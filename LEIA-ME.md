@@ -18,7 +18,7 @@ Durante esta sessão também está em: <http://localhost:8765/>
 - **Galeria** com lightbox (fotos profissionais da proposta)
 - **Cardápio completo** em 8 abas (todas as etapas da festa)
 - **Upgrades** ("Quero mais")
-- **Simulador de orçamento**: dia da semana × convidados → valor por pessoa + total + mensagem pronta no WhatsApp
+- **Simulador de orçamento com captura de lead**: antes de ver valores, o visitante deixa nome + WhatsApp (vira lead no painel admin); depois simula dia × convidados → valor por pessoa + total + mensagem personalizada pronta no WhatsApp
 - **Como funciona** (4 passos) + equipe
 - **FAQ** com as condições gerais reescritas de forma amigável
 - **Mapa do Google** apontando para Rua Yeda, 184 + cartões de contato
@@ -41,6 +41,10 @@ Durante esta sessão também está em: <http://localhost:8765/>
 
 Em `index.html`, procure por `var PRICES` — os valores estão organizados por dia (seg/sex/sab) e nº de convidados.
 
+## O que ainda falta
+
+Todas as pendências em aberto (senhas, domínio, prova social, política de privacidade etc.) estão centralizadas em **`PENDENCIAS.md`**, com responsável e instruções por item.
+
 ## Polimento aplicado (v2)
 
 - Imagens recomprimidas e com `width/height` (zero layout shift); total ~1,4 MB
@@ -54,7 +58,15 @@ Em `index.html`, procure por `var PRICES` — os valores estão organizados por 
 
 ```text
 site/
-├── index.html   (página completa: HTML + CSS + JS)
-├── assets/      (23 imagens otimizadas para web)
-└── LEIA-ME.md
+├── index.html          (site público: HTML + CSS + JS num arquivo)
+├── admin.html          (painel back-office com login Supabase)
+├── proposta.html       (proposta pública acessada por token)
+├── supabase-config.js  (url + anon key do backend)
+├── supabase/           (migrações versionadas — fonte da verdade do schema)
+├── setup/              (instalador manual + guia SETUP-ADMIN.md)
+├── assets/             (imagens otimizadas, WebP + JPG para og:image)
+├── vercel.json         (headers de segurança, CSP e cache)
+├── robots.txt · sitemap.xml
+├── PENDENCIAS.md       (pendências abertas, com responsável)
+└── LEIA-ME.md · README.md · CLAUDE.md · RELATORIO-AUDITORIA.md
 ```
