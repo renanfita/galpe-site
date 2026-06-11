@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>document.documentElement.classList.remove('no-js');</script>
+<script>document.documentElement.classList.remove('no-js');try{if(localStorage.getItem('galpe_lead'))document.documentElement.classList.add('lead-ok')}catch(e){}</script>
 <title>Galpê | Buffet Infantil e Espaço de Festas em Teresópolis – RJ</title>
 <meta name="description" content="Buffet infantil em Teresópolis com brinquedão exclusivo, cardápio completo, +50 temas de decoração e equipe que cuida de tudo. Peça seu orçamento pelo WhatsApp!">
 <link rel="canonical" href="https://galpe-site.vercel.app/">
@@ -275,8 +275,34 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 /* ---------- preços/simulador ---------- */
 #precos{background:var(--olive);color:var(--navy)}
 #precos .kicker{color:var(--navy-d)}
-.sim-card{background:var(--cream-3);border-radius:30px;box-shadow:0 30px 70px -30px rgba(14,39,71,.5);padding:clamp(28px,4vw,52px);margin-top:44px;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,60px)}
-@media(max-width:880px){.sim-card{grid-template-columns:1fr}}
+.sim-card{background:var(--cream-3);border-radius:30px;box-shadow:0 30px 70px -30px rgba(14,39,71,.5);padding:clamp(28px,4vw,52px);margin-top:44px}
+.sim-gate,.sim-app{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,60px)}
+.sim-app{display:none}
+.lead-ok .sim-gate,.no-js .sim-gate{display:none}
+.lead-ok .sim-app,.no-js .sim-app{display:grid;animation:fadeUp .5s cubic-bezier(.22,1,.36,1)}
+@media(max-width:880px){.sim-gate,.sim-app{grid-template-columns:1fr}}
+/* gate: formulário de captura */
+.gate-fields > p{margin:10px 0 4px;color:#46586E;font-size:.97rem;max-width:48ch}
+.gate-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gate-row.tres{grid-template-columns:1.2fr .55fr 1fr}
+.gate-row label{display:block;font-weight:700;font-size:.88rem;color:var(--navy-d)}
+.gate-row input,.gate-row select{width:100%;margin-top:6px;padding:13px 14px;border:2px solid rgba(21,55,101,.2);border-radius:14px;background:#fff;font-family:var(--font-body);font-size:1rem;color:var(--ink)}
+.gate-row input:hover,.gate-row select:hover{border-color:var(--orange)}
+.gate-row ::placeholder{color:#8A97A8}
+.gate-erro{background:rgba(192,57,43,.08);border:1.5px solid rgba(192,57,43,.4);color:#A02E22;border-radius:12px;padding:10px 14px;font-size:.9rem;font-weight:600;margin-top:14px}
+.gate-lgpd{display:block;margin-top:12px;font-size:.8rem;color:#5A6B80;line-height:1.5;max-width:46ch}
+.sim-gate .btn{margin-top:18px}
+.hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+@media(max-width:560px){.gate-row,.gate-row.tres{grid-template-columns:1fr}.sim-gate .btn{width:100%;justify-content:center}}
+/* gate: painel teaser (promessa, sem números) */
+.gate-teaser{background:var(--navy);color:var(--cream);border-radius:22px;padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;justify-content:center;gap:12px;position:relative;overflow:hidden}
+.gate-teaser::before{content:"";position:absolute;top:-30px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(233,180,59,.18)}
+.gate-teaser .gt-label{font-weight:700;letter-spacing:.14em;font-size:.8rem;text-transform:uppercase;opacity:.8}
+.gate-teaser .gt-big{font-family:var(--font-display);font-size:clamp(1.5rem,2.4vw,2.1rem);color:var(--yellow);text-transform:uppercase;line-height:1.1}
+.gate-teaser ul{margin-top:4px}
+.gate-teaser li{padding-left:24px;position:relative;font-size:.95rem;opacity:.94;margin-top:8px}
+.gate-teaser li::before{content:"✓";position:absolute;left:0;color:var(--yellow);font-weight:800}
+.sim-oi{font-weight:800;color:var(--navy-d)}
 .sim-label{font-weight:800;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy-d);display:block;margin:22px 0 10px}
 .day-opts,.guest-opts{display:flex;gap:10px;flex-wrap:wrap}
 .opt{padding:12px 20px;border-radius:14px;border:2px solid rgba(21,55,101,.2);background:#fff;font-weight:700;cursor:pointer;font-family:var(--font-body);font-size:.95rem;transition:all .2s;color:var(--ink)}
@@ -693,7 +719,49 @@ footer a:hover{color:var(--yellow)}
     <h2 class="h-display rv" style="margin:14px 0">Simule sua festa <span class="accent" style="color:var(--cream-3)">em segundos</span></h2>
     <p class="lead rv" style="color:var(--navy-d)">Escolha o dia e o número de convidados pagantes. Festas com 4 horas de duração e tudo incluso: espaço, brinquedão, buffet, equipe completa e mesa decorada.</p>
     <div class="sim-card rv">
+      <form class="sim-gate" id="simGate" novalidate>
+        <div class="gate-fields">
+          <h3 class="h-display" style="color:var(--navy);font-size:clamp(1.3rem,2.2vw,1.7rem)">Quase lá! <span class="accent" style="color:var(--orange)">libera sua simulação</span></h3>
+          <p>Conta pra gente quem você é — sua simulação fica pronta na hora e nossa equipe já fica de olho na sua data.</p>
+          <span class="sim-label">Sobre você</span>
+          <div class="gate-row">
+            <label>Seu nome
+              <input id="gNome" autocomplete="name" maxlength="80" required>
+            </label>
+            <label>Seu WhatsApp
+              <input id="gZap" type="tel" inputmode="tel" autocomplete="tel" placeholder="(21) 99999-9999" maxlength="20" required>
+            </label>
+          </div>
+          <span class="sim-label">Sobre a festa <span style="text-transform:none;letter-spacing:0;opacity:.7">(se já souber)</span></span>
+          <div class="gate-row tres">
+            <label>Aniversariante
+              <input id="gNiver" placeholder="Nome da criança" maxlength="60">
+            </label>
+            <label>Idade
+              <input id="gIdade" type="number" inputmode="numeric" min="1" max="17" placeholder="5">
+            </label>
+            <label>Mês da festa
+              <select id="gMes"><option value="">Ainda não sei</option></select>
+            </label>
+          </div>
+          <input class="hp" id="gWeb" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="gate-erro" id="gateErro" role="alert" hidden></p>
+          <button class="btn btn-primary" id="gateGo" type="submit">Ver o valor da minha festa</button>
+          <small class="gate-lgpd">Ao continuar, você autoriza o contato do Galpê pelo WhatsApp sobre a sua festa. Nada de spam, prometido. 🤝</small>
+        </div>
+        <div class="gate-teaser">
+          <span class="gt-label">Você vai ver</span>
+          <div class="gt-big">Valor por pessoa na hora</div>
+          <ul>
+            <li>Tudo incluso: espaço, brinquedão, buffet e equipe completa</li>
+            <li>Preço por dia da semana e número de convidados</li>
+            <li>Mensagem pronta para garantir sua data no WhatsApp</li>
+          </ul>
+        </div>
+      </form>
+      <div class="sim-app" id="simApp">
       <div>
+        <p class="sim-oi" id="simOi" hidden></p>
         <span class="sim-label">Qual dia da semana?</span>
         <div class="day-opts" id="dayOpts">
           <button class="opt sel" data-day="seg" type="button">Seg. a Qui.</button>
@@ -722,6 +790,7 @@ footer a:hover{color:var(--yellow)}
         <span>👶 Até 5 anos não pagam</span>
         <span>🧒 De 6 a 9 anos pagam meia</span>
         <span>⏰ Sábados: início às 12h ou 18h</span>
+      </div>
       </div>
     </div>
   </div>
@@ -961,7 +1030,9 @@ footer a:hover{color:var(--yellow)}
     var tot = pp * guests;
     ppEl.textContent = 'R$ ' + pp;
     totEl.innerHTML = 'Estimativa para ' + guests + ' convidados: <b>R$ ' + fmt(tot) + '</b>';
-    var msg = 'Oi! Simulei no site: festa para ' + guests + ' convidados, ' + DAY_LABEL[day] + ' (R$ ' + pp + '/pessoa). Quero verificar disponibilidade de data! 🎉';
+    var quem = lerLead('nome') ? 'Oi! Sou ' + lerLead('nome').split(' ')[0] + ' 👋 ' : 'Oi! ';
+    var festa = 'festa' + (lerLead('niver') ? ' de ' + lerLead('niver') + (lerLead('idade') ? ' (' + lerLead('idade') + ' anos)' : '') : '');
+    var msg = quem + 'Simulei no site: ' + festa + ' para ' + guests + ' convidados, ' + DAY_LABEL[day] + ' (R$ ' + pp + '/pessoa). Quero verificar disponibilidade de data! 🎉';
     waEl.href = 'https://wa.me/5521995060184?text=' + encodeURIComponent(msg);
     if(window.gsap){ gsap.fromTo(ppEl, {scale:.85, opacity:.4}, {scale:1, opacity:1, duration:.45, ease:'back.out(2)'}); }
     /* no toque (mobile empilhado), garante que o preço atualizado fique à vista */
@@ -982,6 +1053,83 @@ footer a:hover{color:var(--yellow)}
   });
   update();
 
+  /* ---- gate de captura do simulador (lead antes do preço) ---- */
+  var LEAD_KEY = 'galpe_lead', LEAD_PEND = 'galpe_lead_pendente';
+  var lead = null;
+  try{ lead = JSON.parse(localStorage.getItem(LEAD_KEY) || 'null'); }catch(e){}
+  function lerLead(k){ return (lead && lead[k]) ? String(lead[k]) : ''; }
+
+  (function(){ /* meses dos próximos 12 ciclos no select */
+    var sel = document.getElementById('gMes');
+    var nomes = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+    var hoje = new Date();
+    for(var i = 0; i < 12; i++){
+      var d = new Date(hoje.getFullYear(), hoje.getMonth() + i, 1);
+      var o = document.createElement('option');
+      o.value = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-01';
+      o.textContent = nomes[d.getMonth()] + ' de ' + d.getFullYear();
+      sel.appendChild(o);
+    }
+  })();
+
+  function liberarSimulador(){
+    document.documentElement.classList.add('lead-ok');
+    var nome = lerLead('nome');
+    if(nome){
+      var oi = document.getElementById('simOi');
+      oi.textContent = 'Prontinho, ' + nome.split(' ')[0] + '! 👋';
+      oi.hidden = false;
+    }
+    update();
+  }
+  if(lead) liberarSimulador();
+
+  function enviarLead(payload, done){
+    var SB = window.GALPE_SUPABASE;
+    var soltou = false;
+    function soltar(){ if(!soltou){ soltou = true; if(done) done(); } }
+    function pendurar(){ try{ localStorage.setItem(LEAD_PEND, JSON.stringify(payload)); }catch(e){} }
+    if(!SB || !SB.url || SB.url.indexOf('http') !== 0){ pendurar(); soltar(); return; }
+    setTimeout(soltar, 3500); /* backend lento nunca segura o cliente */
+    fetch(SB.url + '/rest/v1/leads', {
+      method: 'POST',
+      headers: { apikey: SB.anonKey, Authorization: 'Bearer ' + SB.anonKey, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify(payload)
+    }).then(function(r){
+      if(!r.ok) throw 0;
+      try{ localStorage.removeItem(LEAD_PEND); }catch(e){}
+      soltar();
+    }).catch(function(){ pendurar(); soltar(); });
+  }
+  /* reenvia lead que ficou pendente por falha de rede em visita anterior */
+  try{ var pend = localStorage.getItem(LEAD_PEND); if(pend) enviarLead(JSON.parse(pend), null); }catch(e){}
+
+  document.getElementById('simGate').addEventListener('submit', function(e){
+    e.preventDefault();
+    var erroEl = document.getElementById('gateErro');
+    var btn = document.getElementById('gateGo');
+    function falha(msg){ erroEl.textContent = msg; erroEl.hidden = false; }
+    erroEl.hidden = true;
+    var nome = document.getElementById('gNome').value.trim().slice(0, 80);
+    var dig = document.getElementById('gZap').value.replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '');
+    var niver = document.getElementById('gNiver').value.trim().slice(0, 60);
+    var idade = document.getElementById('gIdade').value.replace(/\D/g, '').slice(0, 2);
+    var mes = document.getElementById('gMes').value;
+    lead = { nome: nome, niver: niver, idade: idade };
+    /* honeypot: bot preenche, a gente finge sucesso e não suja o CRM */
+    if(document.getElementById('gWeb').value){ liberarSimulador(); return; }
+    if(nome.length < 2){ falha('Conta seu nome pra gente? 😊'); return; }
+    if(dig.length < 10 || dig.length > 11){ falha('Ops, confere o número do WhatsApp? Use DDD + número.'); return; }
+    var fone = '(' + dig.slice(0, 2) + ') ' + (dig.length === 11 ? dig.slice(2, 7) + '-' + dig.slice(7) : dig.slice(2, 6) + '-' + dig.slice(6));
+    var obs = 'Liberou o simulador do site';
+    if(niver) obs += ' · Aniversariante: ' + niver + (idade ? ', ' + idade + ' anos' : '');
+    var payload = { origem: 'site', nome: nome, telefone: fone, observacoes: obs.slice(0, 900) };
+    if(mes) payload.data_interesse = mes;
+    try{ localStorage.setItem(LEAD_KEY, JSON.stringify(lead)); }catch(e){}
+    btn.disabled = true; btn.textContent = 'Abrindo seu simulador…';
+    enviarLead(payload, liberarSimulador);
+  });
+
   /* ---- preços dinâmicos (admin) + captura de lead ---- */
   (function(){
     var SB = window.GALPE_SUPABASE;
@@ -998,14 +1146,6 @@ footer a:hover{color:var(--yellow)}
         });
         update();
       }).catch(function(){});
-    waEl.addEventListener('click', function(){
-      try{
-        fetch(SB.url + '/rest/v1/leads', { method: 'POST',
-          headers: Object.assign({ 'Content-Type': 'application/json', Prefer: 'return=minimal' }, headers),
-          body: JSON.stringify({ origem: 'site', convidados: guests, dia_tipo: day,
-            observacoes: 'Simulador do site: ' + guests + ' convidados, ' + DAY_LABEL[day] }) });
-      }catch(e){}
-    });
   })();
 
   /* ---- motion (GSAP) ---- */
