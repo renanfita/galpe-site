@@ -322,6 +322,10 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .step-btn{width:44px;height:44px;border:none;background:var(--cream-2);border-radius:10px;font-size:1.35rem;font-weight:800;color:var(--navy);cursor:pointer;transition:background .2s,color .2s}
 .step-btn:hover{background:var(--orange-btn);color:#fff}
 .step-val{min-width:36px;text-align:center;font-weight:800;font-size:1.05rem}
+.step-input{width:78px;border:none;background:transparent;text-align:center;font-weight:800;font-size:1.05rem;font-family:var(--font-body);color:var(--ink);appearance:textfield;-moz-appearance:textfield}
+.step-input::-webkit-outer-spin-button,.step-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.faixa-note{margin-top:10px;font-size:.88rem;font-weight:600;color:var(--navy-d)}
+.faixa-note .dica{display:block;margin-top:2px}
 .sim-adds{display:flex;flex-direction:column;gap:10px}
 .add-opt{display:flex;align-items:flex-start;gap:12px;background:#fff;border:2px solid rgba(21,55,101,.2);border-radius:14px;padding:12px 16px;cursor:pointer;transition:border-color .2s,box-shadow .2s;font-size:.95rem}
 .add-opt:hover{border-color:var(--orange)}
@@ -786,12 +790,18 @@ footer a:hover{color:var(--yellow)}
           <button class="opt" data-day="sab" type="button">Sáb. e Dom.</button>
         </div>
         <span class="sim-label">Quantos convidados pagantes?</span>
-        <div class="guest-opts" id="guestOpts">
+        <div class="stepper" id="guestStep">
+          <button class="step-btn" type="button" data-d="-1" aria-label="Menos um convidado pagante">−</button>
+          <input class="step-input" id="guestInput" type="number" inputmode="numeric" min="1" max="150" value="60" aria-label="Número exato de convidados pagantes">
+          <button class="step-btn" type="button" data-d="1" aria-label="Mais um convidado pagante">+</button>
+        </div>
+        <div class="guest-opts" id="guestOpts" role="group" aria-label="Atalhos de faixas de convidados" style="margin-top:10px">
           <button class="opt sel" data-g="60" type="button">60</button>
           <button class="opt" data-g="80" type="button">80</button>
           <button class="opt" data-g="100" type="button">100</button>
           <button class="opt" data-g="150" type="button">150</button>
         </div>
+        <p class="faixa-note" id="faixaNote">Faixa aplicada: 60 a 79 pagantes · R$ 134 por pessoa</p>
         <span class="sim-label">Crianças de 6 a 9 anos <span style="text-transform:none;letter-spacing:0;opacity:.7">(pagam meia)</span></span>
         <div class="stepper" id="meiaStep" role="group" aria-label="Quantidade de crianças de 6 a 9 anos">
           <button class="step-btn" type="button" data-d="-1" aria-label="Menos uma criança">−</button>
@@ -1056,8 +1066,17 @@ footer a:hover{color:var(--yellow)}
   function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
   function fmt(n){ return n.toLocaleString('pt-BR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); }
   function adicionaisAtivos(){ return ADD_FIXOS.concat(upgsDb).filter(function(a){ return addSel[a.chave]; }); }
+  /* enquadra a contagem exata na faixa de preço (piso) — mesma regra do precoSugerido do admin */
+  function faixaDe(n){
+    var tiers = Object.keys(PRICES[day] || {}).map(Number).sort(function(a, b){ return a - b; });
+    if(!tiers.length) return null;
+    var idx = 0;
+    for(var i = 0; i < tiers.length; i++){ if(n >= tiers[i]) idx = i; }
+    return { piso: tiers[idx], prox: idx + 1 < tiers.length ? tiers[idx + 1] : null };
+  }
   function update(interacao){
-    var pp = (PRICES[day] || {})[guests];
+    var fx = faixaDe(guests);
+    var pp = fx ? PRICES[day][fx.piso] : null;
     if(pp == null || !isFinite(pp)) return;
     var pagantes = guests + meias;
     var base = pp * guests;
@@ -1073,6 +1092,14 @@ footer a:hover{color:var(--yellow)}
       linhas.push('<span>+ ' + esc(a.nome) + (a.unidade === 'por_pessoa' ? ' · ' + pagantes + ' pessoas' : '') + ' <b>R$ ' + fmt(v) + '</b></span>');
     });
     ppEl.textContent = 'R$ ' + fmt(pp);
+    var nota = guests < fx.piso
+      ? 'Abaixo de ' + fx.piso + ' pagantes vale o valor da faixa mínima · R$ ' + fmt(pp) + ' por pessoa'
+      : 'Faixa aplicada: ' + (fx.prox ? fx.piso + ' a ' + (fx.prox - 1) : fx.piso + ' ou mais') + ' pagantes · R$ ' + fmt(pp) + ' por pessoa';
+    if(fx.prox && guests < fx.prox && fx.prox - guests <= 12 && PRICES[day][fx.prox] < pp){
+      nota += '<span class="dica">💡 Com ' + fx.prox + ' pagantes, o valor cai para R$ ' + fmt(PRICES[day][fx.prox]) + ' por pessoa</span>';
+    }
+    document.getElementById('faixaNote').innerHTML = nota;
+    document.querySelectorAll('#guestOpts .opt').forEach(function(x){ x.classList.toggle('sel', +x.dataset.g === fx.piso); });
     document.getElementById('simLinhas').innerHTML = linhas.join('');
     totEl.innerHTML = 'Total estimado: <b>R$ ' + fmt(total) + '</b>';
     var quem = lerLead('nome') ? 'Oi! Sou ' + lerLead('nome').split(' ')[0] + ' 👋 ' : 'Oi! ';
@@ -1091,11 +1118,22 @@ footer a:hover{color:var(--yellow)}
     this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
     b.classList.add('sel'); if(PRICES[b.dataset.day]) day = b.dataset.day; update(true);
   });
+  var guestInput = document.getElementById('guestInput');
+  function clampGuests(n){ return Math.min(150, Math.max(1, Math.round(n))); }
   document.getElementById('guestOpts').addEventListener('click', function(e){
     var b = e.target.closest('.opt'); if(!b) return;
-    this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
-    b.classList.add('sel'); var g = +b.dataset.g; if(PRICES[day][g] != null) guests = g; update(true);
+    guests = +b.dataset.g; guestInput.value = guests; update(true);
   });
+  document.getElementById('guestStep').addEventListener('click', function(e){
+    var b = e.target.closest('.step-btn'); if(!b) return;
+    guests = clampGuests(guests + (+b.dataset.d));
+    guestInput.value = guests; update(true);
+  });
+  guestInput.addEventListener('input', function(){
+    var v = parseInt(guestInput.value, 10);
+    if(isFinite(v)){ guests = clampGuests(v); update(); } /* digitação: calcula sem rolar */
+  });
+  guestInput.addEventListener('change', function(){ guestInput.value = guests; update(true); });
   document.getElementById('meiaStep').addEventListener('click', function(e){
     var b = e.target.closest('.step-btn'); if(!b) return;
     meias = Math.min(60, Math.max(0, meias + (+b.dataset.d)));
