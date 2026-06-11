@@ -478,7 +478,7 @@ tr:hover td{background:var(--cream-2)}
 <div id="toast"></div>
 
 <script src="supabase-config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.106.2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 <script>
 (function(){
 "use strict";
@@ -491,13 +491,16 @@ if(!hasCfg){
 }
 var sb = hasCfg ? supabase.createClient(CFG.url, CFG.anonKey) : null;
 
-var state = { precos: [], upgrades: [], config: {}, eventos: [], leads: [], propostas: [], bloqueios: [], calRef: new Date() };
+var state = { precos: [], upgrades: [], config: {}, eventos: [], leads: [], propostas: [], bloqueios: [],
+  calRef: (function(){ var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); })() };
 
 var $ = function(id){ return document.getElementById(id); };
 var BRL = function(n){ return 'R$ ' + Number(n || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); };
 var DIA_LABEL = { seg:'Seg. à Qui.', sex:'Sex. e feriados', sab:'Sáb. e Dom.' };
 var fmtData = function(d){ if(!d) return '—'; var p = d.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; };
-var hoje = function(){ return new Date().toISOString().slice(0,10); };
+var pad2 = function(n){ return String(n).padStart(2,'0'); };
+/* data local (não UTC) — evita virar o dia às 21h no Brasil */
+var hoje = function(){ var d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); };
 
 function toast(msg, err){
   var t = $('toast');
@@ -532,6 +535,10 @@ $('btnLogout').addEventListener('click', function(){
 if(sb){
   sb.auth.getSession().then(function(r){
     if(r.data.session) enterApp(r.data.session.user);
+  });
+  /* sessão expirada/encerrada em outra aba → volta para o login */
+  sb.auth.onAuthStateChange(function(event){
+    if(event === 'SIGNED_OUT'){ location.reload(); }
   });
 }
 function enterApp(user){
@@ -591,7 +598,7 @@ function renderDash(){
     prox.map(function(e){
       return '<tr><td><b>' + fmtData(e.data) + '</b> ' + String(e.hora_inicio).slice(0,5) + '</td><td>' + esc(e.titulo) + '</td><td>' + esc(e.tema || '—') +
         '</td><td>' + (e.convidados || '—') + '</td><td><span class="chip st-' + e.status + '">' + stLabel(e.status) + '</span></td>' +
-        '<td><button class="icon-btn" onclick="openEventoModal(\'' + e.id + '\')" title="Editar">✎</button></td></tr>';
+        '<td><button class="icon-btn" onclick="openEventoModal(\'' + sid(e.id) + '\')" title="Editar">✎</button></td></tr>';
     }).join('')
   ) : '<div class="empty">Nenhuma festa agendada. Bora vender! 🎉</div>';
 
@@ -608,7 +615,9 @@ function renderDash(){
 function tableHTML(heads, rows){
   return '<table><thead><tr>' + heads.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr></thead><tbody>' + rows + '</tbody></table>';
 }
-function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+/* sanitiza IDs/tokens (UUIDs) antes de interpolar em handlers inline — impede breakout de atributo */
+function sid(s){ return String(s == null ? '' : s).replace(/[^a-zA-Z0-9_-]/g, ''); }
 function stLabel(s){
   return ({ pre_reserva:'Pré-reserva', reservado:'Reservado', confirmado:'Confirmado', realizado:'Realizado', cancelado:'Cancelado',
     novo:'Novo', contato:'Em contato', visita:'Visita', proposta:'Proposta', fechado:'Fechado', perdido:'Perdido',
@@ -651,7 +660,7 @@ function openDia(ds){
   $('diaEventos').innerHTML = evs.length ? evs.map(function(e){
     return '<div class="upg-row" style="justify-content:space-between"><div><b>' + String(e.hora_inicio).slice(0,5) + '</b> — ' + esc(e.titulo) +
       ' <span class="chip st-' + e.status + '">' + stLabel(e.status) + '</span></div>' +
-      '<button class="icon-btn" onclick="closeModal(\'modalDia\');openEventoModal(\'' + e.id + '\')">✎</button></div>';
+      '<button class="icon-btn" onclick="closeModal(\'modalDia\');openEventoModal(\'' + sid(e.id) + '\')">✎</button></div>';
   }).join('') : '<div class="empty">Nenhuma festa neste dia.</div>';
   $('diaBloquear').textContent = blk ? 'Desbloquear data' : 'Bloquear data';
   $('diaBloquear').onclick = function(){
@@ -738,8 +747,8 @@ function renderLeads(){
         '<td>' + esc(l.origem) + '</td>' +
         '<td><span class="chip st-' + l.status + '">' + stLabel(l.status) + '</span></td>' +
         '<td><div class="row-actions">' +
-        '<button class="icon-btn" title="Editar" onclick="openLeadModal(\'' + l.id + '\')">✎</button>' +
-        '<button class="icon-btn" title="Gerar proposta" onclick="propFromLead(\'' + l.id + '\')">📄</button>' +
+        '<button class="icon-btn" title="Editar" onclick="openLeadModal(\'' + sid(l.id) + '\')">✎</button>' +
+        '<button class="icon-btn" title="Gerar proposta" onclick="propFromLead(\'' + sid(l.id) + '\')">📄</button>' +
         '</div></td></tr>';
     }).join('')
   ) : '<div class="empty">Nenhum lead' + (f ? ' com esse status' : '') + '.</div>';
@@ -811,10 +820,10 @@ function renderProps(){
         '<td>' + p.convidados + '</td><td><b>' + BRL(tot) + '</b></td>' +
         '<td><span class="chip st-' + p.status + '">' + stLabel(p.status) + '</span></td>' +
         '<td><div class="row-actions">' +
-        '<button class="icon-btn" title="Editar" onclick="openPropModal(\'' + p.id + '\')">✎</button>' +
-        '<button class="icon-btn" title="Copiar link" onclick="copyPropLink(\'' + p.token + '\')">🔗</button>' +
-        '<button class="icon-btn" title="Enviar por WhatsApp" onclick="sendProp(\'' + p.id + '\')">➤</button>' +
-        (p.status === 'aceita' && !eventoDaProposta(p.id) ? '<button class="icon-btn" title="Criar festa no calendário" onclick="eventoFromProp(\'' + p.id + '\')">📅</button>' : '') +
+        '<button class="icon-btn" title="Editar" onclick="openPropModal(\'' + sid(p.id) + '\')">✎</button>' +
+        '<button class="icon-btn" title="Copiar link" onclick="copyPropLink(\'' + sid(p.token) + '\')">🔗</button>' +
+        '<button class="icon-btn" title="Enviar por WhatsApp" onclick="sendProp(\'' + sid(p.id) + '\')">➤</button>' +
+        (p.status === 'aceita' && !eventoDaProposta(p.id) ? '<button class="icon-btn" title="Criar festa no calendário" onclick="eventoFromProp(\'' + sid(p.id) + '\')">📅</button>' : '') +
         '</div></td></tr>';
     }).join('')
   ) : '<div class="empty">Nenhuma proposta ainda.</div>';
@@ -885,7 +894,7 @@ function calcProp(){
   $('pr_calc').innerHTML = conv + ' convidados × ' + BRL(vp) + ' = <b>' + BRL(conv * vp) + '</b>' +
     (upgTot ? ' &nbsp;+ upgrades <b>' + BRL(upgTot) + '</b>' : '') +
     (desc ? ' &nbsp;− desconto <b>' + BRL(desc) + '</b>' : '') +
-    '<br>Total: <span class="tot">' + BRL(total) + '</span> &nbsp; <small>sinal de ' + (state.config.sinal_percent || 10) + '%: <b>' + BRL(sinal) + '</b></small>';
+    '<br>Total: <span class="tot">' + BRL(total) + '</span> &nbsp; <small>sinal de ' + Number(state.config.sinal_percent || 10) + '%: <b>' + BRL(sinal) + '</b></small>';
 }
 ['pr_convidados','pr_valor','pr_desconto'].forEach(function(id){ $(id).addEventListener('input', calcProp); });
 $('pr_dia').addEventListener('change', function(){
@@ -1000,7 +1009,7 @@ function renderUpgrades(){
         '<td>' + (u.preco != null ? BRL(u.preco) : '<i style="color:#999">sob consulta</i>') + '</td>' +
         '<td>' + (u.unidade === 'por_pessoa' ? 'por pessoa' : u.unidade === 'por_hora' ? 'por hora' : 'fixo') + '</td>' +
         '<td>' + (u.ativo ? '✅' : '—') + '</td>' +
-        '<td><button class="icon-btn" onclick="openUpgModal(\'' + u.id + '\')">✎</button></td></tr>';
+        '<td><button class="icon-btn" onclick="openUpgModal(\'' + sid(u.id) + '\')">✎</button></td></tr>';
     }).join('')
   ) : '<div class="empty">Nenhum upgrade.</div>';
 }

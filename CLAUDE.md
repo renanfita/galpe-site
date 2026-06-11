@@ -41,7 +41,9 @@ Três páginas + um backend Supabase compartilhado:
 | Preços (produção) | painel admin ou tabela `precos` no Supabase |
 | Telefone/WhatsApp | buscar `5521995060184` em todos os arquivos |
 | Cardápio | `index.html` → seção `<!-- ======= CARDÁPIO ======= -->` |
-| Fotos | `assets/` (23 imagens otimizadas, ~1,4 MB total) |
+| Fotos | `assets/` (WebP servido no site; manter o .jpg correspondente — usado no og:image) |
+| Headers de segurança/CSP/cache | `vercel.json` |
+| SEO técnico | `robots.txt`, `sitemap.xml` (atualizar URLs ao migrar para festanogalpe.com.br) |
 
 ## Convenções de front-end
 

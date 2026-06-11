@@ -97,12 +97,13 @@ tr.total td:last-child{font-family:'Anton',sans-serif;font-size:1.7rem;color:var
 </div>
 
 <script src="supabase-config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.106.2/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
 <script>
 (function(){
 "use strict";
 var CFG = window.GALPE_SUPABASE || {};
 var token = new URLSearchParams(location.search).get('t');
+var esc = function(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); };
 var BRL = function(n){ return 'R$ ' + Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); };
 var fmtData = function(d){ if(!d) return null; var p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; };
 var DIA_LABEL = { seg:'segunda a quinta', sex:'sexta ou feriado', sab:'sábado ou domingo' };
@@ -111,7 +112,7 @@ function showNotFound(){
   document.getElementById('loading').style.display='none';
   document.getElementById('notfound').style.display='block';
 }
-if(!token || !CFG.url){ showNotFound(); }
+if(!token || !CFG.url || !CFG.anonKey || !/^[0-9a-f-]{36}$/i.test(token)){ showNotFound(); }
 else{
   var sb = supabase.createClient(CFG.url, CFG.anonKey);
   Promise.all([
@@ -139,28 +140,30 @@ function render(p, cfg, sb){
   var meta = [];
   if(p.data_evento) meta.push(['Data', fmtData(p.data_evento)]);
   if(p.horario) meta.push(['Horário', String(p.horario).slice(0,5)]);
-  meta.push(['Convidados', p.convidados + ' pagantes']);
+  var convidados = Number(p.convidados || 0);
+  meta.push(['Convidados', convidados + ' pagantes']);
   meta.push(['Dia', DIA_LABEL[p.dia_tipo] || p.dia_tipo]);
   document.getElementById('pMeta').innerHTML = meta.map(function(m){
-    return '<div><b>' + m[0] + '</b><span>' + m[1] + '</span></div>';
+    return '<div><b>' + esc(m[0]) + '</b><span>' + esc(m[1]) + '</span></div>';
   }).join('');
 
   var rows = [];
-  var base = p.convidados * Number(p.valor_pessoa);
-  rows.push(['Festa completa — ' + p.convidados + ' convidados × ' + BRL(p.valor_pessoa), BRL(base)]);
+  var valorPessoa = Number(p.valor_pessoa || 0);
+  var base = convidados * valorPessoa;
+  rows.push(['Festa completa — ' + convidados + ' convidados × ' + BRL(valorPessoa), BRL(base)]);
   var total = base;
   (p.upgrades || []).forEach(function(u){
-    var v = u.unidade === 'por_pessoa' ? Number(u.preco) * p.convidados : Number(u.preco);
+    var v = u.unidade === 'por_pessoa' ? Number(u.preco || 0) * convidados : Number(u.preco || 0);
     total += v;
     rows.push([u.nome + (u.unidade === 'por_pessoa' ? ' (' + BRL(u.preco) + '/pessoa)' : ''), BRL(v)]);
   });
   if(Number(p.desconto) > 0){ total -= Number(p.desconto); rows.push(['Desconto especial 🧡', '− ' + BRL(p.desconto)]); }
   var sinalPct = Number(cfg.sinal_percent || 10);
-  rows.push(['<tr class="total"><td>Total da festa</td>', BRL(total)]);
-  document.getElementById('pTabela').innerHTML = rows.map(function(r, i){
-    if(String(r[0]).indexOf('<tr') === 0) return r[0] + '<td>' + r[1] + '</td></tr>';
-    return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
-  }).join('') + '<tr><td style="color:#5A6B80">Sinal para reservar (' + sinalPct + '%)</td><td>' + BRL(total * sinalPct / 100) + '</td></tr>';
+  document.getElementById('pTabela').innerHTML = rows.map(function(r){
+    return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>';
+  }).join('')
+    + '<tr class="total"><td>Total da festa</td><td>' + esc(BRL(total)) + '</td></tr>'
+    + '<tr><td style="color:#5A6B80">Sinal para reservar (' + esc(sinalPct) + '%)</td><td>' + esc(BRL(total * sinalPct / 100)) + '</td></tr>';
 
   if(p.observacoes){
     document.getElementById('pObs').style.display='block';
@@ -175,7 +178,7 @@ function render(p, cfg, sb){
   if(cfg.endereco) document.getElementById('fEndereco').textContent = cfg.endereco;
   document.getElementById('fContato').textContent = (cfg.telefone_exibicao || '') + (cfg.instagram ? ' · ' + cfg.instagram : '');
 
-  var wa = String(cfg.whatsapp || '5521995060184');
+  var wa = String(cfg.whatsapp || '5521995060184').replace(/\D/g,'');
   var waMsg = 'Oi! Recebi a proposta' + (p.aniversariante ? ' da festa de ' + p.aniversariante : '') + ' e quero conversar! 🎉';
   document.getElementById('btnWa').href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(waMsg);
 
@@ -188,7 +191,7 @@ function render(p, cfg, sb){
       if(r.error || r.data !== true){ btn.disabled=false; btn.textContent='✓ Aceitar proposta'; alert('Não foi possível registrar. Fale com a gente pelo WhatsApp!'); return; }
       badge.style.display='block'; btn.style.display='none';
       var waOk = 'Acabei de ACEITAR a proposta' + (p.aniversariante ? ' da festa de ' + p.aniversariante : '') + '! Quero confirmar a data. 🎊';
-      window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(waOk), '_blank');
+      window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(waOk), '_blank', 'noopener');
     });
   });
 }

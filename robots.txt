@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /proposta.html
+
+Sitemap: https://galpe-site.vercel.app/sitemap.xml
