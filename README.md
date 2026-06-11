@@ -32,7 +32,7 @@ Hospedagem estática em qualquer provedor (Vercel, Netlify, Cloudflare Pages, Gi
 ## 🛠 Manutenção rápida
 
 | O quê | Onde |
-|---|---|
+| --- | --- |
 | Preços | `index.html` → `var PRICES` |
 | Telefone/WhatsApp | buscar `5521995060184` |
 | Cardápio | seção `<!-- ======= CARDÁPIO ======= -->` |

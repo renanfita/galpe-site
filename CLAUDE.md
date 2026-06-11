@@ -38,7 +38,7 @@ Três páginas + um backend Supabase compartilhado:
 ## Manutenção frequente
 
 | O quê | Onde |
-|---|---|
+| --- | --- |
 | Preços (fallback estático) | `index.html` → `var PRICES` |
 | Preços (produção) | painel admin ou tabela `precos` no Supabase |
 | Telefone/WhatsApp | buscar `5521995060184` em todos os arquivos |

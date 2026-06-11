@@ -30,12 +30,12 @@ O painel (`admin.html`) gerencia **preços, pacotes, propostas, leads e o calend
 1. **Project Settings → API** → copie a **URL** e a chave **anon (publishable)**
 2. Edite [`../supabase-config.js`](../supabase-config.js):
 
-```js
-window.GALPE_SUPABASE = {
-  url: "https://SEU-PROJETO.supabase.co",
-  anonKey: "sb_publishable_..."
-};
-```
+   ```js
+   window.GALPE_SUPABASE = {
+     url: "https://SEU-PROJETO.supabase.co",
+     anonKey: "sb_publishable_..."
+   };
+   ```
 
 3. Commit + push (a Vercel publica sozinha)
 
@@ -49,7 +49,7 @@ window.GALPE_SUPABASE = {
 ## O que o admin faz
 
 | Área | Função |
-|---|---|
+| --- | --- |
 | Visão geral | KPIs do mês, próximas festas, pagamentos pendentes |
 | Calendário | Festas por mês, status, bloquear datas |
 | Leads | CRM: novo → contato → visita → proposta → fechado |
