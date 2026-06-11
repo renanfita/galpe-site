@@ -945,4 +945,60 @@ footer a:hover{color:var(--yellow)}
       .then(function(rows){
         if(!rows || !rows.length) return;
         rows.forEach(function(row){
-          v
+          if(PRICES[row.dia] && PRICES[row.dia][row.convidados] != null){
+            PRICES[row.dia][row.convidados] = Math.round(Number(row.valor));
+          }
+        });
+        update();
+      }).catch(function(){});
+    waEl.addEventListener('click', function(){
+      try{
+        fetch(SB.url + '/rest/v1/leads', { method: 'POST',
+          headers: Object.assign({ 'Content-Type': 'application/json', Prefer: 'return=minimal' }, headers),
+          body: JSON.stringify({ origem: 'site', convidados: guests, dia_tipo: day,
+            observacoes: 'Simulador do site: ' + guests + ' convidados, ' + DAY_LABEL[day] }) });
+      }catch(e){}
+    });
+  })();
+
+  /* ---- motion (GSAP) ---- */
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(window.gsap && window.ScrollTrigger && !reduced){
+    gsap.registerPlugin(ScrollTrigger);
+    document.querySelectorAll('.rv').forEach(function(el, i){
+      gsap.to(el, {
+        opacity:1, y:0, duration:.9, ease:'power3.out',
+        scrollTrigger:{trigger:el, start:'top 88%', once:true},
+        delay:(i % 4) * .07
+      });
+    });
+    document.querySelectorAll('.shape[data-speed]').forEach(function(s){
+      gsap.to(s, {y: -60 * parseFloat(s.dataset.speed), scrollTrigger:{trigger:s.parentElement, start:'top bottom', end:'bottom top', scrub:1}});
+    });
+    gsap.from('.hero-arch', {clipPath:'inset(0 0 100% 0)', duration:1.1, ease:'power4.out', delay:.15});
+    gsap.from('.hero-sticker', {scale:0, rotate:-20, duration:.7, stagger:.18, delay:.7, ease:'back.out(2.2)'});
+    var ensureVisible = function(){
+      document.querySelectorAll('.rv').forEach(function(el){
+        var r = el.getBoundingClientRect();
+        if(r.top < innerHeight && r.bottom > 0 && parseFloat(getComputedStyle(el).opacity) < .05){
+          gsap.set(el, {opacity:1, y:0});
+        }
+      });
+    };
+    setTimeout(ensureVisible, 3000);
+    document.addEventListener('visibilitychange', function(){ if(!document.hidden) setTimeout(ensureVisible, 1200); });
+  } else {
+    document.documentElement.classList.add('gsap-fail');
+    document.querySelectorAll('.rv').forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+  }
+  } /* fim de init() */
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+</body>
+</html>
