@@ -1,0 +1,47 @@
+# 🎪 Galpê — Site Oficial
+
+Site one-page premium para o **Galpê**, buffet infantil e espaço de festas em Teresópolis/RJ.
+
+> *Diversão de criança. Estrutura de gente grande.*
+
+![Galpê](assets/hero-brinquedao.jpg)
+
+## ✨ Features
+
+- **Design system da marca**: paleta extraída da proposta oficial (creme `#F5EDDC`, marinho `#153765`, laranja `#D85427`, oliva `#A9A22F`), arcos, bordas onduladas e motion design com GSAP/ScrollTrigger
+- **Simulador de orçamento** interativo: dia da semana × nº de convidados → valor por pessoa + total + mensagem pré-pronta no WhatsApp
+- **Cardápio completo** em 8 abas acessíveis (ARIA tabs)
+- **Galeria** com lightbox navegável por teclado
+- **SEO local**: JSON-LD `EventVenue` + `FAQPage`, Open Graph/Twitter Cards, otimizado para "buffet infantil Teresópolis"
+- **Mobile-first**: testado em 340/390/768/1440px, menu fullscreen, zero layout shift (todas as imagens com `width/height`)
+- **Zero dependências de build**: HTML/CSS/JS vanilla em arquivo único + assets otimizados (~1,4 MB)
+
+## 🚀 Rodando localmente
+
+Basta abrir `index.html` no navegador — ou:
+
+```bash
+python -m http.server 8765
+# http://localhost:8765
+```
+
+## 📦 Deploy
+
+Hospedagem estática em qualquer provedor (Vercel, Netlify, Cloudflare Pages, GitHub Pages). Não há etapa de build.
+
+## 🛠 Manutenção rápida
+
+| O quê | Onde |
+|---|---|
+| Preços | `index.html` → `var PRICES` |
+| Telefone/WhatsApp | buscar `5521995060184` |
+| Cardápio | seção `<!-- ======= CARDÁPIO ======= -->` |
+| Fotos | pasta `assets/` |
+
+## 📍 Contato do cliente
+
+**Galpê** · Rua Yeda, 184 – Tijuca, Teresópolis/RJ · (21) 99506-0184 · [@festanogalpe](https://www.instagram.com/festanogalpe/)
+
+---
+
+© Galpê – Espaço de Festas. Todos os direitos sobre marca, fotos e conteúdo reservados.
