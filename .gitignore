@@ -6,3 +6,7 @@ desktop.ini
 node_modules/
 
 .vercel
+
+# segredos locais
+.env.local
+.env*.local
