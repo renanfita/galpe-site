@@ -20,7 +20,8 @@
 <meta name="twitter:image" content="https://www.festanogalpe.com.br/assets/hero-brinquedao.jpg">
 <meta name="theme-color" content="#153765">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-<link rel="preload" as="image" href="assets/hero-brinquedao.jpg">
+<link rel="preload" as="image" href="assets/hero-brinquedao.jpg" media="(min-width:881px)">
+<link rel="preload" as="image" href="assets/piscina-bolinhas.jpg" media="(max-width:880px)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23D85427'/%3E%3Cpath d='M14 50 V34 a18 18 0 0 1 36 0 V50 H38 V36 a6 6 0 0 0 -12 0 V50 Z' fill='%23F5EDDC'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,7 +90,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--font-body);background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.6}
-img{max-width:100%;display:block}
+img{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
 ul{list-style:none}
 ::selection{background:var(--orange);color:var(--cream)}
@@ -165,7 +166,8 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .badge .dot{width:9px;height:9px;border-radius:50%}
 .hero-visual{position:relative}
 .hero-arch{border-radius:var(--radius-arch);overflow:hidden;box-shadow:var(--shadow-soft);position:relative;aspect-ratio:4/4.6;border:6px solid #fff}
-.hero-arch img{width:100%;height:100%;object-fit:cover;transform:scale(1.06)}
+.hero-arch picture{display:block;width:100%;height:100%}
+.hero-arch img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
 .hero-sticker{position:absolute;background:var(--yellow);color:var(--navy);font-family:var(--font-accent);font-style:italic;font-weight:600;padding:14px 20px;border-radius:18px;transform:rotate(6deg);box-shadow:0 12px 28px -12px rgba(0,0,0,.35);font-size:1.05rem;line-height:1.25;z-index:4}
 .hero-sticker.s1{top:8%;right:-14px}
 .hero-sticker.s2{bottom:10%;left:-18px;background:var(--orange);color:#fff;transform:rotate(-5deg)}
@@ -442,7 +444,7 @@ footer a:hover{color:var(--yellow)}
       </div>
     </div>
     <div class="hero-visual rv">
-      <div class="hero-arch"><img decoding="async" width="1088" height="535" src="assets/hero-brinquedao.jpg" alt="Brinquedão do Galpê com tobogã, pontes e casinhas temáticas" fetchpriority="high"></div>
+      <div class="hero-arch"><picture><source media="(max-width:880px)" srcset="assets/piscina-bolinhas.jpg" width="493" height="1008"><img decoding="async" width="1088" height="535" src="assets/hero-brinquedao.jpg" alt="Brinquedão do Galpê com tobogã, pontes e casinhas temáticas" fetchpriority="high"></picture></div>
       <div class="hero-sticker s1">“Mais que um salão,<br>uma experiência.”</div>
       <div class="hero-sticker s2">E vai rolar<br>a festa! 🎉</div>
     </div>
@@ -458,7 +460,7 @@ footer a:hover{color:var(--yellow)}
 <section class="sec" id="espaco">
   <div class="wrap split">
     <div class="photo-stack rv">
-      <svg class="stamp" viewBox="0 0 110 110"><defs><path id="circ" d="M55,55 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><circle cx="55" cy="55" r="54" fill="var(--orange)"/><text fill="#F5EDDC" font-size="12.5" font-weight="700" letter-spacing="2.5"><textPath href="#circ">ENTRE, A CASA É SUA ✦ GALPÊ ✦</textPath></text><path d="M40 68 V52 a15 15 0 0 1 30 0 V68 H58 V56 a3 3 0 0 0 -6 0 V68 Z" fill="#F5EDDC"/></svg>
+      <svg class="stamp" viewBox="0 0 110 110"><defs><path id="circ" d="M55,55 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><circle cx="55" cy="55" r="54" fill="var(--orange)"/><text fill="#F5EDDC" font-size="10.6" font-weight="700" letter-spacing="1.4"><textPath href="#circ" textLength="236" lengthAdjust="spacingAndGlyphs">ENTRE, A CASA É SUA ✦ GALPÊ ✦</textPath></text><path d="M40 68 V52 a15 15 0 0 1 30 0 V68 H58 V56 a3 3 0 0 0 -6 0 V68 Z" fill="#F5EDDC"/></svg>
       <div class="ph p1"><img decoding="async" width="823" height="1125" src="assets/salao-vertical.jpg" alt="Salão do Galpê com mesas de madeira, cadeiras de palhinha e plantas" loading="lazy"></div>
       <div class="ph p2"><img decoding="async" width="492" height="1010" src="assets/casinhas.jpg" alt="Casinhas temáticas e área de convivência do Galpê" loading="lazy"></div>
     </div>
