@@ -987,6 +987,11 @@ footer a:hover{color:var(--yellow)}
     };
     setTimeout(ensureVisible, 3000);
     document.addEventListener('visibilitychange', function(){ if(!document.hidden) setTimeout(ensureVisible, 1200); });
+    var evTm;
+    addEventListener('scroll', function(){
+      clearTimeout(evTm);
+      evTm = setTimeout(ensureVisible, 700);
+    }, {passive:true});
   } else {
     document.documentElement.classList.add('gsap-fail');
     document.querySelectorAll('.rv').forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
