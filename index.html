@@ -82,11 +82,13 @@
   --navy:#153765;
   --navy-d:#0E2747;
   --orange:#D85427;
-  --orange-l:#E8703F;
+  --orange-btn:#C7481C;
+  --orange-ink:#B23F15;
   --olive:#A9A22F;
   --olive-d:#8A8526;
   --red:#C0392B;
   --teal:#2E7E78;
+  --wa:#157A3C;
   --yellow:#E9B43B;
   --ink:#1C2A3A;
   --radius-arch:50% 50% 0 0 / 38% 38% 0 0;
@@ -96,12 +98,12 @@
   --font-body:'DM Sans',sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 body{font-family:var(--font-body);background:var(--cream);color:var(--ink);overflow-x:hidden;line-height:1.6}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit;text-decoration:none}
 ul{list-style:none}
-::selection{background:var(--orange);color:var(--cream)}
+::selection{background:var(--orange-btn);color:var(--cream)}
 :focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
 
 /* ---------- utilitários ---------- */
@@ -118,11 +120,11 @@ h2.h-display{font-size:clamp(2.2rem,5vw,3.9rem)}
 .btn{display:inline-flex;align-items:center;gap:10px;font-weight:700;padding:16px 30px;border-radius:999px;border:2px solid transparent;cursor:pointer;font-size:1rem;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s,background .25s}
 .btn:hover{transform:translateY(-3px) scale(1.02)}
 .btn:active{transform:translateY(0) scale(.99)}
-.btn-primary{background:var(--orange);color:#fff;box-shadow:0 14px 30px -12px rgba(216,84,39,.55)}
-.btn-primary:hover{background:var(--orange-l)}
+.btn-primary{background:var(--orange-btn);color:#fff;box-shadow:0 14px 30px -12px rgba(199,72,28,.55)}
+.btn-primary:hover{background:var(--orange-ink)}
 .btn-ghost{border-color:var(--navy);color:var(--navy)}
 .btn-ghost:hover{background:var(--navy);color:var(--cream)}
-.btn-wa{background:#23a455;color:#fff;box-shadow:0 14px 30px -12px rgba(35,164,85,.55)}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 14px 30px -12px rgba(21,122,60,.5)}
 .btn .ic{width:20px;height:20px;flex:none}
 
 /* scallop divider */
@@ -131,7 +133,7 @@ h2.h-display{font-size:clamp(2.2rem,5vw,3.9rem)}
 .scallop.bottom{bottom:-1px}
 
 /* ---------- header ---------- */
-.topbar{background:var(--navy);color:var(--cream);font-size:.85rem;padding:8px 0;text-align:center;letter-spacing:.04em}
+.topbar{background:var(--navy);color:var(--cream);font-size:.85rem;padding:8px 12px;text-align:center;letter-spacing:.04em}
 .topbar b{color:var(--yellow)}
 header.nav{position:sticky;top:0;z-index:60;background:rgba(245,237,220,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(21,55,101,.12);transition:box-shadow .3s}
 header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
@@ -148,12 +150,12 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .nav-links a:hover::after{width:100%}
 .nav-cta{display:flex;gap:12px;align-items:center}
 .nav .btn{padding:11px 22px;font-size:.9rem}
-.burger{display:none;background:none;border:none;cursor:pointer;width:42px;height:42px;border-radius:10px}
+.burger{display:none;background:none;border:none;cursor:pointer;width:44px;height:44px;border-radius:10px}
 .burger span{display:block;width:22px;height:2.5px;background:var(--navy);margin:5px auto;border-radius:2px;transition:.3s}
 @media(max-width:900px){
   .nav-links,.nav-cta .btn-ghost{display:none}
   .burger{display:block}
-  .mobile-menu{position:fixed;inset:0;top:0;background:var(--navy);z-index:70;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;font-size:1.4rem;font-weight:700;color:var(--cream);transform:translateY(-100%);transition:transform .45s cubic-bezier(.65,0,.35,1)}
+  .mobile-menu{position:fixed;inset:0;top:0;background:var(--navy);z-index:85;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;font-size:1.4rem;font-weight:700;color:var(--cream);transform:translateY(-100%);transition:transform .45s cubic-bezier(.65,0,.35,1)}
   .mobile-menu.open{transform:translateY(0)}
   .mobile-menu a:hover{color:var(--yellow)}
   .mobile-close{position:absolute;top:24px;right:24px;background:none;border:2px solid var(--cream);color:var(--cream);width:44px;height:44px;border-radius:50%;font-size:1.2rem;cursor:pointer}
@@ -178,7 +180,7 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .hero-arch img{width:100%;height:100%;object-fit:cover;transform:scale(1.04)}
 .hero-sticker{position:absolute;background:var(--yellow);color:var(--navy);font-family:var(--font-accent);font-style:italic;font-weight:600;padding:14px 20px;border-radius:18px;transform:rotate(6deg);box-shadow:0 12px 28px -12px rgba(0,0,0,.35);font-size:1.05rem;line-height:1.25;z-index:4}
 .hero-sticker.s1{top:8%;right:-14px}
-.hero-sticker.s2{bottom:10%;left:-18px;background:var(--orange);color:#fff;transform:rotate(-5deg)}
+.hero-sticker.s2{bottom:10%;left:-18px;background:var(--orange-btn);color:#fff;transform:rotate(-5deg)}
 .shape{position:absolute;border-radius:50%;z-index:0;opacity:.85;pointer-events:none}
 .shape.arc{border-radius:50% 50% 0 0/100% 100% 0 0}
 .sh1{width:130px;height:65px;background:var(--olive);top:6%;left:-50px}
@@ -217,7 +219,7 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .brinq-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(34px,5vw,70px);align-items:center;margin-top:14px}
 .attr-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
 .chip{background:rgba(245,237,220,.08);border:1.5px solid rgba(245,237,220,.22);padding:10px 18px;border-radius:999px;font-weight:600;font-size:.92rem;transition:background .25s,transform .2s,border-color .25s;cursor:default}
-.chip:hover{background:var(--orange);border-color:var(--orange);transform:translateY(-3px)}
+.chip:hover{border-color:rgba(245,237,220,.5);background:rgba(245,237,220,.14)}
 .brinq-photos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .brinq-photos .bp{border-radius:20px;overflow:hidden;border:4px solid rgba(245,237,220,.16);box-shadow:0 22px 50px -22px rgba(0,0,0,.55)}
 .brinq-photos .bp img{width:100%;height:100%;object-fit:cover}
@@ -246,7 +248,7 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 #cardapio{background:var(--cream-2)}
 .menu-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:40px 0 30px}
 .mtab{padding:12px 22px;border-radius:999px;border:1.5px solid rgba(21,55,101,.25);background:transparent;font-weight:700;font-size:.92rem;cursor:pointer;font-family:var(--font-body);color:var(--navy);transition:all .25s}
-.mtab:hover{border-color:var(--orange);color:var(--orange)}
+.mtab:hover{border-color:var(--orange-ink);color:var(--orange-ink)}
 .mtab.active{background:var(--navy);border-color:var(--navy);color:var(--cream)}
 .menu-panel{display:none;animation:fadeUp .5s cubic-bezier(.22,1,.36,1)}
 .menu-panel.active{display:grid;grid-template-columns:340px 1fr;gap:clamp(26px,4vw,54px);align-items:start}
@@ -254,11 +256,11 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .menu-photo{border-radius:var(--radius-arch);overflow:hidden;border:5px solid #fff;box-shadow:var(--shadow-soft);aspect-ratio:3/3.6}
 .menu-photo img{width:100%;height:100%;object-fit:cover}
 .menu-info h3{font-family:var(--font-display);font-size:clamp(1.5rem,2.6vw,2.2rem);text-transform:uppercase;color:var(--navy);margin-bottom:6px}
-.menu-info .sub{font-family:var(--font-accent);font-style:italic;color:var(--orange);font-size:1.1rem;margin-bottom:18px;display:block}
+.menu-info .sub{font-family:var(--font-accent);font-style:italic;color:var(--orange-ink);font-size:1.1rem;margin-bottom:18px;display:block}
 .menu-items{display:grid;grid-template-columns:1fr 1fr;gap:8px 26px;font-size:.95rem}
 .menu-items li{padding:7px 0 7px 22px;position:relative;border-bottom:1px dashed rgba(21,55,101,.18)}
 .menu-items li::before{content:"";position:absolute;left:0;top:14px;width:11px;height:6px;border-radius:50% 50% 0 0/100% 100% 0 0;background:var(--orange)}
-.menu-note{margin-top:18px;font-size:.88rem;color:#5A6B80;font-style:italic}
+.menu-note{margin-top:18px;font-size:.88rem;color:#4D5D75;font-style:italic}
 @media(max-width:860px){.menu-panel.active{grid-template-columns:1fr}.menu-photo{max-width:380px;aspect-ratio:4/3}.menu-items{grid-template-columns:1fr}}
 
 /* ---------- upgrades ---------- */
@@ -275,11 +277,11 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 #precos .kicker{color:var(--navy-d)}
 .sim-card{background:var(--cream-3);border-radius:30px;box-shadow:0 30px 70px -30px rgba(14,39,71,.5);padding:clamp(28px,4vw,52px);margin-top:44px;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,4vw,60px)}
 @media(max-width:880px){.sim-card{grid-template-columns:1fr}}
-.sim-label{font-weight:800;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);display:block;margin:22px 0 10px}
+.sim-label{font-weight:800;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy-d);display:block;margin:22px 0 10px}
 .day-opts,.guest-opts{display:flex;gap:10px;flex-wrap:wrap}
 .opt{padding:12px 20px;border-radius:14px;border:2px solid rgba(21,55,101,.2);background:#fff;font-weight:700;cursor:pointer;font-family:var(--font-body);font-size:.95rem;transition:all .2s;color:var(--ink)}
 .opt:hover{border-color:var(--orange)}
-.opt.sel{background:var(--orange);border-color:var(--orange);color:#fff;box-shadow:0 10px 22px -10px rgba(216,84,39,.6)}
+.opt.sel{background:var(--orange-btn);border-color:var(--orange-btn);color:#fff;box-shadow:0 10px 22px -10px rgba(199,72,28,.6)}
 .sim-result{background:var(--navy);color:var(--cream);border-radius:22px;padding:clamp(26px,3vw,40px);display:flex;flex-direction:column;justify-content:center;gap:6px;position:relative;overflow:hidden}
 .sim-result::before{content:"";position:absolute;top:-30px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(233,180,59,.18)}
 .sim-result .pp{font-family:var(--font-display);font-size:clamp(2.6rem,4.5vw,3.6rem);color:var(--yellow);line-height:1}
@@ -287,7 +289,7 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .sim-result .tot b{color:var(--yellow)}
 .sim-result small{opacity:.75;font-size:.82rem;line-height:1.5;margin-top:10px}
 .sim-result .btn{margin-top:20px;justify-content:center}
-.price-notes{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;font-size:.92rem;font-weight:600;color:var(--navy-d)}
+.price-notes{display:flex;gap:18px;flex-wrap:wrap;margin-top:4px;font-size:.92rem;font-weight:600;color:var(--navy-d);grid-column:1/-1}
 .price-notes span{display:inline-flex;align-items:center;gap:8px;background:rgba(245,237,220,.55);padding:9px 16px;border-radius:999px}
 
 /* ---------- passos ---------- */
@@ -329,9 +331,9 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .ccard small{color:#5A6B80}
 
 /* ---------- CTA final ---------- */
-.final-cta{background:var(--orange);color:#fff;text-align:center;position:relative;overflow:hidden}
+.final-cta{background:var(--orange-btn);color:#fff;text-align:center;position:relative;overflow:hidden}
 .final-cta h2{font-size:clamp(2.6rem,6.5vw,5rem)}
-.final-cta .accent{color:var(--yellow)}
+.final-cta .accent{color:var(--cream)}
 .final-cta p{max-width:46ch;margin:18px auto 34px;font-size:1.1rem;opacity:.95}
 .final-cta .shape{opacity:.12;background:#fff}
 .fc1{width:220px;height:110px;top:-20px;left:-60px}
@@ -342,16 +344,16 @@ footer{background:var(--navy-d);color:rgba(245,237,220,.85);padding:60px 0 30px}
 .foot-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;margin-bottom:40px}
 @media(max-width:760px){.foot-grid{grid-template-columns:1fr}}
 footer .logo{font-size:2rem;margin-bottom:14px}
-footer h4{font-size:.85rem;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);margin-bottom:16px}
+footer h3{font-size:.85rem;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);margin-bottom:16px}
 footer li{margin-bottom:10px;font-size:.95rem}
 footer a:hover{color:var(--yellow)}
 .foot-bottom{border-top:1px solid rgba(245,237,220,.15);padding-top:24px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.84rem;opacity:.7}
 
 /* whatsapp float */
-.wa-float{position:fixed;right:22px;bottom:22px;z-index:80;width:62px;height:62px;border-radius:50%;background:#23a455;display:grid;place-items:center;box-shadow:0 16px 36px -12px rgba(35,164,85,.7);transition:transform .3s}
+.wa-float{position:fixed;right:22px;bottom:22px;z-index:80;width:62px;height:62px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 16px 36px -12px rgba(21,122,60,.6);transition:transform .3s}
 .wa-float:hover{transform:scale(1.1) rotate(8deg)}
 .wa-float svg{width:32px;height:32px;fill:#fff}
-.wa-float::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid #23a455;opacity:.5;animation:pulse 2s infinite}
+.wa-float::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--wa);opacity:.5;animation:pulse 2s infinite}
 @keyframes pulse{0%{transform:scale(.9);opacity:.6}70%{transform:scale(1.25);opacity:0}100%{opacity:0}}
 
 /* ---------- responsivo: empilhamento mobile ---------- */
@@ -372,7 +374,7 @@ footer a:hover{color:var(--yellow)}
   .marquee-track span{font-size:1.1rem}
   .novidade{text-align:left}
   .menu-tabs{gap:8px}
-  .mtab{padding:10px 16px;font-size:.85rem}
+  .mtab{padding:13px 18px;font-size:.85rem}
   .nav .btn{padding:10px 14px;font-size:.82rem}
   .logo{font-size:1.45rem}
   .hero-ctas .btn{width:100%;justify-content:center}
@@ -407,7 +409,7 @@ footer a:hover{color:var(--yellow)}
 </head>
 <body id="top">
 <!-- ======= TOPBAR + NAV ======= -->
-<div class="topbar">É festa no <b>Galpê</b>! <span class="addr">&nbsp;✦&nbsp; Rua Yeda, 184 – Teresópolis/RJ</span> &nbsp;✦&nbsp; <b>(21) 99506-0184</b></div>
+<div class="topbar">É festa no <b>Galpê</b>! <span class="addr">&nbsp;✦&nbsp; Rua Yeda, 184 – Teresópolis/RJ</span> &nbsp;✦&nbsp; <a href="tel:+5521995060184" aria-label="Ligar para o Galpê"><b>(21) 99506-0184</b></a></div>
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a href="#top" class="logo" aria-label="Galpê – início"><span>G</span><span>A</span><span>L</span><span>P</span><span>Ê</span></a>
@@ -436,6 +438,7 @@ footer a:hover{color:var(--yellow)}
   <a class="btn btn-primary" href="https://wa.me/5521995060184?text=Oi!%20Quero%20fazer%20minha%20festa%20no%20Galp%C3%AA%20%F0%9F%8E%89">Quero minha festa</a>
 </div>
 
+<main>
 <!-- ======= HERO ======= -->
 <section class="hero">
   <div class="shape arc sh1" data-speed="0.4"></div>
@@ -443,7 +446,7 @@ footer a:hover{color:var(--yellow)}
   <div class="shape arc sh3" data-speed="0.3"></div>
   <div class="wrap hero-grid">
     <div class="hero-copy">
-      <span class="kicker hero-in" style="color:var(--orange)">Teresópolis · RJ</span>
+      <span class="kicker hero-in" style="color:var(--orange-ink)">Teresópolis · RJ</span>
       <h1 class="hero-in">Diversão de <span class="o">criança.</span><br>Estrutura de <span class="accent">gente grande.</span></h1>
       <p class="lead hero-in">O buffet infantil de Teresópolis que você nunca viu. No Galpê, a festa do seu filho vira uma experiência completa: brinquedão exclusivo, buffet de verdade e uma equipe inteira cuidando de tudo — para você curtir junto.</p>
       <div class="hero-ctas hero-in">
@@ -481,7 +484,7 @@ footer a:hover{color:var(--yellow)}
       <div class="ph p2"><img decoding="async" width="492" height="1010" src="assets/casinhas.webp" alt="Casinhas temáticas e área de convivência do Galpê" loading="lazy"></div>
     </div>
     <div>
-      <span class="kicker" style="color:var(--orange)">O Espaço</span>
+      <span class="kicker" style="color:var(--orange-ink)">O Espaço</span>
       <h2 class="h-display rv" style="color:var(--navy);margin:14px 0 18px">Ambientes pensados para <span class="accent" style="color:var(--orange)">encantar</span></h2>
       <p class="lead rv">Mais do que um ambiente para brincar, o Galpê é um lugar pensado para reunir a família — com conforto, integração e aquele cuidado nos detalhes que transforma a comemoração em uma verdadeira aventura.</p>
       <div class="amenities">
@@ -529,7 +532,7 @@ footer a:hover{color:var(--yellow)}
 <!-- ======= GALERIA ======= -->
 <section class="sec" id="galeria">
   <div class="wrap">
-    <span class="kicker" style="color:var(--orange)">Por dentro do Galpê</span>
+    <span class="kicker" style="color:var(--orange-ink)">Por dentro do Galpê</span>
     <h2 class="h-display rv" style="color:var(--navy);margin:14px 0">Para celebrar momentos <span class="accent" style="color:var(--orange)">especiais</span></h2>
     <p class="lead rv">Com cores, sabores e muita brincadeira. Veja um pouquinho do que acontece por aqui — e imagine a festa do seu pequeno.</p>
     <div class="gal-grid">
@@ -550,7 +553,7 @@ footer a:hover{color:var(--yellow)}
 <section class="sec" id="cardapio">
   <div class="scallop top" style="--sc:var(--cream-2)"></div>
   <div class="wrap">
-    <span class="kicker" style="color:var(--orange)">Experiência Galpê</span>
+    <span class="kicker" style="color:var(--orange-ink)">Experiência Galpê</span>
     <h2 class="h-display rv" style="color:var(--navy);margin:14px 0">Comida de festa. <span class="accent" style="color:var(--orange)">E de verdade.</span></h2>
     <p class="lead rv">Variedade, qualidade e apresentação cuidadosa, do começo da festa à hora do cafezinho. Monte o cardápio do seu jeito: são até 12 opções de salgados, mini porções, bolo, docinhos e muito mais.</p>
     <div class="menu-tabs rv" role="tablist" aria-label="Etapas do cardápio">
@@ -612,7 +615,7 @@ footer a:hover{color:var(--yellow)}
     </div>
 
     <div class="menu-panel" role="tabpanel" id="tab-verdade">
-      <div class="menu-photo"><img decoding="async" width="380" height="380" src="assets/comida-verdade.webp" alt="Strogonoff cremoso servido em mini porção" loading="lazy"></div>
+      <div class="menu-photo"><img decoding="async" width="568" height="559" src="assets/familia-mesa.webp" alt="Família saboreando o almoço de festa à mesa do Galpê" loading="lazy"></div>
       <div class="menu-info">
         <h3>Comida de verdade</h3>
         <span class="sub">Adicione até 3 mini porções por R$ 25 a mais por pessoa</span>
@@ -667,10 +670,10 @@ footer a:hover{color:var(--yellow)}
 <!-- ======= UPGRADES ======= -->
 <section class="sec" id="upgrades" style="padding-top:clamp(50px,6vw,80px)">
   <div class="wrap">
-    <span class="kicker" style="color:var(--orange)">Quero mais!</span>
+    <span class="kicker" style="color:var(--orange-ink)">Quero mais!</span>
     <h2 class="h-display rv" style="color:var(--navy);margin:14px 0">Upgrades para deixar tudo <span class="accent" style="color:var(--orange)">ainda mais incrível</span></h2>
   </div>
-  <div class="wrap upg-scroll" id="upgScroll">
+  <div class="wrap upg-scroll" id="upgScroll" role="region" aria-label="Upgrades disponíveis — role para o lado" tabindex="0">
     <div class="upg rv"><div class="em" style="background:#FCE8D8">🍿</div><b>Ilha de pipoca</b><small>Pipoca fresquinha saindo na hora, com aquele cheirinho de festa.</small></div>
     <div class="upg rv"><div class="em" style="background:#E8ECF5">🍭</div><b>Algodão doce</b><small>Nuvens coloridas que fazem sucesso com todas as idades.</small></div>
     <div class="upg rv"><div class="em" style="background:#F0F0DC">🍦</div><b>Carrinho de picolé</b><small>Refrescância e diversão servidas direto do carrinho.</small></div>
@@ -693,7 +696,7 @@ footer a:hover{color:var(--yellow)}
       <div>
         <span class="sim-label">Qual dia da semana?</span>
         <div class="day-opts" id="dayOpts">
-          <button class="opt sel" data-day="seg" type="button">Seg. à Qui.</button>
+          <button class="opt sel" data-day="seg" type="button">Seg. a Qui.</button>
           <button class="opt" data-day="sex" type="button">Sex. e feriados</button>
           <button class="opt" data-day="sab" type="button">Sáb. e Dom.</button>
         </div>
@@ -703,11 +706,6 @@ footer a:hover{color:var(--yellow)}
           <button class="opt" data-g="80" type="button">80</button>
           <button class="opt" data-g="100" type="button">100</button>
           <button class="opt" data-g="150" type="button">150</button>
-        </div>
-        <div class="price-notes">
-          <span>👶 Até 5 anos não pagam</span>
-          <span>🧒 De 6 a 9 anos pagam meia</span>
-          <span>⏰ Sábados: início às 12h ou 18h</span>
         </div>
       </div>
       <div class="sim-result">
@@ -720,6 +718,11 @@ footer a:hover{color:var(--yellow)}
           Garantir minha data
         </a>
       </div>
+      <div class="price-notes">
+        <span>👶 Até 5 anos não pagam</span>
+        <span>🧒 De 6 a 9 anos pagam meia</span>
+        <span>⏰ Sábados: início às 12h ou 18h</span>
+      </div>
     </div>
   </div>
 </section>
@@ -728,7 +731,7 @@ footer a:hover{color:var(--yellow)}
 <section class="sec" id="como-funciona" style="background:var(--cream)">
   <div class="scallop top" style="--sc:var(--cream)"></div>
   <div class="wrap">
-    <span class="kicker" style="color:var(--orange)">Como funciona</span>
+    <span class="kicker" style="color:var(--orange-ink)">Como funciona</span>
     <h2 class="h-display rv" style="color:var(--navy);margin:14px 0">Sua festa pronta em <span class="accent" style="color:var(--orange)">4 passos</span></h2>
     <div class="steps">
       <div class="step rv"><b>Chama no WhatsApp</b><small>Conta pra gente a data dos sonhos, o número de convidados e o que você imagina.</small></div>
@@ -739,7 +742,7 @@ footer a:hover{color:var(--yellow)}
     <div class="team-strip rv">
       <b>Equipe completa no dia da festa:</b>
       <div class="team-tags">
-        <span>Coordenador de eventos</span><span>Monitores</span><span>Garçons</span><span>Cumins</span><span>Copeiras</span><span>Recepcionista</span><span>Equipe de limpeza</span>
+        <span>Coordenador de eventos</span><span>Monitores</span><span>Garçons</span><span>Auxiliares de garçom</span><span>Copeiras</span><span>Recepcionista</span><span>Equipe de limpeza</span>
       </div>
     </div>
   </div>
@@ -748,7 +751,7 @@ footer a:hover{color:var(--yellow)}
 <!-- ======= FAQ ======= -->
 <section class="sec" id="faq">
   <div class="wrap">
-    <span class="kicker" style="color:var(--orange)">Dúvidas frequentes</span>
+    <span class="kicker" style="color:var(--orange-ink)">Dúvidas frequentes</span>
     <h2 class="h-display rv" style="color:var(--navy);margin:14px 0">Tudo às claras, <span class="accent" style="color:var(--orange)">sem surpresas</span></h2>
     <div class="faq-list rv">
       <details class="faq"><summary>Como garanto a reserva da minha data?</summary><p>A reserva é confirmada com a assinatura do contrato e o pagamento do sinal de 10%. O saldo restante pode ser quitado até 10 dias antes do evento. Orçamentos têm validade de 7 dias.</p></details>
@@ -767,7 +770,7 @@ footer a:hover{color:var(--yellow)}
 <!-- ======= CONTATO ======= -->
 <section class="sec" id="contato" style="background:var(--cream-2)">
   <div class="wrap">
-    <span class="kicker" style="color:var(--orange)">Onde estamos</span>
+    <span class="kicker" style="color:var(--orange-ink)">Onde estamos</span>
     <h2 class="h-display rv" style="color:var(--navy);margin:14px 0">Vem conhecer o <span class="accent" style="color:var(--orange)">Galpê</span></h2>
     <div class="contact-grid">
       <div class="map-frame rv">
@@ -775,7 +778,7 @@ footer a:hover{color:var(--yellow)}
       </div>
       <div class="contact-cards">
         <a class="ccard rv" href="https://wa.me/5521995060184" target="_blank" rel="noopener">
-          <div class="ico" style="background:#23a455"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1a16 16 0 0 1-1.6-.6 12.6 12.6 0 0 1-4.8-4.3 5.5 5.5 0 0 1-1.1-2.9 3.1 3.1 0 0 1 1-2.3 1 1 0 0 1 .7-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .6l-.4.6-.3.4c-.1.2-.2.3-.1.5a8.3 8.3 0 0 0 1.5 1.9 9 9 0 0 0 2.2 1.4c.3.1.4.1.6-.1l.9-1c.2-.2.4-.3.6-.2l2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.2Z"/></svg></div>
+          <div class="ico" style="background:var(--wa)"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1a16 16 0 0 1-1.6-.6 12.6 12.6 0 0 1-4.8-4.3 5.5 5.5 0 0 1-1.1-2.9 3.1 3.1 0 0 1 1-2.3 1 1 0 0 1 .7-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .6l-.4.6-.3.4c-.1.2-.2.3-.1.5a8.3 8.3 0 0 0 1.5 1.9 9 9 0 0 0 2.2 1.4c.3.1.4.1.6-.1l.9-1c.2-.2.4-.3.6-.2l2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.2Z"/></svg></div>
           <div><b>(21) 99506-0184</b><small>WhatsApp — resposta rapidinha</small></div>
         </a>
         <a class="ccard rv" href="https://www.instagram.com/festanogalpe/" target="_blank" rel="noopener">
@@ -802,9 +805,13 @@ footer a:hover{color:var(--yellow)}
   <div class="wrap">
     <h2 class="h-display rv">Entre, a casa <span class="accent">é sua!</span></h2>
     <p class="rv">As melhores datas voam. Garanta a sua e deixe o resto com a gente — do brinquedão ao cafezinho.</p>
-    <a class="btn rv" style="background:var(--cream);color:var(--orange);font-size:1.1rem;padding:18px 38px" href="https://wa.me/5521995060184?text=Oi!%20Quero%20garantir%20minha%20data%20no%20Galp%C3%AA%20%F0%9F%8E%89" target="_blank" rel="noopener">Falar com o Galpê agora</a>
+    <a class="btn rv" style="background:var(--cream);color:var(--orange-ink);font-size:1.1rem;padding:18px 38px" href="https://wa.me/5521995060184?text=Oi!%20Quero%20garantir%20minha%20data%20no%20Galp%C3%AA%20%F0%9F%8E%89" target="_blank" rel="noopener">
+      <svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1a16 16 0 0 1-1.6-.6 12.6 12.6 0 0 1-4.8-4.3 5.5 5.5 0 0 1-1.1-2.9 3.1 3.1 0 0 1 1-2.3 1 1 0 0 1 .7-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .6l-.4.6-.3.4c-.1.2-.2.3-.1.5a8.3 8.3 0 0 0 1.5 1.9 9 9 0 0 0 2.2 1.4c.3.1.4.1.6-.1l.9-1c.2-.2.4-.3.6-.2l2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.2Z"/></svg>
+      Falar com o Galpê agora
+    </a>
   </div>
 </section>
+</main>
 
 <!-- ======= FOOTER ======= -->
 <footer>
@@ -815,7 +822,7 @@ footer a:hover{color:var(--yellow)}
         <p style="max-width:34ch;font-size:.95rem">Diversão de criança. Estrutura de gente grande. O espaço de festas que Teresópolis merecia.</p>
       </div>
       <div>
-        <h4>Navegue</h4>
+        <h3>Navegue</h3>
         <ul>
           <li><a href="#espaco">O Espaço</a></li>
           <li><a href="#brinquedao">Brinquedão</a></li>
@@ -825,7 +832,7 @@ footer a:hover{color:var(--yellow)}
         </ul>
       </div>
       <div>
-        <h4>Contato</h4>
+        <h3>Contato</h3>
         <ul>
           <li><a href="https://wa.me/5521995060184">(21) 99506-0184</a></li>
           <li><a href="mailto:festanogalpe@gmail.com">festanogalpe@gmail.com</a></li>
@@ -863,20 +870,40 @@ footer a:hover{color:var(--yellow)}
     menu.classList.toggle('open', open);
     burger.setAttribute('aria-expanded', String(open));
     document.body.style.overflow = open ? 'hidden' : '';
+    if(open){ document.getElementById('mobileClose').focus(); }
+    else if(document.activeElement && menu.contains(document.activeElement)){ burger.focus(); }
   }
   burger.addEventListener('click', function(){ setMenu(true); });
   document.getElementById('mobileClose').addEventListener('click', function(){ setMenu(false); });
   menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
 
-  /* ---- cardápio tabs ---- */
-  var tabs = document.querySelectorAll('.mtab');
+  /* ---- cardápio tabs (padrão ARIA completo: roving tabindex + setas) ---- */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.mtab'));
   tabs.forEach(function(t){
-    t.addEventListener('click', function(){
-      tabs.forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-selected','false'); });
-      document.querySelectorAll('.menu-panel').forEach(function(p){ p.classList.remove('active'); });
-      t.classList.add('active');
-      t.setAttribute('aria-selected','true');
-      document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+    var panel = document.getElementById('tab-' + t.dataset.tab);
+    t.id = 'mtab-' + t.dataset.tab;
+    t.setAttribute('aria-controls', 'tab-' + t.dataset.tab);
+    t.setAttribute('tabindex', t.classList.contains('active') ? '0' : '-1');
+    if(panel) panel.setAttribute('aria-labelledby', t.id);
+  });
+  function selectTab(t, focus){
+    tabs.forEach(function(x){ x.classList.remove('active'); x.setAttribute('aria-selected','false'); x.setAttribute('tabindex','-1'); });
+    document.querySelectorAll('.menu-panel').forEach(function(p){ p.classList.remove('active'); });
+    t.classList.add('active');
+    t.setAttribute('aria-selected','true');
+    t.setAttribute('tabindex','0');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+    if(focus) t.focus();
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ selectTab(t, false); });
+    t.addEventListener('keydown', function(e){
+      var n = null;
+      if(e.key === 'ArrowRight') n = tabs[(i + 1) % tabs.length];
+      else if(e.key === 'ArrowLeft') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if(e.key === 'Home') n = tabs[0];
+      else if(e.key === 'End') n = tabs[tabs.length - 1];
+      if(n){ e.preventDefault(); selectTab(n, true); }
     });
   });
 
@@ -901,7 +928,22 @@ footer a:hover{color:var(--yellow)}
   }
   document.getElementById('lbClose').addEventListener('click', closeLb);
   lb.addEventListener('click', function(e){ if(e.target === lb) closeLb(); });
-  addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLb(); });
+  addEventListener('keydown', function(e){
+    if(menu.classList.contains('open')){
+      if(e.key === 'Escape'){ setMenu(false); return; }
+      if(e.key === 'Tab'){
+        var focaveis = menu.querySelectorAll('a,button');
+        var primeiro = focaveis[0], ultimo = focaveis[focaveis.length - 1];
+        if(!menu.contains(document.activeElement)){ e.preventDefault(); primeiro.focus(); }
+        else if(e.shiftKey && document.activeElement === primeiro){ e.preventDefault(); ultimo.focus(); }
+        else if(!e.shiftKey && document.activeElement === ultimo){ e.preventDefault(); primeiro.focus(); }
+      }
+      return;
+    }
+    if(!lb.classList.contains('open')) return;
+    if(e.key === 'Escape') closeLb();
+    else if(e.key === 'Tab'){ e.preventDefault(); document.getElementById('lbClose').focus(); }
+  });
 
   /* ---- simulador ---- */
   var PRICES = {
@@ -913,7 +955,7 @@ footer a:hover{color:var(--yellow)}
   var day = 'seg', guests = 60;
   var ppEl = document.getElementById('simPP'), totEl = document.getElementById('simTot'), waEl = document.getElementById('simWa');
   function fmt(n){ return n.toLocaleString('pt-BR'); }
-  function update(){
+  function update(interacao){
     var pp = (PRICES[day] || {})[guests];
     if(pp == null || !isFinite(pp)) return;
     var tot = pp * guests;
@@ -922,16 +964,21 @@ footer a:hover{color:var(--yellow)}
     var msg = 'Oi! Simulei no site: festa para ' + guests + ' convidados, ' + DAY_LABEL[day] + ' (R$ ' + pp + '/pessoa). Quero verificar disponibilidade de data! 🎉';
     waEl.href = 'https://wa.me/5521995060184?text=' + encodeURIComponent(msg);
     if(window.gsap){ gsap.fromTo(ppEl, {scale:.85, opacity:.4}, {scale:1, opacity:1, duration:.45, ease:'back.out(2)'}); }
+    /* no toque (mobile empilhado), garante que o preço atualizado fique à vista */
+    if(interacao){
+      var suave = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      ppEl.closest('.sim-result').scrollIntoView({behavior: suave, block: 'nearest'});
+    }
   }
   document.getElementById('dayOpts').addEventListener('click', function(e){
     var b = e.target.closest('.opt'); if(!b) return;
     this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
-    b.classList.add('sel'); if(PRICES[b.dataset.day]) day = b.dataset.day; update();
+    b.classList.add('sel'); if(PRICES[b.dataset.day]) day = b.dataset.day; update(true);
   });
   document.getElementById('guestOpts').addEventListener('click', function(e){
     var b = e.target.closest('.opt'); if(!b) return;
     this.querySelectorAll('.opt').forEach(function(x){ x.classList.remove('sel'); });
-    b.classList.add('sel'); var g = +b.dataset.g; if(PRICES[day][g] != null) guests = g; update();
+    b.classList.add('sel'); var g = +b.dataset.g; if(PRICES[day][g] != null) guests = g; update(true);
   });
   update();
 
