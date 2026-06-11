@@ -9,7 +9,7 @@
 - [ ] **Rotacionar senhas do `.env.local`** (`GALPE_ADMIN_PASSWORD` + senha do Postgres) e **mover o arquivo para fora da pasta do projeto**. Pendente desde a auditoria de 11/06 — as credenciais chegaram a ficar no diretório de deploy antes do `.vercelignore`.
 - [ ] **Confirmar o hardening aplicado no Supabase.** A migração está em `supabase/migrations/` (a integração GitHub aplica no push), mas a aplicação nunca foi verificada. Checar no SQL Editor: `select public.is_admin();` funciona e as policies de `leads` exigem colunas restritas. Se a integração não estiver ativa, rodar `setup/setup.sql` inteiro (idempotente). Após criar novo usuário admin, rodar de novo o `insert into public.admins…`.
 - [ ] **Dashboard Supabase:** desativar signups públicos + ativar leaked password protection.
-- [ ] **Teste pós-deploy do back-office:** login do admin e um link real de proposta (`proposta.html?t=…`) — a CSP do `vercel.json` foi mapeada de todos os recursos, mas nunca testada com fluxo real.
+- [ ] **Teste pós-deploy do back-office:** login do admin e um link real de proposta (`proposta.html?t=…`) — a CSP do `vercel.json` foi mapeada de todos os recursos, mas nunca testada com fluxo real. Incluir no teste: criar uma proposta **com crianças 6–9 (meia)** e abrir o link público (a coluna `convidados_meia` chegou na migração `20260611150000_convidados_meia.sql` — conferir que foi aplicada junto com as demais).
 - [ ] **SRI nos CDNs:** gerar hashes `integrity` para GSAP `3.12.5` (gsap.min.js + ScrollTrigger.min.js, cdnjs) e supabase-js `2.106.2` (jsdelivr) e adicionar nas tags. A CSP já restringe os hosts; o SRI é o refinamento que falta.
 
 ## 🌐 Domínio e presença local — responsável: Renan/cliente

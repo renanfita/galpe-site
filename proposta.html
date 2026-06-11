@@ -143,7 +143,8 @@ function render(p, cfg, sb){
   if(p.data_evento) meta.push(['Data', fmtData(p.data_evento)]);
   if(p.horario) meta.push(['Horário', String(p.horario).slice(0,5)]);
   var convidados = Number(p.convidados || 0);
-  meta.push(['Convidados', convidados + ' pagantes']);
+  var meias = Number(p.convidados_meia || 0);
+  meta.push(['Convidados', convidados + ' pagantes' + (meias ? ' + ' + meias + ' meia' + (meias > 1 ? 's' : '') : '')]);
   meta.push(['Dia', DIA_LABEL[p.dia_tipo] || p.dia_tipo]);
   document.getElementById('pMeta').innerHTML = meta.map(function(m){
     return '<div><b>' + esc(m[0]) + '</b><span>' + esc(m[1]) + '</span></div>';
@@ -151,11 +152,17 @@ function render(p, cfg, sb){
 
   var rows = [];
   var valorPessoa = Number(p.valor_pessoa || 0);
+  var pessoas = convidados + meias; /* adicionais "por pessoa" cobram integrais + meias */
   var base = convidados * valorPessoa;
   rows.push(['Festa completa — ' + convidados + ' convidados × ' + BRL(valorPessoa), BRL(base)]);
   var total = base;
+  if(meias > 0){
+    var meiaTot = meias * valorPessoa / 2;
+    total += meiaTot;
+    rows.push(['Crianças de 6 a 9 anos (meia) — ' + meias + ' × ' + BRL(valorPessoa / 2), BRL(meiaTot)]);
+  }
   (p.upgrades || []).forEach(function(u){
-    var v = u.unidade === 'por_pessoa' ? Number(u.preco || 0) * convidados : Number(u.preco || 0);
+    var v = u.unidade === 'por_pessoa' ? Number(u.preco || 0) * pessoas : Number(u.preco || 0);
     total += v;
     rows.push([u.nome + (u.unidade === 'por_pessoa' ? ' (' + BRL(u.preco) + '/pessoa)' : ''), BRL(v)]);
   });

@@ -61,6 +61,7 @@ create table if not exists public.propostas (
   data_evento date,
   horario text,
   convidados int not null check (convidados > 0),
+  convidados_meia int not null default 0,
   dia_tipo text not null check (dia_tipo in ('seg','sex','sab')),
   valor_pessoa numeric(10,2) not null,
   upgrades jsonb not null default '[]'::jsonb,
@@ -272,6 +273,9 @@ alter table public.propostas drop constraint if exists prop_desc_chk;
 alter table public.propostas add constraint prop_desc_chk check (desconto >= 0);
 alter table public.propostas drop constraint if exists prop_idade_chk;
 alter table public.propostas add constraint prop_idade_chk check (idade is null or idade between 0 and 130);
+alter table public.propostas add column if not exists convidados_meia int not null default 0;
+alter table public.propostas drop constraint if exists prop_meia_chk;
+alter table public.propostas add constraint prop_meia_chk check (convidados_meia >= 0);
 
 -- ---------- H2) Insert público de leads: só colunas seguras + status travado ----------
 drop policy if exists leads_insert_public on public.leads;
@@ -345,6 +349,7 @@ as $$
     'data_evento', p.data_evento,
     'horario', p.horario,
     'convidados', p.convidados,
+    'convidados_meia', p.convidados_meia,
     'dia_tipo', p.dia_tipo,
     'valor_pessoa', p.valor_pessoa,
     'upgrades', p.upgrades,
