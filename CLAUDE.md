@@ -25,7 +25,9 @@ Três páginas + um backend Supabase compartilhado:
 - **`admin.html`** (back-office, login via Supabase Auth) — KPIs, calendário/bloqueio de datas, CRM de leads, gerador de propostas, editor de preços/upgrades e configurações. Escreve nas tabelas `site_config`, `precos`, `upgrades`, `leads`, `propostas`, `eventos`, `bloqueios`.
 - **`proposta.html`** — página pública de proposta acessada por token UUID (`?t=...`). Não lê tabelas diretamente: usa as RPCs `get_proposta` e `aceitar_proposta` (security definer) para não expor a tabela `propostas`.
 - **`supabase-config.js`** — único ponto de configuração do backend (`window.GALPE_SUPABASE = { url, anonKey }`). Carregado pelas três páginas.
-- **`setup/setup.sql`** — schema completo, idempotente (pode rodar de novo). RLS em todas as tabelas: anônimo só lê `site_config`/`precos`/`upgrades` e só insere em `leads`; todo o resto exige usuário autenticado. Mudanças de schema vão aqui, mantendo a idempotência. Guia de ativação em `setup/SETUP-ADMIN.md`.
+- **`supabase/migrations/`** — fonte da verdade do schema. A integração GitHub do Supabase aplica automaticamente novos arquivos `*.sql` (ordem pelo timestamp do nome) a cada push na branch de produção. **Mudança de schema = novo arquivo timestampado aqui; nunca editar migração já aplicada.** `supabase/config.toml` e `seed.sql` valem para preview branches.
+- **`setup/setup.sql`** — instalador manual all-in-one (idempotente), usado só para ativar um projeto Supabase do zero fora da integração (guia em `setup/SETUP-ADMIN.md`). Ao mudar o schema, manter este arquivo em sincronia com as migrações.
+- **Modelo de RLS** (pós-hardening): anônimo lê `site_config`/`precos`/`upgrades` e insere em `leads` (colunas restritas, throttle); escrita administrativa exige `public.is_admin()` (tabela `admins`), não apenas estar autenticado. Novos usuários admin precisam ser inseridos em `public.admins`.
 
 ## Modelo de segurança (não violar)
 

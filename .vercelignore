@@ -2,4 +2,5 @@
 .env*.local
 *.md
 setup/
+supabase/
 CLAUDE.md
