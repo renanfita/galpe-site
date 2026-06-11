@@ -1,0 +1,5 @@
+# Supabase CLI / GitHub Integration
+project_id = "galpe"
+
+[db.migrations]
+enabled = true
