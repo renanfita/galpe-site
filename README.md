@@ -38,6 +38,12 @@ Hospedagem estática em qualquer provedor (Vercel, Netlify, Cloudflare Pages, Gi
 | Cardápio | seção `<!-- ======= CARDÁPIO ======= -->` |
 | Fotos | pasta `assets/` |
 
+## 🧭 Painel Admin (back-office)
+
+`admin.html` — dashboard completo com login (Supabase): KPIs, calendário de festas com bloqueio de datas, CRM de leads, gerador de propostas com link público e aceite online (`proposta.html`), editor de preços/upgrades que atualiza o site em tempo real e ajustes das regras do negócio.
+
+**Ativação (~10 min):** siga [`setup/SETUP-ADMIN.md`](setup/SETUP-ADMIN.md). Sem backend configurado, o site público funciona normalmente com os preços embutidos.
+
 ## 📍 Contato do cliente
 
 **Galpê** · Rua Yeda, 184 – Tijuca, Teresópolis/RJ · (21) 99506-0184 · [@festanogalpe](https://www.instagram.com/festanogalpe/)

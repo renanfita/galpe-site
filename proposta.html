@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sua proposta — Galpê</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23D85427'/%3E%3Cpath d='M14 50 V34 a18 18 0 0 1 36 0 V50 H38 V36 a6 6 0 0 0 -12 0 V50 Z' fill='%23F5EDDC'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,wght@1,500&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#F5EDDC;--cream-2:#FBF6EA;--navy:#153765;--orange:#D85427;--olive:#A9A22F;--yellow:#E9B43B;--red:#C0392B;--ink:#1C2A3A;--ok:#23a455;--line:rgba(21,55,101,.14)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
+.h-display{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase}
+.accent{font-family:'Fraunces',serif;font-style:italic;text-transform:none}
+.topband{background:var(--navy);color:var(--cream);text-align:center;padding:10px;font-size:.85rem;letter-spacing:.05em}
+.wrap{width:min(760px,94%);margin:0 auto;padding:34px 0 70px}
+.card{background:#fff;border-radius:26px;overflow:hidden;box-shadow:0 30px 70px -30px rgba(14,39,71,.4)}
+.card-head{background:var(--orange);color:#fff;padding:36px 34px;position:relative;overflow:hidden}
+.card-head::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.12)}
+.logo{font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:.05em;margin-bottom:8px}
+.card-head h1{font-size:clamp(1.5rem,4vw,2.2rem)}
+.card-head .accent{color:var(--yellow)}
+.card-body{padding:30px 34px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px}
+.meta div{background:var(--cream-2);border-radius:14px;padding:12px 16px}
+.meta b{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#5A6B80}
+.meta span{font-weight:700;color:var(--navy);font-size:1.02rem}
+table{width:100%;border-collapse:collapse;font-size:.97rem;margin:8px 0 4px}
+td{padding:11px 4px;border-bottom:1px dashed var(--line)}
+td:last-child{text-align:right;font-weight:700;color:var(--navy);white-space:nowrap}
+tr.total td{border-bottom:none;padding-top:16px}
+tr.total td:last-child{font-family:'Anton',sans-serif;font-size:1.7rem;color:var(--orange)}
+.obs{background:var(--cream-2);border-left:4px solid var(--yellow);border-radius:10px;padding:14px 18px;font-size:.92rem;margin:18px 0}
+.cond{font-size:.85rem;color:#5A6B80;line-height:1.7;margin-top:18px}
+.cond li{margin-left:18px;margin-bottom:4px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-weight:700;padding:15px 28px;border-radius:999px;border:2px solid transparent;font-size:1rem;cursor:pointer;text-decoration:none;transition:transform .2s;flex:1;min-width:200px}
+.btn:hover{transform:translateY(-2px)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-wa{background:transparent;border-color:var(--ok);color:var(--ok)}
+.badge-aceita{background:#DFF5E7;color:var(--ok);font-weight:800;padding:12px 20px;border-radius:14px;text-align:center;margin-top:20px;display:none}
+.validade{text-align:center;font-size:.85rem;color:#5A6B80;margin-top:18px}
+.foot{text-align:center;margin-top:26px;font-size:.85rem;color:#5A6B80;line-height:1.7}
+.loading,.notfound{text-align:center;padding:90px 20px;color:var(--navy)}
+.loading .h-display,.notfound .h-display{font-size:1.6rem;margin-bottom:10px}
+#conteudo{display:none}
+@media(max-width:540px){.card-body,.card-head{padding:24px 20px}}
+</style>
+</head>
+<body>
+<div class="topband">É festa no <b>Galpê</b>! ✦ Teresópolis/RJ</div>
+<div class="wrap">
+  <div class="loading" id="loading"><div class="h-display">Carregando sua proposta…</div><p>Só um instante ✨</p></div>
+  <div class="notfound" id="notfound" style="display:none">
+    <div class="h-display">Proposta não encontrada</div>
+    <p>Confira o link ou fale com a gente pelo WhatsApp.</p>
+  </div>
+
+  <div id="conteudo">
+    <div class="card">
+      <div class="card-head">
+        <div class="logo">GALPÊ</div>
+        <h1 class="h-display">Proposta para <span class="accent" id="pNome">você</span></h1>
+        <p id="pSub" style="margin-top:6px;opacity:.95"></p>
+      </div>
+      <div class="card-body">
+        <div class="meta" id="pMeta"></div>
+        <h3 class="h-display" style="color:var(--navy);font-size:1.1rem;margin-top:6px">Investimento</h3>
+        <table id="pTabela"></table>
+        <div class="obs" id="pObs" style="display:none"></div>
+        <div class="cond">
+          <b>O que está incluso:</b> espaço exclusivo com brinquedão, buffet completo (entradas, salgados, piquenique, bolo, docinhos e bebidas), decoração com mesa temática, equipe completa (coordenador, monitores, garçons, copeiras e recepção) — festa de <span id="pDuracao">4</span> horas.
+          <ul style="margin-top:10px">
+            <li>Crianças até <span id="pGratis">5</span> anos não pagam; de <span id="pMeiaDe">6</span> a <span id="pMeiaAte">9</span> anos pagam meia.</li>
+            <li>Reserva confirmada com assinatura do contrato e sinal de <span id="pSinalPct">10</span>%.</li>
+            <li>Saldo restante até 10 dias antes do evento.</li>
+            <li>Esta proposta não garante reserva de data.</li>
+          </ul>
+        </div>
+        <div class="cta-row">
+          <button class="btn btn-ok" id="btnAceitar">✓ Aceitar proposta</button>
+          <a class="btn btn-wa" id="btnWa" target="_blank" rel="noopener">Falar no WhatsApp</a>
+        </div>
+        <div class="badge-aceita" id="badgeAceita">🎉 Proposta aceita! Vamos confirmar sua data — a equipe Galpê entra em contato.</div>
+        <div class="validade" id="pValidade"></div>
+      </div>
+    </div>
+    <div class="foot">
+      <b>Galpê — Espaço de Festas</b><br>
+      <span id="fEndereco">Rua Yeda, 184 – Tijuca, Teresópolis/RJ</span><br>
+      <span id="fContato"></span>
+    </div>
+  </div>
+</div>
+
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+"use strict";
+var CFG = window.GALPE_SUPABASE || {};
+var token = new URLSearchParams(location.search).get('t');
+var BRL = function(n){ return 'R$ ' + Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); };
+var fmtData = function(d){ if(!d) return null; var p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; };
+var DIA_LABEL = { seg:'segunda a quinta', sex:'sexta ou feriado', sab:'sábado ou domingo' };
+
+function showNotFound(){
+  document.getElementById('loading').style.display='none';
+  document.getElementById('notfound').style.display='block';
+}
+if(!token || !CFG.url){ showNotFound(); }
+else{
+  var sb = supabase.createClient(CFG.url, CFG.anonKey);
+  Promise.all([
+    sb.rpc('get_proposta', { p_token: token }),
+    sb.from('site_config').select('*')
+  ]).then(function(rs){
+    var p = rs[0].data;
+    if(rs[0].error || !p){ showNotFound(); return; }
+    var cfg = {};
+    (rs[1].data || []).forEach(function(c){ cfg[c.key] = c.value; });
+    render(p, cfg, sb);
+  }).catch(showNotFound);
+}
+
+function render(p, cfg, sb){
+  document.getElementById('loading').style.display='none';
+  document.getElementById('conteudo').style.display='block';
+
+  document.getElementById('pNome').textContent = p.nome_cliente;
+  var subs = [];
+  if(p.aniversariante) subs.push('Festa de ' + p.aniversariante + (p.idade ? ' · ' + p.idade + ' anos' : ''));
+  if(p.tema) subs.push('Tema: ' + p.tema);
+  document.getElementById('pSub').textContent = subs.join(' — ');
+
+  var meta = [];
+  if(p.data_evento) meta.push(['Data', fmtData(p.data_evento)]);
+  if(p.horario) meta.push(['Horário', String(p.horario).slice(0,5)]);
+  meta.push(['Convidados', p.convidados + ' pagantes']);
+  meta.push(['Dia', DIA_LABEL[p.dia_tipo] || p.dia_tipo]);
+  document.getElementById('pMeta').innerHTML = meta.map(function(m){
+    return '<div><b>' + m[0] + '</b><span>' + m[1] + '</span></div>';
+  }).join('');
+
+  var rows = [];
+  var base = p.convidados * Number(p.valor_pessoa);
+  rows.push(['Festa completa — ' + p.convidados + ' convidados × ' + BRL(p.valor_pessoa), BRL(base)]);
+  var total = base;
+  (p.upgrades || []).forEach(function(u){
+    var v = u.unidade === 'por_pessoa' ? Number(u.preco) * p.convidados : Number(u.preco);
+    total += v;
+    rows.push([u.nome + (u.unidade === 'por_pessoa' ? ' (' + BRL(u.preco) + '/pessoa)' : ''), BRL(v)]);
+  });
+  if(Number(p.desconto) > 0){ total -= Number(p.desconto); rows.push(['Desconto especial 🧡', '− ' + BRL(p.desconto)]); }
+  var sinalPct = Number(cfg.sinal_percent || 10);
+  rows.push(['<tr class="total"><td>Total da festa</td>', BRL(total)]);
+  document.getElementById('pTabela').innerHTML = rows.map(function(r, i){
+    if(String(r[0]).indexOf('<tr') === 0) return r[0] + '<td>' + r[1] + '</td></tr>';
+    return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>';
+  }).join('') + '<tr><td style="color:#5A6B80">Sinal para reservar (' + sinalPct + '%)</td><td>' + BRL(total * sinalPct / 100) + '</td></tr>';
+
+  if(p.observacoes){
+    document.getElementById('pObs').style.display='block';
+    document.getElementById('pObs').textContent = p.observacoes;
+  }
+  document.getElementById('pDuracao').textContent = cfg.duracao_horas || 4;
+  document.getElementById('pGratis').textContent = cfg.criancas_gratis_ate || 5;
+  document.getElementById('pMeiaDe').textContent = cfg.meia_de || 6;
+  document.getElementById('pMeiaAte').textContent = cfg.meia_ate || 9;
+  document.getElementById('pSinalPct').textContent = sinalPct;
+  if(p.validade) document.getElementById('pValidade').textContent = 'Proposta válida até ' + fmtData(p.validade) + '.';
+  if(cfg.endereco) document.getElementById('fEndereco').textContent = cfg.endereco;
+  document.getElementById('fContato').textContent = (cfg.telefone_exibicao || '') + (cfg.instagram ? ' · ' + cfg.instagram : '');
+
+  var wa = String(cfg.whatsapp || '5521995060184');
+  var waMsg = 'Oi! Recebi a proposta' + (p.aniversariante ? ' da festa de ' + p.aniversariante : '') + ' e quero conversar! 🎉';
+  document.getElementById('btnWa').href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(waMsg);
+
+  var badge = document.getElementById('badgeAceita');
+  var btn = document.getElementById('btnAceitar');
+  if(p.status === 'aceita'){ badge.style.display='block'; btn.style.display='none'; }
+  btn.addEventListener('click', function(){
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    sb.rpc('aceitar_proposta', { p_token: token }).then(function(r){
+      if(r.error || r.data !== true){ btn.disabled=false; btn.textContent='✓ Aceitar proposta'; alert('Não foi possível registrar. Fale com a gente pelo WhatsApp!'); return; }
+      badge.style.display='block'; btn.style.display='none';
+      var waOk = 'Acabei de ACEITAR a proposta' + (p.aniversariante ? ' da festa de ' + p.aniversariante : '') + '! Quero confirmar a data. 🎊';
+      window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(waOk), '_blank');
+    });
+  });
+}
+})();
+</script>
+</body>
+</html>

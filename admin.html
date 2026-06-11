@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galpê Admin — Painel de Gestão</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23153765'/%3E%3Cpath d='M14 50 V34 a18 18 0 0 1 36 0 V50 H38 V36 a6 6 0 0 0 -12 0 V50 Z' fill='%23F5EDDC'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F5EDDC; --cream-2:#FBF6EA; --navy:#153765; --navy-d:#0E2747;
+  --orange:#D85427; --orange-l:#E8703F; --olive:#A9A22F; --red:#C0392B;
+  --teal:#2E7E78; --yellow:#E9B43B; --ink:#1C2A3A; --line:rgba(21,55,101,.14);
+  --ok:#23a455;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:.95rem;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(--orange)}
+label{font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);display:block;margin:12px 0 5px}
+.h-display{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.02em}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:700;padding:11px 20px;border-radius:999px;border:2px solid transparent;font-size:.92rem;transition:transform .2s,opacity .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.5;pointer-events:none}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-navy{background:var(--navy);color:var(--cream)}
+.btn-ghost{border-color:var(--navy);color:var(--navy);background:transparent}
+.btn-danger{background:transparent;border-color:var(--red);color:var(--red)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-sm{padding:7px 14px;font-size:.82rem}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;font-size:.75rem;font-weight:700}
+
+/* ---------- login ---------- */
+.login-wrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:
+  radial-gradient(circle at 15% 20%, rgba(169,162,47,.18), transparent 40%),
+  radial-gradient(circle at 85% 80%, rgba(216,84,39,.16), transparent 40%), var(--cream)}
+.login-card{background:#fff;border-radius:26px;padding:44px 38px;width:min(420px,100%);box-shadow:0 30px 70px -30px rgba(14,39,71,.45)}
+.login-logo{font-family:'Anton',sans-serif;font-size:2.2rem;display:flex;gap:2px;justify-content:center;margin-bottom:6px}
+.login-logo span:nth-child(1){color:var(--orange)}.login-logo span:nth-child(2){color:var(--navy)}
+.login-logo span:nth-child(3){color:#8A8526}.login-logo span:nth-child(4){color:var(--red)}
+.login-logo span:nth-child(5){color:var(--teal)}
+.login-sub{text-align:center;color:#5A6B80;font-size:.92rem;margin-bottom:22px}
+.login-err{background:#FDECEA;color:var(--red);padding:10px 14px;border-radius:10px;font-size:.88rem;margin-top:14px;display:none}
+.setup-note{background:var(--cream);border:1.5px dashed var(--orange);border-radius:14px;padding:16px;font-size:.88rem;line-height:1.6;margin-top:16px}
+.setup-note code{background:#fff;padding:2px 6px;border-radius:6px;font-size:.8rem}
+
+/* ---------- app layout ---------- */
+#app{display:none;min-height:100vh}
+.layout{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+aside{background:var(--navy);color:var(--cream);padding:26px 16px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+aside .logo{font-family:'Anton',sans-serif;font-size:1.5rem;padding:0 10px 18px;display:flex;gap:1px}
+aside .logo span:nth-child(odd){color:var(--yellow)}
+aside .logo small{font-family:'DM Sans';font-size:.6rem;letter-spacing:.2em;align-self:flex-end;margin-left:6px;opacity:.7;padding-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;color:rgba(245,237,220,.82);font-weight:600;font-size:.94rem;border:none;background:none;width:100%;text-align:left;transition:background .2s}
+.nav-item:hover{background:rgba(245,237,220,.08)}
+.nav-item.active{background:var(--orange);color:#fff}
+.nav-item svg{width:19px;height:19px;flex:none}
+aside .spacer{flex:1}
+.user-box{font-size:.8rem;opacity:.75;padding:10px 14px;border-top:1px solid rgba(245,237,220,.15);word-break:break-all}
+main{padding:clamp(20px,3vw,40px);max-width:1200px;width:100%}
+.page-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:24px}
+.page-head h1{font-size:clamp(1.5rem,3vw,2.2rem);color:var(--navy)}
+.view{display:none}
+.view.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+
+/* ---------- cards/tables ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:26px}
+.kpi{background:#fff;border-radius:18px;padding:20px 22px;border:1.5px solid var(--line)}
+.kpi .num{font-family:'Anton',sans-serif;font-size:2rem;color:var(--navy);line-height:1.1}
+.kpi .lbl{font-size:.82rem;color:#5A6B80;font-weight:600;margin-top:2px}
+.kpi.hl .num{color:var(--orange)}
+.panel{background:#fff;border-radius:18px;border:1.5px solid var(--line);padding:22px;margin-bottom:20px}
+.panel h3{color:var(--navy);margin-bottom:14px;font-size:1.05rem}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#5A6B80;padding:8px 10px;border-bottom:2px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:hover td{background:var(--cream-2)}
+.empty{color:#8A97A6;font-style:italic;padding:22px;text-align:center}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.icon-btn{border:1.5px solid var(--line);background:#fff;border-radius:9px;width:32px;height:32px;display:grid;place-items:center;color:var(--navy)}
+.icon-btn:hover{border-color:var(--orange);color:var(--orange)}
+
+/* status chips */
+.st-novo{background:#E8ECF5;color:var(--navy)} .st-contato{background:#FFF3D6;color:#8a6d1a}
+.st-visita{background:#E0F0EF;color:var(--teal)} .st-proposta{background:#FCE8D8;color:var(--orange)}
+.st-fechado{background:#DFF5E7;color:var(--ok)} .st-perdido{background:#FDECEA;color:var(--red)}
+.st-rascunho{background:#E8ECF5;color:var(--navy)} .st-enviada{background:#FFF3D6;color:#8a6d1a}
+.st-aceita{background:#DFF5E7;color:var(--ok)} .st-recusada{background:#FDECEA;color:var(--red)}
+.st-expirada{background:#eee;color:#777}
+.st-pre_reserva{background:#FFF3D6;color:#8a6d1a} .st-reservado{background:#E8ECF5;color:var(--navy)}
+.st-confirmado{background:#DFF5E7;color:var(--ok)} .st-realizado{background:#E0F0EF;color:var(--teal)}
+.st-cancelado{background:#FDECEA;color:var(--red)}
+
+/* ---------- calendário ---------- */
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.cal-head h2{color:var(--navy);font-size:1.3rem;text-transform:capitalize}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{text-align:center;font-size:.72rem;font-weight:800;letter-spacing:.08em;color:#5A6B80;padding:6px 0;text-transform:uppercase}
+.cal-day{background:#fff;border:1.5px solid var(--line);border-radius:12px;min-height:86px;padding:7px;cursor:pointer;position:relative;transition:border-color .15s}
+.cal-day:hover{border-color:var(--orange)}
+.cal-day .n{font-weight:700;font-size:.85rem;color:var(--navy)}
+.cal-day.out{opacity:.35;cursor:default}
+.cal-day.today .n{background:var(--orange);color:#fff;border-radius:8px;padding:1px 7px;display:inline-block}
+.cal-day.blocked{background:repeating-linear-gradient(45deg,#fff, #fff 6px, #FDECEA 6px, #FDECEA 12px)}
+.cal-ev{font-size:.68rem;font-weight:700;border-radius:6px;padding:2px 6px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;background:var(--navy)}
+.cal-ev.confirmado{background:var(--ok)} .cal-ev.pre_reserva{background:var(--yellow);color:var(--navy)}
+.cal-ev.realizado{background:var(--teal)} .cal-ev.cancelado{background:#aaa}
+.cal-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:.78rem;font-weight:600;color:#5A6B80}
+.cal-legend i{display:inline-block;width:11px;height:11px;border-radius:4px;margin-right:5px}
+
+/* ---------- modal ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(14,39,71,.55);z-index:50;display:none;align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:20px;padding:28px;width:min(640px,100%);box-shadow:0 30px 80px -20px rgba(0,0,0,.4);margin:auto 0}
+.modal h2{color:var(--navy);margin-bottom:6px;font-size:1.3rem}
+.modal .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.modal .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 16px}
+.modal-foot{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+.modal-foot .right{display:flex;gap:10px;margin-left:auto}
+.calc-box{background:var(--cream-2);border-radius:14px;padding:14px 18px;margin-top:16px;font-size:.95rem}
+.calc-box .tot{font-family:'Anton',sans-serif;font-size:1.5rem;color:var(--orange)}
+.upg-list{display:flex;flex-direction:column;gap:6px;margin-top:6px;max-height:180px;overflow-y:auto}
+.upg-row{display:flex;align-items:center;gap:10px;background:var(--cream-2);border-radius:10px;padding:8px 12px;font-size:.9rem}
+.upg-row input[type=checkbox]{width:auto}
+.upg-row input[type=number]{width:110px;padding:6px 8px}
+
+/* ---------- preços grid ---------- */
+.precos-grid{display:grid;grid-template-columns:auto repeat(4,1fr);gap:8px;align-items:center;max-width:640px}
+.precos-grid .hd{font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#5A6B80;text-align:center}
+.precos-grid .rowlbl{font-weight:700;color:var(--navy);font-size:.9rem;padding-right:8px}
+.precos-grid input{text-align:center}
+
+/* ---------- toast ---------- */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:var(--cream);padding:13px 26px;border-radius:999px;font-weight:700;font-size:.92rem;z-index:99;transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 16px 40px -12px rgba(0,0,0,.45)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.err{background:var(--red)}
+
+/* ---------- mobile ---------- */
+@media(max-width:840px){
+  .layout{grid-template-columns:1fr}
+  aside{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;padding:6px 8px;z-index:40;justify-content:space-around;align-items:center;gap:0}
+  aside .logo,aside .spacer,.user-box,#btnLogout{display:none}
+  .nav-item{flex-direction:column;gap:3px;font-size:.6rem;padding:8px 6px;border-radius:10px}
+  .nav-item svg{width:20px;height:20px}
+  main{padding:18px 14px 110px}
+  .modal .grid2,.modal .grid3{grid-template-columns:1fr}
+  .cal-day{min-height:62px;padding:4px}
+  .cal-ev{font-size:.55px;display:none}
+  .cal-day .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);position:absolute;bottom:6px;left:50%;transform:translateX(-50%)}
+}
+@media(min-width:841px){.cal-day .dot{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo"><span>G</span><span>A</span><span>L</span><span>P</span><span>Ê</span></div>
+    <p class="login-sub">Painel de gestão · acesso restrito</p>
+    <div id="setupWarn" class="setup-note" style="display:none">
+      <b>⚙️ Backend não configurado.</b><br>
+      1. Crie um projeto gratuito em <b>supabase.com</b><br>
+      2. Rode o arquivo <code>setup/setup.sql</code> no SQL Editor<br>
+      3. Crie o usuário admin em Authentication → Users<br>
+      4. Cole a URL e a anon key em <code>supabase-config.js</code>
+    </div>
+    <form id="loginForm">
+      <label for="loginEmail">E-mail</label>
+      <input id="loginEmail" type="email" autocomplete="username" required placeholder="voce@galpe.com.br">
+      <label for="loginPass">Senha</label>
+      <input id="loginPass" type="password" autocomplete="current-password" required placeholder="••••••••">
+      <div class="login-err" id="loginErr"></div>
+      <button class="btn btn-primary" type="submit" id="loginBtn" style="width:100%;justify-content:center;margin-top:20px">Entrar no painel</button>
+    </form>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app">
+<div class="layout">
+  <aside>
+    <div class="logo"><span>G</span><span>A</span><span>L</span><span>P</span><span>Ê</span><small>ADMIN</small></div>
+    <button class="nav-item active" data-view="dash">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>
+      Visão geral</button>
+    <button class="nav-item" data-view="cal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+      Calendário</button>
+    <button class="nav-item" data-view="leads">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.4 3.4-5 6.5-5s5.7 1.6 6.5 5"/><circle cx="17.5" cy="9.5" r="2.5"/><path d="M15.8 14.6c2.8.2 4.9 1.6 5.7 4.4"/></svg>
+      Leads</button>
+    <button class="nav-item" data-view="prop">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2h9l5 5v15H6Z"/><path d="M14 2v6h6M9 13h7M9 17h7"/></svg>
+      Propostas</button>
+    <button class="nav-item" data-view="precos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6.5c0-2-2.2-3-5-3s-5 1-5 3 1.8 2.7 5 3.5 5 1.7 5 3.5-2.2 3-5 3-5-1-5-3"/></svg>
+      Preços</button>
+    <button class="nav-item" data-view="cfg">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M19 12a7 7 0 0 0-.2-1.6l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2.8-1.6L13.2 2h-4l-.5 2.5a7 7 0 0 0-2.8 1.6l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 3.2l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2.8 1.6l.5 2.5h4l.5-2.5a7 7 0 0 0 2.8-1.6l2.3 1 2-3.4-2-1.5c.1-.5.2-1 .2-1.6Z"/></svg>
+      Ajustes</button>
+    <div class="spacer"></div>
+    <div class="user-box" id="userEmail"></div>
+    <button class="nav-item" id="btnLogout">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+      Sair</button>
+  </aside>
+
+  <main>
+    <!-- ===== DASHBOARD ===== -->
+    <section class="view active" id="view-dash">
+      <div class="page-head"><h1 class="h-display">Visão geral</h1>
+        <button class="btn btn-primary btn-sm" onclick="openEventoModal()">+ Nova festa</button></div>
+      <div class="cards">
+        <div class="kpi hl"><div class="num" id="kpiFestas">–</div><div class="lbl">festas este mês</div></div>
+        <div class="kpi"><div class="num" id="kpiReceita">–</div><div class="lbl">receita prevista (mês)</div></div>
+        <div class="kpi"><div class="num" id="kpiProp">–</div><div class="lbl">propostas em aberto</div></div>
+        <div class="kpi"><div class="num" id="kpiLeads">–</div><div class="lbl">leads novos</div></div>
+      </div>
+      <div class="panel">
+        <h3>Próximas festas</h3>
+        <div id="dashProximas"></div>
+      </div>
+      <div class="panel">
+        <h3>Pagamentos pendentes</h3>
+        <div id="dashPagamentos"></div>
+      </div>
+    </section>
+
+    <!-- ===== CALENDÁRIO ===== -->
+    <section class="view" id="view-cal">
+      <div class="page-head"><h1 class="h-display">Calendário</h1>
+        <button class="btn btn-primary btn-sm" onclick="openEventoModal()">+ Nova festa</button></div>
+      <div class="panel">
+        <div class="cal-head">
+          <button class="btn btn-ghost btn-sm" id="calPrev">‹ Anterior</button>
+          <h2 class="h-display" id="calTitle"></h2>
+          <button class="btn btn-ghost btn-sm" id="calNext">Próximo ›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-legend">
+          <span><i style="background:var(--yellow)"></i>Pré-reserva</span>
+          <span><i style="background:var(--navy)"></i>Reservado</span>
+          <span><i style="background:var(--ok)"></i>Confirmado</span>
+          <span><i style="background:var(--teal)"></i>Realizado</span>
+          <span><i style="background:repeating-linear-gradient(45deg,#fff,#fff 3px,#FDECEA 3px,#FDECEA 6px);border:1px solid var(--line)"></i>Data bloqueada</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== LEADS ===== -->
+    <section class="view" id="view-leads">
+      <div class="page-head"><h1 class="h-display">Leads</h1>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <select id="leadFiltro" style="width:auto">
+            <option value="">Todos os status</option>
+            <option value="novo">Novo</option><option value="contato">Em contato</option>
+            <option value="visita">Visita marcada</option><option value="proposta">Proposta enviada</option>
+            <option value="fechado">Fechado</option><option value="perdido">Perdido</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="openLeadModal()">+ Novo lead</button>
+        </div></div>
+      <div class="panel" style="overflow-x:auto"><div id="leadsTable"></div></div>
+    </section>
+
+    <!-- ===== PROPOSTAS ===== -->
+    <section class="view" id="view-prop">
+      <div class="page-head"><h1 class="h-display">Propostas</h1>
+        <button class="btn btn-primary btn-sm" onclick="openPropModal()">+ Nova proposta</button></div>
+      <div class="panel" style="overflow-x:auto"><div id="propTable"></div></div>
+    </section>
+
+    <!-- ===== PREÇOS ===== -->
+    <section class="view" id="view-precos">
+      <div class="page-head"><h1 class="h-display">Preços &amp; Pacotes</h1></div>
+      <div class="panel">
+        <h3>Tabela por pessoa (festa de <span id="precoDuracao">4</span>h)</h3>
+        <div class="precos-grid" id="precosGrid"></div>
+        <button class="btn btn-primary btn-sm" style="margin-top:18px" id="btnSalvarPrecos">Salvar tabela</button>
+        <p style="font-size:.82rem;color:#5A6B80;margin-top:10px">As alterações valem na hora para o site público e para novas propostas.</p>
+      </div>
+      <div class="panel">
+        <h3>Upgrades &amp; adicionais</h3>
+        <div id="upgTable" style="overflow-x:auto"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="openUpgModal()">+ Novo upgrade</button>
+      </div>
+    </section>
+
+    <!-- ===== CONFIG ===== -->
+    <section class="view" id="view-cfg">
+      <div class="page-head"><h1 class="h-display">Ajustes</h1></div>
+      <div class="panel">
+        <h3>Contato &amp; site</h3>
+        <div class="modal grid2" style="all:unset;display:grid;grid-template-columns:1fr 1fr;gap:0 16px">
+          <div><label>WhatsApp (só números, com 55)</label><input id="cfg_whatsapp"></div>
+          <div><label>Telefone (exibição)</label><input id="cfg_telefone_exibicao"></div>
+          <div><label>E-mail</label><input id="cfg_email"></div>
+          <div><label>Instagram</label><input id="cfg_instagram"></div>
+          <div style="grid-column:1/-1"><label>Endereço</label><input id="cfg_endereco"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Regras do negócio</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0 16px">
+          <div><label>Duração da festa (h)</label><input id="cfg_duracao_horas" type="number" step="0.5"></div>
+          <div><label>Sinal (%)</label><input id="cfg_sinal_percent" type="number"></div>
+          <div><label>Validade proposta (dias)</label><input id="cfg_validade_proposta_dias" type="number"></div>
+          <div><label>Hora extra antecipada (%)</label><input id="cfg_hora_extra_antecipada_percent" type="number"></div>
+          <div><label>Hora extra no dia (%)</label><input id="cfg_hora_extra_dia_percent" type="number"></div>
+          <div><label>Grátis até (anos)</label><input id="cfg_criancas_gratis_ate" type="number"></div>
+          <div><label>Meia de (anos)</label><input id="cfg_meia_de" type="number"></div>
+          <div><label>Meia até (anos)</label><input id="cfg_meia_ate" type="number"></div>
+          <div><label>Docinhos por pessoa</label><input id="cfg_docinhos_por_pessoa" type="number"></div>
+          <div><label>Tolerância (min)</label><input id="cfg_tolerancia_min" type="number"></div>
+          <div><label>Extra de convidados (%)</label><input id="cfg_max_extra_percent" type="number"></div>
+        </div>
+        <button class="btn btn-primary btn-sm" style="margin-top:18px" id="btnSalvarCfg">Salvar ajustes</button>
+      </div>
+      <div class="panel">
+        <h3>Segurança</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;max-width:560px">
+          <div><label>Nova senha</label><input id="newPass" type="password" autocomplete="new-password"></div>
+          <div><label>Repetir nova senha</label><input id="newPass2" type="password" autocomplete="new-password"></div>
+        </div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:16px" id="btnSenha">Alterar senha</button>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+<!-- ===== MODAL EVENTO ===== -->
+<div class="modal-bg" id="modalEvento">
+  <div class="modal">
+    <h2 class="h-display" id="evTitle">Nova festa</h2>
+    <input type="hidden" id="ev_id">
+    <div class="grid2">
+      <div><label>Título / Nome da festa *</label><input id="ev_titulo" placeholder="Festa da Maria"></div>
+      <div><label>Tema</label><input id="ev_tema" placeholder="Zootopia"></div>
+      <div><label>Aniversariante</label><input id="ev_aniversariante"></div>
+      <div><label>Idade</label><input id="ev_idade" type="number" min="0"></div>
+      <div><label>Data *</label><input id="ev_data" type="date"></div>
+      <div><label>Início</label><input id="ev_hora" type="time" value="12:00"></div>
+      <div><label>Convidados</label><input id="ev_convidados" type="number" min="0"></div>
+      <div><label>Valor total (R$)</label><input id="ev_valor" type="number" step="0.01" min="0"></div>
+      <div><label>Contato (nome)</label><input id="ev_contato_nome"></div>
+      <div><label>Contato (telefone)</label><input id="ev_contato_telefone" placeholder="21 99999-9999"></div>
+      <div><label>Status</label>
+        <select id="ev_status">
+          <option value="pre_reserva">Pré-reserva</option>
+          <option value="reservado" selected>Reservado</option>
+          <option value="confirmado">Confirmado</option>
+          <option value="realizado">Realizado</option>
+          <option value="cancelado">Cancelado</option>
+        </select></div>
+      <div style="display:flex;gap:18px;align-items:flex-end;padding-bottom:4px">
+        <label style="display:flex;gap:7px;align-items:center;margin:0;text-transform:none;font-size:.88rem"><input type="checkbox" id="ev_sinal" style="width:auto"> Sinal pago</label>
+        <label style="display:flex;gap:7px;align-items:center;margin:0;text-transform:none;font-size:.88rem"><input type="checkbox" id="ev_saldo" style="width:auto"> Saldo quitado</label>
+      </div>
+    </div>
+    <label>Observações</label><textarea id="ev_obs" rows="2"></textarea>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="evDelete" style="display:none">Excluir</button>
+      <div class="right">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalEvento')">Cancelar</button>
+        <button class="btn btn-primary btn-sm" id="evSave">Salvar festa</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL DIA (lista + bloqueio) ===== -->
+<div class="modal-bg" id="modalDia">
+  <div class="modal">
+    <h2 class="h-display" id="diaTitle">Dia</h2>
+    <div id="diaEventos" style="margin:14px 0"></div>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="diaBloquear">Bloquear data</button>
+      <div class="right">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalDia')">Fechar</button>
+        <button class="btn btn-primary btn-sm" id="diaNovaFesta">+ Festa neste dia</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL LEAD ===== -->
+<div class="modal-bg" id="modalLead">
+  <div class="modal">
+    <h2 class="h-display" id="leadTitle">Novo lead</h2>
+    <input type="hidden" id="ld_id">
+    <div class="grid2">
+      <div><label>Nome</label><input id="ld_nome"></div>
+      <div><label>Telefone</label><input id="ld_telefone" placeholder="21 99999-9999"></div>
+      <div><label>Data de interesse</label><input id="ld_data" type="date"></div>
+      <div><label>Convidados</label><input id="ld_convidados" type="number" min="0"></div>
+      <div><label>Origem</label>
+        <select id="ld_origem"><option value="whatsapp">WhatsApp</option><option value="instagram">Instagram</option><option value="site">Site</option><option value="indicacao">Indicação</option><option value="outro">Outro</option></select></div>
+      <div><label>Status</label>
+        <select id="ld_status"><option value="novo">Novo</option><option value="contato">Em contato</option><option value="visita">Visita marcada</option><option value="proposta">Proposta enviada</option><option value="fechado">Fechado</option><option value="perdido">Perdido</option></select></div>
+    </div>
+    <label>Observações</label><textarea id="ld_obs" rows="2"></textarea>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="ldDelete" style="display:none">Excluir</button>
+      <div class="right">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalLead')">Cancelar</button>
+        <button class="btn btn-primary btn-sm" id="ldSave">Salvar lead</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL PROPOSTA ===== -->
+<div class="modal-bg" id="modalProp">
+  <div class="modal">
+    <h2 class="h-display" id="propTitle">Nova proposta</h2>
+    <input type="hidden" id="pr_id">
+    <div class="grid2">
+      <div><label>Cliente *</label><input id="pr_cliente"></div>
+      <div><label>Aniversariante</label><input id="pr_aniversariante"></div>
+      <div><label>Tema</label><input id="pr_tema"></div>
+      <div><label>Idade</label><input id="pr_idade" type="number" min="0"></div>
+      <div><label>Data do evento</label><input id="pr_data" type="date"></div>
+      <div><label>Horário</label><input id="pr_horario" type="time" value="12:00"></div>
+    </div>
+    <div class="grid3">
+      <div><label>Convidados *</label><input id="pr_convidados" type="number" min="1" value="60"></div>
+      <div><label>Dia</label>
+        <select id="pr_dia"><option value="seg">Seg. à Qui.</option><option value="sex">Sex. e feriados</option><option value="sab">Sáb. e Dom.</option></select></div>
+      <div><label>Valor/pessoa (R$)</label><input id="pr_valor" type="number" step="0.01" min="0"></div>
+    </div>
+    <label>Upgrades inclusos</label>
+    <div class="upg-list" id="pr_upgrades"></div>
+    <div class="grid2">
+      <div><label>Desconto (R$)</label><input id="pr_desconto" type="number" step="0.01" min="0" value="0"></div>
+      <div><label>Validade</label><input id="pr_validade" type="date"></div>
+    </div>
+    <label>Observações (aparecem na proposta)</label><textarea id="pr_obs" rows="2"></textarea>
+    <div class="calc-box" id="pr_calc"></div>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="prDelete" style="display:none">Excluir</button>
+      <div class="right">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalProp')">Cancelar</button>
+        <button class="btn btn-primary btn-sm" id="prSave">Salvar proposta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL UPGRADE ===== -->
+<div class="modal-bg" id="modalUpg">
+  <div class="modal" style="width:min(460px,100%)">
+    <h2 class="h-display" id="upgTitle">Novo upgrade</h2>
+    <input type="hidden" id="up_id">
+    <label>Nome *</label><input id="up_nome">
+    <label>Descrição</label><input id="up_desc">
+    <div class="grid2">
+      <div><label>Preço (R$)</label><input id="up_preco" type="number" step="0.01" min="0" placeholder="sob consulta"></div>
+      <div><label>Cobrança</label>
+        <select id="up_unidade"><option value="fixo">Valor fixo</option><option value="por_pessoa">Por pessoa</option><option value="por_hora">Por hora</option></select></div>
+    </div>
+    <label style="display:flex;gap:8px;align-items:center;text-transform:none"><input type="checkbox" id="up_ativo" checked style="width:auto"> Ativo</label>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="upDelete" style="display:none">Excluir</button>
+      <div class="right">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalUpg')">Cancelar</button>
+        <button class="btn btn-primary btn-sm" id="upSave">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ================= boot ================= */
+var CFG = window.GALPE_SUPABASE || {};
+var hasCfg = CFG.url && CFG.anonKey && CFG.url.indexOf('http') === 0;
+if(!hasCfg){
+  document.getElementById('setupWarn').style.display = 'block';
+}
+var sb = hasCfg ? supabase.createClient(CFG.url, CFG.anonKey) : null;
+
+var state = { precos: [], upgrades: [], config: {}, eventos: [], leads: [], propostas: [], bloqueios: [], calRef: new Date() };
+
+var $ = function(id){ return document.getElementById(id); };
+var BRL = function(n){ return 'R$ ' + Number(n || 0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2}); };
+var DIA_LABEL = { seg:'Seg. à Qui.', sex:'Sex. e feriados', sab:'Sáb. e Dom.' };
+var fmtData = function(d){ if(!d) return '—'; var p = d.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; };
+var hoje = function(){ return new Date().toISOString().slice(0,10); };
+
+function toast(msg, err){
+  var t = $('toast');
+  t.textContent = msg;
+  t.className = err ? 'err show' : 'show';
+  clearTimeout(t._tm);
+  t._tm = setTimeout(function(){ t.classList.remove('show'); }, 2800);
+}
+window.closeModal = function(id){ $(id).classList.remove('open'); };
+function openModal(id){ $(id).classList.add('open'); }
+document.querySelectorAll('.modal-bg').forEach(function(m){
+  m.addEventListener('click', function(e){ if(e.target === m) m.classList.remove('open'); });
+});
+
+/* ================= auth ================= */
+$('loginForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  if(!sb){ $('loginErr').textContent = 'Configure o supabase-config.js primeiro.'; $('loginErr').style.display = 'block'; return; }
+  $('loginBtn').disabled = true;
+  sb.auth.signInWithPassword({ email: $('loginEmail').value.trim(), password: $('loginPass').value })
+    .then(function(r){
+      $('loginBtn').disabled = false;
+      if(r.error){
+        $('loginErr').textContent = 'E-mail ou senha inválidos.';
+        $('loginErr').style.display = 'block';
+      } else { enterApp(r.data.user); }
+    });
+});
+$('btnLogout').addEventListener('click', function(){
+  sb.auth.signOut().then(function(){ location.reload(); });
+});
+if(sb){
+  sb.auth.getSession().then(function(r){
+    if(r.data.session) enterApp(r.data.session.user);
+  });
+}
+function enterApp(user){
+  $('loginScreen').style.display = 'none';
+  $('app').style.display = 'block';
+  $('userEmail').textContent = user.email;
+  loadAll();
+}
+
+/* ================= navegação ================= */
+document.querySelectorAll('.nav-item[data-view]').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.nav-item[data-view]').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
+    b.classList.add('active');
+    $('view-' + b.dataset.view).classList.add('active');
+  });
+});
+
+/* ================= load ================= */
+function loadAll(){
+  Promise.all([
+    sb.from('precos').select('*').order('convidados'),
+    sb.from('upgrades').select('*').order('ordem'),
+    sb.from('site_config').select('*'),
+    sb.from('eventos').select('*').order('data'),
+    sb.from('leads').select('*').order('created_at', {ascending:false}),
+    sb.from('propostas').select('*').order('created_at', {ascending:false}),
+    sb.from('bloqueios').select('*')
+  ]).then(function(rs){
+    var err = rs.find(function(r){ return r.error; });
+    if(err){ toast('Erro ao carregar: ' + err.error.message, true); return; }
+    state.precos = rs[0].data; state.upgrades = rs[1].data;
+    state.config = {};
+    rs[2].data.forEach(function(c){ state.config[c.key] = c.value; });
+    state.eventos = rs[3].data; state.leads = rs[4].data;
+    state.propostas = rs[5].data; state.bloqueios = rs[6].data;
+    renderDash(); renderCal(); renderLeads(); renderProps(); renderPrecos(); renderUpgrades(); renderCfg();
+  });
+}
+
+/* ================= dashboard ================= */
+function renderDash(){
+  var now = new Date(), y = now.getFullYear(), m = now.getMonth();
+  var mesIni = new Date(y, m, 1).toISOString().slice(0,10);
+  var mesFim = new Date(y, m + 1, 0).toISOString().slice(0,10);
+  var ativos = state.eventos.filter(function(e){ return e.status !== 'cancelado'; });
+  var doMes = ativos.filter(function(e){ return e.data >= mesIni && e.data <= mesFim; });
+  $('kpiFestas').textContent = doMes.length;
+  $('kpiReceita').textContent = BRL(doMes.reduce(function(s,e){ return s + Number(e.valor_total || 0); }, 0));
+  $('kpiProp').textContent = state.propostas.filter(function(p){ return p.status === 'enviada' || p.status === 'rascunho'; }).length;
+  $('kpiLeads').textContent = state.leads.filter(function(l){ return l.status === 'novo'; }).length;
+
+  var prox = ativos.filter(function(e){ return e.data >= hoje(); }).slice(0, 8);
+  $('dashProximas').innerHTML = prox.length ? tableHTML(
+    ['Data','Festa','Tema','Convid.','Status',''],
+    prox.map(function(e){
+      return '<tr><td><b>' + fmtData(e.data) + '</b> ' + String(e.hora_inicio).slice(0,5) + '</td><td>' + esc(e.titulo) + '</td><td>' + esc(e.tema || '—') +
+        '</td><td>' + (e.convidados || '—') + '</td><td><span class="chip st-' + e.status + '">' + stLabel(e.status) + '</span></td>' +
+        '<td><button class="icon-btn" onclick="openEventoModal(\'' + e.id + '\')" title="Editar">✎</button></td></tr>';
+    }).join('')
+  ) : '<div class="empty">Nenhuma festa agendada. Bora vender! 🎉</div>';
+
+  var pend = ativos.filter(function(e){ return e.data >= hoje() && (!e.sinal_pago || !e.saldo_quitado); }).slice(0, 8);
+  $('dashPagamentos').innerHTML = pend.length ? tableHTML(
+    ['Data','Festa','Valor','Sinal','Saldo'],
+    pend.map(function(e){
+      return '<tr><td>' + fmtData(e.data) + '</td><td>' + esc(e.titulo) + '</td><td>' + BRL(e.valor_total) +
+        '</td><td>' + (e.sinal_pago ? '✅' : '<span class="chip st-perdido">pendente</span>') +
+        '</td><td>' + (e.saldo_quitado ? '✅' : '<span class="chip st-enviada">até 10 dias antes</span>') + '</td></tr>';
+    }).join('')
+  ) : '<div class="empty">Tudo em dia. 👏</div>';
+}
+function tableHTML(heads, rows){
+  return '<table><thead><tr>' + heads.map(function(h){ return '<th>' + h + '</th>'; }).join('') + '</tr></thead><tbody>' + rows + '</tbody></table>';
+}
+function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function stLabel(s){
+  return ({ pre_reserva:'Pré-reserva', reservado:'Reservado', confirmado:'Confirmado', realizado:'Realizado', cancelado:'Cancelado',
+    novo:'Novo', contato:'Em contato', visita:'Visita', proposta:'Proposta', fechado:'Fechado', perdido:'Perdido',
+    rascunho:'Rascunho', enviada:'Enviada', aceita:'Aceita ✓', recusada:'Recusada', expirada:'Expirada' })[s] || s;
+}
+
+/* ================= calendário ================= */
+var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+$('calPrev').addEventListener('click', function(){ state.calRef.setMonth(state.calRef.getMonth() - 1); renderCal(); });
+$('calNext').addEventListener('click', function(){ state.calRef.setMonth(state.calRef.getMonth() + 1); renderCal(); });
+
+function renderCal(){
+  var y = state.calRef.getFullYear(), m = state.calRef.getMonth();
+  $('calTitle').textContent = MESES[m] + ' ' + y;
+  var first = new Date(y, m, 1), startDow = first.getDay();
+  var daysIn = new Date(y, m + 1, 0).getDate();
+  var html = ['D','S','T','Q','Q','S','S'].map(function(d){ return '<div class="cal-dow">' + d + '</div>'; }).join('');
+  var todayStr = hoje();
+  for(var i = 0; i < startDow; i++) html += '<div class="cal-day out"></div>';
+  for(var d = 1; d <= daysIn; d++){
+    var ds = y + '-' + String(m+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+    var evs = state.eventos.filter(function(e){ return e.data === ds && e.status !== 'cancelado'; });
+    var blocked = state.bloqueios.some(function(b){ return b.data === ds; });
+    html += '<div class="cal-day' + (ds === todayStr ? ' today' : '') + (blocked ? ' blocked' : '') + '" data-d="' + ds + '">' +
+      '<span class="n">' + d + '</span>' +
+      evs.map(function(e){ return '<div class="cal-ev ' + e.status + '">' + String(e.hora_inicio).slice(0,5) + ' ' + esc(e.titulo) + '</div>'; }).join('') +
+      (evs.length ? '<span class="dot"></span>' : '') +
+      '</div>';
+  }
+  $('calGrid').innerHTML = html;
+  $('calGrid').querySelectorAll('.cal-day[data-d]').forEach(function(c){
+    c.addEventListener('click', function(){ openDia(c.dataset.d); });
+  });
+}
+
+function openDia(ds){
+  var evs = state.eventos.filter(function(e){ return e.data === ds; });
+  var blk = state.bloqueios.find(function(b){ return b.data === ds; });
+  $('diaTitle').textContent = fmtData(ds) + (blk ? ' · BLOQUEADO' : '');
+  $('diaEventos').innerHTML = evs.length ? evs.map(function(e){
+    return '<div class="upg-row" style="justify-content:space-between"><div><b>' + String(e.hora_inicio).slice(0,5) + '</b> — ' + esc(e.titulo) +
+      ' <span class="chip st-' + e.status + '">' + stLabel(e.status) + '</span></div>' +
+      '<button class="icon-btn" onclick="closeModal(\'modalDia\');openEventoModal(\'' + e.id + '\')">✎</button></div>';
+  }).join('') : '<div class="empty">Nenhuma festa neste dia.</div>';
+  $('diaBloquear').textContent = blk ? 'Desbloquear data' : 'Bloquear data';
+  $('diaBloquear').onclick = function(){
+    if(blk){
+      sb.from('bloqueios').delete().eq('data', ds).then(function(r){
+        if(r.error) return toast(r.error.message, true);
+        toast('Data desbloqueada'); closeModal('modalDia'); loadAll();
+      });
+    } else {
+      sb.from('bloqueios').insert({ data: ds, motivo: 'Bloqueado pelo admin' }).then(function(r){
+        if(r.error) return toast(r.error.message, true);
+        toast('Data bloqueada'); closeModal('modalDia'); loadAll();
+      });
+    }
+  };
+  $('diaNovaFesta').onclick = function(){ closeModal('modalDia'); openEventoModal(null, ds); };
+  openModal('modalDia');
+}
+
+/* ================= eventos CRUD ================= */
+window.openEventoModal = function(id, dataPre){
+  var e = id ? state.eventos.find(function(x){ return x.id === id; }) : null;
+  $('evTitle').textContent = e ? 'Editar festa' : 'Nova festa';
+  $('ev_id').value = e ? e.id : '';
+  $('ev_titulo').value = e ? e.titulo : '';
+  $('ev_tema').value = e ? (e.tema || '') : '';
+  $('ev_aniversariante').value = e ? (e.aniversariante || '') : '';
+  $('ev_idade').value = e ? (e.idade || '') : '';
+  $('ev_data').value = e ? e.data : (dataPre || '');
+  $('ev_hora').value = e ? String(e.hora_inicio).slice(0,5) : '12:00';
+  $('ev_convidados').value = e ? (e.convidados || '') : '';
+  $('ev_valor').value = e ? (e.valor_total || '') : '';
+  $('ev_contato_nome').value = e ? (e.contato_nome || '') : '';
+  $('ev_contato_telefone').value = e ? (e.contato_telefone || '') : '';
+  $('ev_status').value = e ? e.status : 'reservado';
+  $('ev_sinal').checked = e ? e.sinal_pago : false;
+  $('ev_saldo').checked = e ? e.saldo_quitado : false;
+  $('ev_obs').value = e ? (e.observacoes || '') : '';
+  $('evDelete').style.display = e ? 'inline-flex' : 'none';
+  openModal('modalEvento');
+};
+$('evSave').addEventListener('click', function(){
+  if(!$('ev_titulo').value.trim() || !$('ev_data').value) return toast('Preencha título e data.', true);
+  var payload = {
+    titulo: $('ev_titulo').value.trim(), tema: $('ev_tema').value.trim() || null,
+    aniversariante: $('ev_aniversariante').value.trim() || null,
+    idade: $('ev_idade').value ? +$('ev_idade').value : null,
+    data: $('ev_data').value, hora_inicio: $('ev_hora').value || '12:00',
+    convidados: $('ev_convidados').value ? +$('ev_convidados').value : null,
+    valor_total: $('ev_valor').value ? +$('ev_valor').value : null,
+    contato_nome: $('ev_contato_nome').value.trim() || null,
+    contato_telefone: $('ev_contato_telefone').value.trim() || null,
+    status: $('ev_status').value,
+    sinal_pago: $('ev_sinal').checked, saldo_quitado: $('ev_saldo').checked,
+    observacoes: $('ev_obs').value.trim() || null
+  };
+  var id = $('ev_id').value;
+  var q = id ? sb.from('eventos').update(payload).eq('id', id) : sb.from('eventos').insert(payload);
+  q.then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast(id ? 'Festa atualizada!' : 'Festa criada! 🎉'); closeModal('modalEvento'); loadAll();
+  });
+});
+$('evDelete').addEventListener('click', function(){
+  if(!confirm('Excluir esta festa?')) return;
+  sb.from('eventos').delete().eq('id', $('ev_id').value).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Festa excluída'); closeModal('modalEvento'); loadAll();
+  });
+});
+
+/* ================= leads ================= */
+$('leadFiltro').addEventListener('change', renderLeads);
+function renderLeads(){
+  var f = $('leadFiltro').value;
+  var ls = f ? state.leads.filter(function(l){ return l.status === f; }) : state.leads;
+  $('leadsTable').innerHTML = ls.length ? tableHTML(
+    ['Nome','Telefone','Interesse','Origem','Status',''],
+    ls.map(function(l){
+      var tel = (l.telefone || '').replace(/\D/g,'');
+      return '<tr><td><b>' + esc(l.nome || 'Sem nome') + '</b></td>' +
+        '<td>' + (tel ? '<a href="https://wa.me/55' + tel.replace(/^55/,'') + '" target="_blank" rel="noopener" style="color:var(--ok);font-weight:700">' + esc(l.telefone) + '</a>' : '—') + '</td>' +
+        '<td>' + (l.data_interesse ? fmtData(l.data_interesse) : '—') + (l.convidados ? ' · ' + l.convidados + ' conv.' : '') + '</td>' +
+        '<td>' + esc(l.origem) + '</td>' +
+        '<td><span class="chip st-' + l.status + '">' + stLabel(l.status) + '</span></td>' +
+        '<td><div class="row-actions">' +
+        '<button class="icon-btn" title="Editar" onclick="openLeadModal(\'' + l.id + '\')">✎</button>' +
+        '<button class="icon-btn" title="Gerar proposta" onclick="propFromLead(\'' + l.id + '\')">📄</button>' +
+        '</div></td></tr>';
+    }).join('')
+  ) : '<div class="empty">Nenhum lead' + (f ? ' com esse status' : '') + '.</div>';
+}
+window.openLeadModal = function(id){
+  var l = id ? state.leads.find(function(x){ return x.id === id; }) : null;
+  $('leadTitle').textContent = l ? 'Editar lead' : 'Novo lead';
+  $('ld_id').value = l ? l.id : '';
+  $('ld_nome').value = l ? (l.nome || '') : '';
+  $('ld_telefone').value = l ? (l.telefone || '') : '';
+  $('ld_data').value = l ? (l.data_interesse || '') : '';
+  $('ld_convidados').value = l ? (l.convidados || '') : '';
+  $('ld_origem').value = l ? l.origem : 'whatsapp';
+  $('ld_status').value = l ? l.status : 'novo';
+  $('ld_obs').value = l ? (l.observacoes || '') : '';
+  $('ldDelete').style.display = l ? 'inline-flex' : 'none';
+  openModal('modalLead');
+};
+$('ldSave').addEventListener('click', function(){
+  var payload = {
+    nome: $('ld_nome').value.trim() || null, telefone: $('ld_telefone').value.trim() || null,
+    data_interesse: $('ld_data').value || null,
+    convidados: $('ld_convidados').value ? +$('ld_convidados').value : null,
+    origem: $('ld_origem').value, status: $('ld_status').value,
+    observacoes: $('ld_obs').value.trim() || null
+  };
+  var id = $('ld_id').value;
+  var q = id ? sb.from('leads').update(payload).eq('id', id) : sb.from('leads').insert(payload);
+  q.then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Lead salvo!'); closeModal('modalLead'); loadAll();
+  });
+});
+$('ldDelete').addEventListener('click', function(){
+  if(!confirm('Excluir este lead?')) return;
+  sb.from('leads').delete().eq('id', $('ld_id').value).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Lead excluído'); closeModal('modalLead'); loadAll();
+  });
+});
+window.propFromLead = function(leadId){
+  var l = state.leads.find(function(x){ return x.id === leadId; });
+  document.querySelector('[data-view="prop"]').click();
+  openPropModal(null, l);
+};
+
+/* ================= propostas ================= */
+function precoSugerido(dia, conv){
+  var tiers = state.precos.filter(function(p){ return p.dia === dia; }).sort(function(a,b){ return a.convidados - b.convidados; });
+  if(!tiers.length) return 0;
+  var t = tiers[0];
+  for(var i = 0; i < tiers.length; i++){ if(conv >= tiers[i].convidados) t = tiers[i]; }
+  return Number(t.valor);
+}
+function diaTipoFromDate(ds){
+  if(!ds) return null;
+  var dow = new Date(ds + 'T12:00:00').getDay();
+  if(dow === 0 || dow === 6) return 'sab';
+  if(dow === 5) return 'sex';
+  return 'seg';
+}
+function renderProps(){
+  $('propTable').innerHTML = state.propostas.length ? tableHTML(
+    ['Cliente','Evento','Convid.','Total','Status',''],
+    state.propostas.map(function(p){
+      var tot = propTotal(p);
+      return '<tr><td><b>' + esc(p.nome_cliente) + '</b></td>' +
+        '<td>' + (p.data_evento ? fmtData(p.data_evento) : '—') + (p.tema ? ' · ' + esc(p.tema) : '') + '</td>' +
+        '<td>' + p.convidados + '</td><td><b>' + BRL(tot) + '</b></td>' +
+        '<td><span class="chip st-' + p.status + '">' + stLabel(p.status) + '</span></td>' +
+        '<td><div class="row-actions">' +
+        '<button class="icon-btn" title="Editar" onclick="openPropModal(\'' + p.id + '\')">✎</button>' +
+        '<button class="icon-btn" title="Copiar link" onclick="copyPropLink(\'' + p.token + '\')">🔗</button>' +
+        '<button class="icon-btn" title="Enviar por WhatsApp" onclick="sendProp(\'' + p.id + '\')">➤</button>' +
+        (p.status === 'aceita' && !eventoDaProposta(p.id) ? '<button class="icon-btn" title="Criar festa no calendário" onclick="eventoFromProp(\'' + p.id + '\')">📅</button>' : '') +
+        '</div></td></tr>';
+    }).join('')
+  ) : '<div class="empty">Nenhuma proposta ainda.</div>';
+}
+function eventoDaProposta(pid){ return state.eventos.some(function(e){ return e.proposta_id === pid; }); }
+function propTotal(p){
+  var upgs = (p.upgrades || []);
+  var upgTotal = upgs.reduce(function(s,u){
+    var v = Number(u.preco || 0);
+    return s + (u.unidade === 'por_pessoa' ? v * p.convidados : v);
+  }, 0);
+  return p.convidados * Number(p.valor_pessoa) + upgTotal - Number(p.desconto || 0);
+}
+
+window.openPropModal = function(id, lead){
+  var p = id ? state.propostas.find(function(x){ return x.id === id; }) : null;
+  $('propTitle').textContent = p ? 'Editar proposta' : 'Nova proposta';
+  $('pr_id').value = p ? p.id : '';
+  $('pr_cliente').value = p ? p.nome_cliente : (lead && lead.nome ? lead.nome : '');
+  $('pr_aniversariante').value = p ? (p.aniversariante || '') : '';
+  $('pr_tema').value = p ? (p.tema || '') : '';
+  $('pr_idade').value = p ? (p.idade || '') : '';
+  $('pr_data').value = p ? (p.data_evento || '') : (lead && lead.data_interesse ? lead.data_interesse : '');
+  $('pr_horario').value = p ? (p.horario || '12:00') : '12:00';
+  $('pr_convidados').value = p ? p.convidados : (lead && lead.convidados ? lead.convidados : 60);
+  var dia = p ? p.dia_tipo : (diaTipoFromDate($('pr_data').value) || 'sab');
+  $('pr_dia').value = dia;
+  $('pr_valor').value = p ? p.valor_pessoa : precoSugerido(dia, +$('pr_convidados').value);
+  $('pr_desconto').value = p ? p.desconto : 0;
+  var valDias = Number(state.config.validade_proposta_dias || 7);
+  var dv = new Date(); dv.setDate(dv.getDate() + valDias);
+  $('pr_validade').value = p ? (p.validade || '') : dv.toISOString().slice(0,10);
+  $('pr_obs').value = p ? (p.observacoes || '') : '';
+  $('pr_id').dataset.leadId = lead ? lead.id : (p && p.lead_id ? p.lead_id : '');
+  renderPropUpgrades(p ? (p.upgrades || []) : []);
+  $('prDelete').style.display = p ? 'inline-flex' : 'none';
+  calcProp();
+  openModal('modalProp');
+};
+function renderPropUpgrades(selected){
+  $('pr_upgrades').innerHTML = state.upgrades.filter(function(u){ return u.ativo; }).map(function(u, i){
+    var sel = selected.find(function(s){ return s.nome === u.nome; });
+    var preco = sel ? sel.preco : (u.preco || '');
+    return '<div class="upg-row"><input type="checkbox" data-i="' + i + '" data-nome="' + esc(u.nome) + '" data-unidade="' + u.unidade + '"' + (sel ? ' checked' : '') + '>' +
+      '<span style="flex:1">' + esc(u.nome) + ' <small style="color:#5A6B80">(' + (u.unidade === 'por_pessoa' ? 'por pessoa' : u.unidade === 'por_hora' ? 'por hora' : 'fixo') + ')</small></span>' +
+      '<input type="number" step="0.01" min="0" placeholder="R$" value="' + preco + '"></div>';
+  }).join('') || '<div class="empty">Nenhum upgrade cadastrado.</div>';
+  $('pr_upgrades').querySelectorAll('input').forEach(function(inp){ inp.addEventListener('change', calcProp); inp.addEventListener('input', calcProp); });
+}
+function propUpgradesValue(){
+  var out = [];
+  $('pr_upgrades').querySelectorAll('.upg-row').forEach(function(row){
+    var chk = row.querySelector('input[type=checkbox]');
+    if(chk && chk.checked){
+      out.push({ nome: chk.dataset.nome, unidade: chk.dataset.unidade, preco: +(row.querySelector('input[type=number]').value || 0) });
+    }
+  });
+  return out;
+}
+function calcProp(){
+  var conv = +$('pr_convidados').value || 0;
+  var vp = +$('pr_valor').value || 0;
+  var desc = +$('pr_desconto').value || 0;
+  var upgs = propUpgradesValue();
+  var upgTot = upgs.reduce(function(s,u){ return s + (u.unidade === 'por_pessoa' ? u.preco * conv : u.preco); }, 0);
+  var total = conv * vp + upgTot - desc;
+  var sinal = total * Number(state.config.sinal_percent || 10) / 100;
+  $('pr_calc').innerHTML = conv + ' convidados × ' + BRL(vp) + ' = <b>' + BRL(conv * vp) + '</b>' +
+    (upgTot ? ' &nbsp;+ upgrades <b>' + BRL(upgTot) + '</b>' : '') +
+    (desc ? ' &nbsp;− desconto <b>' + BRL(desc) + '</b>' : '') +
+    '<br>Total: <span class="tot">' + BRL(total) + '</span> &nbsp; <small>sinal de ' + (state.config.sinal_percent || 10) + '%: <b>' + BRL(sinal) + '</b></small>';
+}
+['pr_convidados','pr_valor','pr_desconto'].forEach(function(id){ $(id).addEventListener('input', calcProp); });
+$('pr_dia').addEventListener('change', function(){
+  $('pr_valor').value = precoSugerido($('pr_dia').value, +$('pr_convidados').value);
+  calcProp();
+});
+$('pr_convidados').addEventListener('change', function(){
+  $('pr_valor').value = precoSugerido($('pr_dia').value, +$('pr_convidados').value);
+  calcProp();
+});
+$('pr_data').addEventListener('change', function(){
+  var dt = diaTipoFromDate($('pr_data').value);
+  if(dt){ $('pr_dia').value = dt; $('pr_valor').value = precoSugerido(dt, +$('pr_convidados').value); calcProp(); }
+});
+$('prSave').addEventListener('click', function(){
+  if(!$('pr_cliente').value.trim() || !+$('pr_convidados').value) return toast('Preencha cliente e convidados.', true);
+  var payload = {
+    nome_cliente: $('pr_cliente').value.trim(),
+    aniversariante: $('pr_aniversariante').value.trim() || null,
+    tema: $('pr_tema').value.trim() || null,
+    idade: $('pr_idade').value ? +$('pr_idade').value : null,
+    data_evento: $('pr_data').value || null,
+    horario: $('pr_horario').value || null,
+    convidados: +$('pr_convidados').value,
+    dia_tipo: $('pr_dia').value,
+    valor_pessoa: +$('pr_valor').value || 0,
+    upgrades: propUpgradesValue(),
+    desconto: +$('pr_desconto').value || 0,
+    validade: $('pr_validade').value || null,
+    observacoes: $('pr_obs').value.trim() || null,
+    lead_id: $('pr_id').dataset.leadId || null
+  };
+  var id = $('pr_id').value;
+  var q = id ? sb.from('propostas').update(payload).eq('id', id) : sb.from('propostas').insert(payload);
+  q.then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Proposta salva!'); closeModal('modalProp'); loadAll();
+  });
+});
+$('prDelete').addEventListener('click', function(){
+  if(!confirm('Excluir esta proposta?')) return;
+  sb.from('propostas').delete().eq('id', $('pr_id').value).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Proposta excluída'); closeModal('modalProp'); loadAll();
+  });
+});
+function propLink(token){
+  return location.origin + location.pathname.replace(/admin\.html$/, '') + 'proposta.html?t=' + token;
+}
+window.copyPropLink = function(token){
+  navigator.clipboard.writeText(propLink(token)).then(function(){ toast('Link copiado! 🔗'); });
+};
+window.sendProp = function(id){
+  var p = state.propostas.find(function(x){ return x.id === id; });
+  var msg = 'Oi' + (p.nome_cliente ? ', ' + p.nome_cliente.split(' ')[0] : '') + '! 🎪 Aqui é do Galpê.\n\n' +
+    'Preparamos sua proposta' + (p.aniversariante ? ' para a festa de ' + p.aniversariante : '') + ':\n' + propLink(p.token) +
+    '\n\nQualquer dúvida é só chamar. Vai ser uma festa linda! ✨';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  if(p.status === 'rascunho'){
+    sb.from('propostas').update({ status: 'enviada' }).eq('id', id).then(function(){ loadAll(); });
+  }
+};
+window.eventoFromProp = function(id){
+  var p = state.propostas.find(function(x){ return x.id === id; });
+  sb.from('eventos').insert({
+    proposta_id: p.id,
+    titulo: 'Festa ' + (p.aniversariante || p.nome_cliente),
+    aniversariante: p.aniversariante, idade: p.idade, tema: p.tema,
+    data: p.data_evento || hoje(), hora_inicio: p.horario || '12:00',
+    convidados: p.convidados, valor_total: propTotal(p),
+    contato_nome: p.nome_cliente, status: 'reservado'
+  }).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Festa criada no calendário! 📅'); loadAll();
+  });
+};
+
+/* ================= preços ================= */
+function renderPrecos(){
+  $('precoDuracao').textContent = state.config.duracao_horas || 4;
+  var tiers = [];
+  state.precos.forEach(function(p){ if(tiers.indexOf(p.convidados) < 0) tiers.push(p.convidados); });
+  tiers.sort(function(a,b){ return a - b; });
+  var dias = [['seg','Seg. à Qui.'],['sex','Sex. e feriados'],['sab','Sáb. e Dom.']];
+  var html = '<div class="hd"></div>' + tiers.map(function(t){ return '<div class="hd">' + t + ' conv.</div>'; }).join('');
+  dias.forEach(function(d){
+    html += '<div class="rowlbl">' + d[1] + '</div>';
+    tiers.forEach(function(t){
+      var p = state.precos.find(function(x){ return x.dia === d[0] && x.convidados === t; });
+      html += '<input type="number" step="0.01" min="0" data-dia="' + d[0] + '" data-conv="' + t + '" value="' + (p ? Number(p.valor) : '') + '">';
+    });
+  });
+  $('precosGrid').innerHTML = html;
+}
+$('btnSalvarPrecos').addEventListener('click', function(){
+  var ups = [];
+  $('precosGrid').querySelectorAll('input').forEach(function(i){
+    ups.push({ dia: i.dataset.dia, convidados: +i.dataset.conv, valor: +i.value || 0 });
+  });
+  sb.from('precos').upsert(ups, { onConflict: 'dia,convidados' }).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Tabela de preços atualizada! 💰'); loadAll();
+  });
+});
+
+/* ================= upgrades ================= */
+function renderUpgrades(){
+  $('upgTable').innerHTML = state.upgrades.length ? tableHTML(
+    ['Nome','Preço','Cobrança','Ativo',''],
+    state.upgrades.map(function(u){
+      return '<tr><td><b>' + esc(u.nome) + '</b><br><small style="color:#5A6B80">' + esc(u.descricao || '') + '</small></td>' +
+        '<td>' + (u.preco != null ? BRL(u.preco) : '<i style="color:#999">sob consulta</i>') + '</td>' +
+        '<td>' + (u.unidade === 'por_pessoa' ? 'por pessoa' : u.unidade === 'por_hora' ? 'por hora' : 'fixo') + '</td>' +
+        '<td>' + (u.ativo ? '✅' : '—') + '</td>' +
+        '<td><button class="icon-btn" onclick="openUpgModal(\'' + u.id + '\')">✎</button></td></tr>';
+    }).join('')
+  ) : '<div class="empty">Nenhum upgrade.</div>';
+}
+window.openUpgModal = function(id){
+  var u = id ? state.upgrades.find(function(x){ return x.id === id; }) : null;
+  $('upgTitle').textContent = u ? 'Editar upgrade' : 'Novo upgrade';
+  $('up_id').value = u ? u.id : '';
+  $('up_nome').value = u ? u.nome : '';
+  $('up_desc').value = u ? (u.descricao || '') : '';
+  $('up_preco').value = u && u.preco != null ? u.preco : '';
+  $('up_unidade').value = u ? u.unidade : 'fixo';
+  $('up_ativo').checked = u ? u.ativo : true;
+  $('upDelete').style.display = u ? 'inline-flex' : 'none';
+  openModal('modalUpg');
+};
+$('upSave').addEventListener('click', function(){
+  if(!$('up_nome').value.trim()) return toast('Dê um nome ao upgrade.', true);
+  var payload = {
+    nome: $('up_nome').value.trim(), descricao: $('up_desc').value.trim() || null,
+    preco: $('up_preco').value === '' ? null : +$('up_preco').value,
+    unidade: $('up_unidade').value, ativo: $('up_ativo').checked
+  };
+  var id = $('up_id').value;
+  var q = id ? sb.from('upgrades').update(payload).eq('id', id) : sb.from('upgrades').insert(payload);
+  q.then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Upgrade salvo!'); closeModal('modalUpg'); loadAll();
+  });
+});
+$('upDelete').addEventListener('click', function(){
+  if(!confirm('Excluir este upgrade?')) return;
+  sb.from('upgrades').delete().eq('id', $('up_id').value).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Upgrade excluído'); closeModal('modalUpg'); loadAll();
+  });
+});
+
+/* ================= config ================= */
+var CFG_KEYS = ['whatsapp','telefone_exibicao','email','instagram','endereco','duracao_horas','sinal_percent','validade_proposta_dias','hora_extra_antecipada_percent','hora_extra_dia_percent','criancas_gratis_ate','meia_de','meia_ate','docinhos_por_pessoa','tolerancia_min','max_extra_percent'];
+function renderCfg(){
+  CFG_KEYS.forEach(function(k){
+    var el = $('cfg_' + k);
+    if(el && state.config[k] !== undefined) el.value = state.config[k];
+  });
+}
+$('btnSalvarCfg').addEventListener('click', function(){
+  var ups = CFG_KEYS.map(function(k){
+    var el = $('cfg_' + k);
+    var v = el.type === 'number' ? (+el.value || 0) : el.value.trim();
+    return { key: k, value: JSON.parse(JSON.stringify(v)), updated_at: new Date().toISOString() };
+  });
+  sb.from('site_config').upsert(ups, { onConflict: 'key' }).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Ajustes salvos! ⚙️'); loadAll();
+  });
+});
+$('btnSenha').addEventListener('click', function(){
+  var p1 = $('newPass').value, p2 = $('newPass2').value;
+  if(p1.length < 8) return toast('A senha precisa de pelo menos 8 caracteres.', true);
+  if(p1 !== p2) return toast('As senhas não conferem.', true);
+  sb.auth.updateUser({ password: p1 }).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    $('newPass').value = ''; $('newPass2').value = '';
+    toast('Senha alterada com sucesso! 🔒');
+  });
+});
+
+})();
+</script>
+</body>
+</html>
