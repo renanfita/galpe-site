@@ -22,6 +22,7 @@ Durante esta sessão também está em: <http://localhost:8765/>
 - **Como funciona** (4 passos) + equipe
 - **FAQ** com as condições gerais reescritas de forma amigável
 - **Mapa do Google** apontando para Rua Yeda, 184 + cartões de contato
+- **Banner de cookies + política de privacidade** (LGPD): o Google Analytics só liga com o consentimento do visitante
 - Botão flutuante de WhatsApp, animações GSAP, 100% responsivo
 
 ## SEO (pronto para dominar o Google local)
@@ -62,9 +63,12 @@ site/
 ├── index.html          (site público: HTML + CSS + JS num arquivo)
 ├── admin.html          (painel back-office com login Supabase)
 ├── proposta.html       (proposta pública acessada por token)
+├── contrato.html       (assinatura eletrônica do contrato por token)
+├── privacidade.html    (política de privacidade — LGPD)
 ├── supabase-config.js  (url + anon key do backend)
 ├── supabase/           (migrações versionadas — fonte da verdade do schema)
 ├── setup/              (instalador manual + guia SETUP-ADMIN.md)
+├── tests/e2e/          (suíte E2E Playwright — dev-only, fora do deploy)
 ├── assets/             (imagens otimizadas, WebP + JPG para og:image)
 ├── vercel.json         (headers de segurança, CSP e cache)
 ├── robots.txt · sitemap.xml

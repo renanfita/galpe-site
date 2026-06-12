@@ -21,9 +21,11 @@ O painel (`admin.html`) gerencia **preços, pacotes, propostas, contratos com as
 
 ## Passo 4 — Travar a segurança (CRÍTICO)
 
-1. **Authentication → Sign In / Providers** → desative **"Allow new users to sign up"**
+1. **Authentication → Sign In / Providers → User Signups** → desative **"Allow new users to sign up"** e **Save changes**
    ⚠️ Sem isso, qualquer pessoa poderia criar conta e acessar o painel.
-2. **Authentication → Passwords** → ative **"Leaked password protection"**
+2. No mesmo lugar, abra o provider **Email** e endureça a política de senha: **Minimum password length** 10+ e **Password requirements** com maiúscula/minúscula/dígito/símbolo.
+3. Ainda no provider Email, ative **"Prevent use of leaked passwords"** (checa senhas vazadas via HaveIBeenPwned).
+   ℹ️ Esse recurso só existe no **plano Pro** — no Free o dashboard recusa o save (*"available on Pro Plans and up"*). No Free, a combinação do passo 1 (signups off) + passo 2 (senha forte) + um único usuário admin já cobre o risco; deixe este item para quando/se migrar para o Pro.
 
 ## Passo 5 — Conectar o site ao banco
 
@@ -63,7 +65,8 @@ O painel (`admin.html`) gerencia **preços, pacotes, propostas, contratos com as
 
 ## Segurança (como foi desenhado)
 
-- RLS em todas as tabelas: público só lê preços/config e só cria leads
-- Propostas/eventos/leads: somente usuário autenticado
-- Link de proposta usa token UUID — sem expor a tabela (via RPC `security definer`)
+- RLS em todas as tabelas: público só lê preços/config e só cria leads (colunas restritas + throttle anti-flood)
+- Propostas, eventos, contratos e leads: escrita exige `public.is_admin()` — estar autenticado **não basta**, o usuário precisa estar na tabela `public.admins`
+- Links de proposta e de contrato usam token UUID — sem expor as tabelas (via RPC `security definer`); o CPF sai mascarado e a assinatura grava trilha de auditoria (hash SHA-256 do texto, IP, user-agent)
 - A anon key é pública por design; a `service_role` **nunca** é usada no front
+- Scripts de CDN com SRI (`integrity`) + CSP no `vercel.json` restringindo os hosts
