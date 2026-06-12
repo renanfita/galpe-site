@@ -542,6 +542,64 @@ insert into public.site_config (key, value) values
 on conflict (key) do nothing;
 
 -- ============================================================
+-- PERFORMANCE — lints do advisor (= migração 20260612150000)
+-- auth.uid()/is_admin() como initplan; nas tabelas de leitura
+-- pública a policy de admin cobre só escrita (o SELECT é a *_read).
+-- ============================================================
+drop policy if exists admins_self on public.admins;
+create policy admins_self on public.admins for select to authenticated
+  using (user_id = (select auth.uid()));
+
+drop policy if exists cfg_admin     on public.site_config;
+drop policy if exists cfg_admin_ins on public.site_config;
+create policy cfg_admin_ins on public.site_config for insert to authenticated
+  with check ((select public.is_admin()));
+drop policy if exists cfg_admin_upd on public.site_config;
+create policy cfg_admin_upd on public.site_config for update to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+drop policy if exists cfg_admin_del on public.site_config;
+create policy cfg_admin_del on public.site_config for delete to authenticated
+  using ((select public.is_admin()));
+
+drop policy if exists precos_admin     on public.precos;
+drop policy if exists precos_admin_ins on public.precos;
+create policy precos_admin_ins on public.precos for insert to authenticated
+  with check ((select public.is_admin()));
+drop policy if exists precos_admin_upd on public.precos;
+create policy precos_admin_upd on public.precos for update to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+drop policy if exists precos_admin_del on public.precos;
+create policy precos_admin_del on public.precos for delete to authenticated
+  using ((select public.is_admin()));
+
+drop policy if exists upg_admin     on public.upgrades;
+drop policy if exists upg_admin_ins on public.upgrades;
+create policy upg_admin_ins on public.upgrades for insert to authenticated
+  with check ((select public.is_admin()));
+drop policy if exists upg_admin_upd on public.upgrades;
+create policy upg_admin_upd on public.upgrades for update to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+drop policy if exists upg_admin_del on public.upgrades;
+create policy upg_admin_del on public.upgrades for delete to authenticated
+  using ((select public.is_admin()));
+
+drop policy if exists leads_admin on public.leads;
+create policy leads_admin on public.leads for all to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+drop policy if exists prop_admin on public.propostas;
+create policy prop_admin on public.propostas for all to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+drop policy if exists ev_admin on public.eventos;
+create policy ev_admin on public.eventos for all to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+drop policy if exists blk_admin on public.bloqueios;
+create policy blk_admin on public.bloqueios for all to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+drop policy if exists ctr_admin on public.contratos;
+create policy ctr_admin on public.contratos for all to authenticated
+  using ((select public.is_admin())) with check ((select public.is_admin()));
+
+-- ============================================================
 -- PASSOS MANUAIS OBRIGATÓRIOS (no Dashboard do Supabase):
 -- 1. Authentication → Sign In / Providers →
 --    DESATIVE "Allow new users to sign up"  (CRÍTICO: o painel
