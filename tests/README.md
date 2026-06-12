@@ -23,6 +23,19 @@ npm test               # ~30s, imprime OK/FALHA por verificação
 Sai com código 0 quando todas as verificações passam. Falhas listam a página e a
 verificação exata. Erros de JS de qualquer página também reprovam a suíte.
 
+Em sandboxes sem acesso ao CDN do Playwright (ex.: Claude Code on the web, onde
+só o registry do npm é liberado), use o Chromium empacotado no npm:
+
+```bash
+npm i --no-save @sparticuz/chromium
+node -e "require('@sparticuz/chromium').default.executablePath().then(console.log)"  # extrai p/ /tmp/chromium
+GALPE_E2E_CHROME=/tmp/chromium npm test
+```
+
+Nota sobre SRI: as páginas levam `integrity` nas tags de CDN; como o mock nunca
+bateria o hash real, o servidor de teste do `run.js` remove o atributo do HTML
+servido à suíte (em produção o atributo permanece).
+
 ## Estrutura
 
 | Arquivo | Papel |
