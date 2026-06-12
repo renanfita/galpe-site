@@ -59,7 +59,7 @@ O painel (`admin.html`) gerencia **preços, pacotes, propostas, contratos com as
 | Contratos | Gerados da proposta (texto-modelo editável), link de **assinatura eletrônica** (`contrato.html?t=...`) com trilha de auditoria (data/hora, IP, hash SHA-256), PDF |
 | Métricas | Funil de leads, origem, taxa de conversão/aceitação, ticket médio, receita por mês |
 | Preços | Tabela dia × convidados (atualiza o site na hora) e upgrades |
-| Ajustes | Contatos, dados p/ contrato (razão social, CNPJ, PIX), metas, ID do Google Analytics (GA4), regras (sinal %, validade, meia etc.) e troca de senha |
+| Ajustes | Contatos, dados p/ contrato (razão social, CNPJ, PIX), metas, ID do Google Analytics (GA4), regras (sinal %, validade, meia etc.), troca de senha e **Sair da conta** |
 
 > **Depois de ativar:** preencha em **Ajustes** a razão social/CNPJ/chave PIX (entram no contrato) e, se quiser medir visitas, crie uma propriedade GA4 em analytics.google.com e cole o ID — o site só mede com consentimento de cookies do visitante (LGPD).
 
