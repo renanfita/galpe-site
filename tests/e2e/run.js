@@ -1,6 +1,8 @@
 /* E2E de navegador (Playwright + Chromium) com Supabase mockado.
    Uso: ver tests/README.md. Não roda em CI da Vercel — verificação de dev.
-   Sem o pacote `playwright` instalado, cai para playwright-core + Edge do sistema. */
+   Sem o pacote `playwright` instalado, cai para playwright-core + Edge do sistema.
+   GALPE_E2E_CHROME=/caminho/chromium usa um binário próprio (sandboxes sem
+   acesso ao CDN do Playwright: npm i --no-save @sparticuz/chromium). */
 let chromium, usaCore = false;
 try { ({ chromium } = require('playwright')); }
 catch (e) { ({ chromium } = require('playwright-core')); usaCore = true; }
@@ -24,6 +26,8 @@ const server = http.createServer((req, res) => {
   const p = path.join(SITE, decodeURIComponent(req.url.split('?')[0]).replace(/^\/$/, '/index.html'));
   fs.readFile(p, (err, data) => {
     if(err){ res.writeHead(404); res.end('404'); return; }
+    // SRI: o mock do CDN nunca bate o hash real — remover integrity no HTML servido ao teste
+    if(path.extname(p) === '.html') data = Buffer.from(data.toString().replace(/ integrity="[^"]*"/g, ''));
     res.writeHead(200, { 'Content-Type': MIME[path.extname(p)] || 'application/octet-stream' });
     res.end(data);
   });
@@ -64,7 +68,7 @@ async function newPage(browser, db, rpcJs){
   // CDN do supabase → mock; resto de terceiros → aborta (offline real)
   await ctx.route('**/*', (route) => {
     const url = route.request().url();
-    if(url.includes('supabase.min.js')) return route.fulfill({ contentType: 'text/javascript', body: MOCK_LIB });
+    if(url.includes('dist/umd/supabase.')) return route.fulfill({ contentType: 'text/javascript', body: MOCK_LIB });
     if(url.startsWith(BASE) || url.startsWith('data:')) return route.continue();
     if(url.includes('atzcjyweglcyrztwpisv.supabase.co')){
       // REST usada pelo index.html via fetch()
@@ -86,7 +90,10 @@ let pageErrors = [], gtagRequests = [], leadPosts = [];
 
 (async () => {
   server.listen(PORT);
-  const browser = await chromium.launch(usaCore ? { channel: 'msedge' } : {});
+  const browser = await chromium.launch(
+    process.env.GALPE_E2E_CHROME
+      ? { executablePath: process.env.GALPE_E2E_CHROME, args: ['--no-sandbox', '--disable-dev-shm-usage'] }
+      : usaCore ? { channel: 'msedge' } : {});
 
   /* ================= ADMIN ================= */
   console.log('\n== admin.html: login → dashboard → proposta → contrato → métricas ==');

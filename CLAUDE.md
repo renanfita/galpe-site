@@ -66,6 +66,7 @@ Regras confirmadas com o negócio em 11/06/2026. Implementadas em três lugares 
 | Metas do painel / ID GA4 / dados do contrato (CNPJ, PIX) | painel admin → Ajustes (chaves `meta_*`, `ga4_id`, `razao_social`, `cnpj`, `pix_chave`) |
 | Política de privacidade / banner de cookies | `privacidade.html` / `index.html` → `#ckBanner` + bloco JS `cookies (LGPD)` |
 | Headers de segurança/CSP/cache | `vercel.json` |
+| Versão das libs de CDN (GSAP/supabase-js) | tags `<script integrity>` nas páginas — ao subir versão, recalcular o SRI com os bytes do pacote npm (`openssl dgst -sha384 -binary arq.js \| openssl base64 -A`) e apontar para um arquivo exato do pacote (nunca `.min.js` auto-gerado pelo jsdelivr, que pode mudar de bytes) |
 | SEO técnico | `robots.txt`, `sitemap.xml` (atualizar URLs ao migrar para festanogalpe.com.br) |
 | Pendências abertas | `PENDENCIAS.md` (atualizar ao concluir qualquer item) |
 
