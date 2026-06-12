@@ -1,6 +1,9 @@
 /* E2E de navegador (Playwright + Chromium) com Supabase mockado.
-   Uso: ver tests/README.md. Não roda em CI da Vercel — verificação de dev. */
-const { chromium } = require('playwright');
+   Uso: ver tests/README.md. Não roda em CI da Vercel — verificação de dev.
+   Sem o pacote `playwright` instalado, cai para playwright-core + Edge do sistema. */
+let chromium, usaCore = false;
+try { ({ chromium } = require('playwright')); }
+catch (e) { ({ chromium } = require('playwright-core')); usaCore = true; }
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
@@ -83,7 +86,7 @@ let pageErrors = [], gtagRequests = [], leadPosts = [];
 
 (async () => {
   server.listen(PORT);
-  const browser = await chromium.launch();
+  const browser = await chromium.launch(usaCore ? { channel: 'msedge' } : {});
 
   /* ================= ADMIN ================= */
   console.log('\n== admin.html: login → dashboard → proposta → contrato → métricas ==');
