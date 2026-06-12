@@ -1,0 +1,11 @@
+{
+  "name": "galpe-e2e",
+  "private": true,
+  "description": "Verificação E2E de navegador do site/painel Galpê (dev-only, fora do deploy)",
+  "scripts": {
+    "test": "node run.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

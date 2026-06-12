@@ -44,6 +44,8 @@ tr.total td:last-child{font-family:'Anton',sans-serif;font-size:1.7rem;color:var
 .btn-ok{background:var(--ok);color:#fff}
 .btn-wa{background:transparent;border-color:var(--ok);color:var(--ok)}
 .badge-aceita{background:#DFF5E7;color:var(--ok);font-weight:800;padding:12px 20px;border-radius:14px;text-align:center;margin-top:20px;display:none}
+.aviso{background:rgba(233,180,59,.16);border:1.5px solid rgba(233,180,59,.6);color:#7a5b10;font-weight:600;padding:12px 20px;border-radius:14px;text-align:center;margin-top:20px;display:none}
+.msg-err{background:rgba(192,57,43,.1);border:1.5px solid rgba(192,57,43,.4);color:var(--red);font-weight:600;padding:12px 20px;border-radius:14px;text-align:center;margin-top:14px;display:none}
 .validade{text-align:center;font-size:.85rem;color:#5A6B80;margin-top:18px}
 .foot{text-align:center;margin-top:26px;font-size:.85rem;color:#5A6B80;line-height:1.7}
 .loading,.notfound{text-align:center;padding:90px 20px;color:var(--navy)}
@@ -53,7 +55,7 @@ tr.total td:last-child{font-family:'Anton',sans-serif;font-size:1.7rem;color:var
 @media(max-width:540px){.card-body,.card-head{padding:24px 20px}}
 @media print{
   body{background:#fff}
-  .topband,.cta-row,.badge-aceita,.foot{display:none!important}
+  .topband,.cta-row,.badge-aceita,.aviso,.msg-err,.foot{display:none!important}
   .card{box-shadow:none;border-radius:0}
   .card-head{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
@@ -95,6 +97,8 @@ tr.total td:last-child{font-family:'Anton',sans-serif;font-size:1.7rem;color:var
           <button class="btn btn-print" type="button" onclick="window.print()">Salvar em PDF</button>
         </div>
         <div class="badge-aceita" id="badgeAceita">🎉 Proposta aceita! Vamos confirmar sua data — a equipe Galpê entra em contato.</div>
+        <div class="aviso" id="avisoIndisp"></div>
+        <div class="msg-err" id="msgErr" role="alert" aria-live="assertive"></div>
         <div class="validade" id="pValidade"></div>
       </div>
     </div>
@@ -201,14 +205,39 @@ function render(p, cfg, sb){
 
   var badge = document.getElementById('badgeAceita');
   var btn = document.getElementById('btnAceitar');
-  if(p.status === 'aceita'){ badge.style.display='block'; btn.style.display='none'; }
+  var aviso = document.getElementById('avisoIndisp');
+  var msgErr = document.getElementById('msgErr');
+  function falha(txt){
+    btn.disabled = false; btn.textContent = '✓ Aceitar proposta';
+    msgErr.textContent = txt; msgErr.style.display = 'block';
+  }
+  /* validade comparada em data local (não UTC) — mesma regra do servidor */
+  var pad2 = function(n){ return String(n).padStart(2,'0'); };
+  var d = new Date();
+  var hojeISO = d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate());
+  var expirada = p.status === 'expirada' || (p.validade && p.validade < hojeISO);
+  if(p.status === 'aceita'){
+    badge.style.display='block'; btn.style.display='none';
+  } else if(expirada || p.status === 'recusada'){
+    /* a RPC recusaria de qualquer jeito; avisar antes evita o clique frustrado */
+    btn.style.display='none';
+    aviso.textContent = expirada
+      ? '⏳ Esta proposta venceu' + (p.validade ? ' em ' + fmtData(p.validade) : '') + '. Chame a gente no WhatsApp para receber uma atualizada!'
+      : 'Esta proposta não está mais disponível. Fale com a gente pelo WhatsApp!';
+    aviso.style.display='block';
+  }
   btn.addEventListener('click', function(){
     btn.disabled = true; btn.textContent = 'Enviando…';
+    msgErr.style.display = 'none';
     sb.rpc('aceitar_proposta', { p_token: token }).then(function(r){
-      if(r.error || r.data !== true){ btn.disabled=false; btn.textContent='✓ Aceitar proposta'; alert('Não foi possível registrar. Fale com a gente pelo WhatsApp!'); return; }
+      if(r.error || r.data !== true){
+        return falha('Não conseguimos registrar seu aceite agora. Tente de novo — ou confirme direto pelo WhatsApp, vale do mesmo jeito! 🧡');
+      }
       badge.style.display='block'; btn.style.display='none';
       var waOk = 'Acabei de ACEITAR a proposta' + (p.aniversariante ? ' da festa de ' + p.aniversariante : '') + '! Quero confirmar a data. 🎊';
       window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(waOk), '_blank', 'noopener');
+    }, function(){
+      falha('Falha de conexão. Confira a internet e tente novamente.');
     });
   });
 }

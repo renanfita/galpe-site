@@ -12,10 +12,13 @@ Site one-page + painel admin do **Galpê**, buffet infantil em Teresópolis/RJ. 
 # Rodar localmente (ou só abrir index.html no navegador)
 python -m http.server 8765   # http://localhost:8765
 
+# Verificação E2E (Playwright + Supabase mockado — ver tests/README.md)
+cd tests/e2e && npm install && npx playwright install chromium && npm test
+
 # Deploy: commit + push → Vercel publica sozinha
 ```
 
-Não há lint nem testes automatizados. Verificação é manual no navegador (testar em 340/390/768/1440px).
+Não há lint. A suíte E2E em `tests/e2e/` (fora do deploy; o **site** segue sem build e sem dependências) cobre os fluxos das cinco páginas — rodar ao mexer em preço, gate, aceite ou assinatura, e cobrir comportamento novo com uma verificação nova. Ajustes visuais: conferir manualmente no navegador (340/390/768/1440px).
 
 ## Arquitetura
 

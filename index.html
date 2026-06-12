@@ -148,6 +148,8 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
 .nav-links a{position:relative;padding:4px 0}
 .nav-links a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--orange);border-radius:2px;transition:width .25s}
 .nav-links a:hover::after{width:100%}
+.nav-links a.ativo{color:var(--orange-ink)}
+.nav-links a.ativo::after{width:100%}
 .nav-cta{display:flex;gap:12px;align-items:center}
 .nav .btn{padding:11px 22px;font-size:.9rem}
 .burger{display:none;background:none;border:none;cursor:pointer;width:44px;height:44px;border-radius:10px}
@@ -158,6 +160,7 @@ header.nav.scrolled{box-shadow:0 8px 30px -18px rgba(21,55,101,.4)}
   .mobile-menu{position:fixed;inset:0;top:0;background:var(--navy);z-index:85;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;font-size:1.4rem;font-weight:700;color:var(--cream);transform:translateY(-100%);transition:transform .45s cubic-bezier(.65,0,.35,1)}
   .mobile-menu.open{transform:translateY(0)}
   .mobile-menu a:hover{color:var(--yellow)}
+  .mobile-menu a.ativo{color:var(--yellow)}
   .mobile-close{position:absolute;top:24px;right:24px;background:none;border:2px solid var(--cream);color:var(--cream);width:44px;height:44px;border-radius:50%;font-size:1.2rem;cursor:pointer}
 }
 .mobile-menu{display:flex}
@@ -1045,6 +1048,28 @@ footer a:hover{color:var(--yellow)}
   burger.addEventListener('click', function(){ setMenu(true); });
   document.getElementById('mobileClose').addEventListener('click', function(){ setMenu(false); });
   menu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', function(){ setMenu(false); }); });
+
+  /* ---- scrollspy: marca no nav a seção visível (one-page longa) ---- */
+  if('IntersectionObserver' in window){
+    var spyLinks = document.querySelectorAll('.nav-links a[href^="#"], .mobile-menu a[href^="#"]');
+    var marcaAtiva = function(id){
+      spyLinks.forEach(function(a){
+        var ativo = a.getAttribute('href') === '#' + id;
+        a.classList.toggle('ativo', ativo);
+        if(ativo) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      });
+    };
+    /* faixa de 30–60% da viewport: seção que a cruza vira a ativa; seções
+       fora do nav (ex.: galeria) mantêm a última marcada */
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) marcaAtiva(e.target.id); });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    document.querySelectorAll('.nav-links a[href^="#"]').forEach(function(a){
+      var sec = document.getElementById(a.getAttribute('href').slice(1));
+      if(sec) spy.observe(sec);
+    });
+  }
 
   /* ---- cardápio tabs (padrão ARIA completo: roving tabindex + setas) ---- */
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.mtab'));
