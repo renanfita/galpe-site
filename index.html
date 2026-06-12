@@ -396,6 +396,16 @@ footer li{margin-bottom:10px;font-size:.95rem}
 footer a:hover{color:var(--yellow)}
 .foot-bottom{border-top:1px solid rgba(245,237,220,.15);padding-top:24px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.84rem;opacity:.7}
 
+/* cookies (LGPD) — analytics só carrega com aceite */
+.ck-banner{position:fixed;left:18px;right:18px;bottom:18px;z-index:90;background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:18px 20px;box-shadow:0 24px 60px -20px rgba(14,39,71,.45);display:none;gap:14px;align-items:center;flex-wrap:wrap;max-width:680px;margin-inline:auto}
+.ck-banner.on{display:flex}
+.ck-banner p{font-size:.88rem;line-height:1.55;color:#33445C;flex:1;min-width:220px;margin:0}
+.ck-banner a{color:var(--orange-ink);font-weight:700}
+.ck-acoes{display:flex;gap:10px;flex-wrap:wrap}
+.ck-acoes .btn{padding:11px 20px;font-size:.88rem}
+.ck-recusar{background:transparent;border:2px solid var(--navy);color:var(--navy)}
+@media(max-width:560px){.ck-banner{bottom:10px;left:10px;right:10px}}
+
 /* whatsapp float */
 .wa-float{position:fixed;right:22px;bottom:22px;z-index:80;width:62px;height:62px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 16px 36px -12px rgba(21,122,60,.6);transition:transform .3s}
 .wa-float:hover{transform:scale(1.1) rotate(8deg)}
@@ -768,7 +778,7 @@ footer a:hover{color:var(--yellow)}
           <input class="hp" id="gWeb" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <p class="gate-erro" id="gateErro" role="alert" hidden></p>
           <button class="btn btn-primary" id="gateGo" type="submit">Ver o valor da minha festa</button>
-          <small class="gate-lgpd">Ao continuar, você autoriza o contato do Galpê pelo WhatsApp sobre a sua festa. Nada de spam, prometido. 🤝</small>
+          <small class="gate-lgpd">Ao continuar, você autoriza o contato do Galpê pelo WhatsApp sobre a sua festa, conforme nossa <a href="privacidade.html" style="color:var(--orange-ink);font-weight:700">Política de Privacidade</a>. Nada de spam, prometido. 🤝</small>
         </div>
         <div class="gate-teaser">
           <span class="gt-label">Você vai ver</span>
@@ -948,10 +958,20 @@ footer a:hover{color:var(--yellow)}
     </div>
     <div class="foot-bottom">
       <span>© <span id="year">2026</span> Galpê – Espaço de Festas. Todos os direitos reservados.</span>
+      <span><a href="privacidade.html">Política de Privacidade</a> · <a href="#" id="ckPrefs">Preferências de cookies</a></span>
       <span>Feito com carinho em Teresópolis ⛰️</span>
     </div>
   </div>
 </footer>
+
+<!-- banner de cookies (LGPD): estatística só com aceite -->
+<div class="ck-banner" id="ckBanner" role="dialog" aria-label="Aviso de cookies" aria-describedby="ckTxt">
+  <p id="ckTxt">🍪 Usamos cookies essenciais para o site funcionar e, <b>só se você deixar</b>, cookies de estatística para melhorar sua experiência. Saiba mais na <a href="privacidade.html">Política de Privacidade</a>.</p>
+  <div class="ck-acoes">
+    <button class="btn btn-primary" id="ckAceitar" type="button">Aceitar cookies</button>
+    <button class="btn ck-recusar" id="ckRecusar" type="button">Só os essenciais</button>
+  </div>
+</div>
 
 <a class="wa-float" href="https://wa.me/5521995060184?text=Oi!%20Quero%20um%20or%C3%A7amento%20para%20festa%20no%20Galp%C3%AA%20%F0%9F%8E%89" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1a16 16 0 0 1-1.6-.6 12.6 12.6 0 0 1-4.8-4.3 5.5 5.5 0 0 1-1.1-2.9 3.1 3.1 0 0 1 1-2.3 1 1 0 0 1 .7-.3h.5c.2 0 .4 0 .6.4l.8 2c.1.2.1.4 0 .6l-.4.6-.3.4c-.1.2-.2.3-.1.5a8.3 8.3 0 0 0 1.5 1.9 9 9 0 0 0 2.2 1.4c.3.1.4.1.6-.1l.9-1c.2-.2.4-.3.6-.2l2 1c.2.1.4.2.5.3.1.2.1.6-.1 1.2Z"/></svg>
@@ -965,6 +985,50 @@ footer a:hover{color:var(--yellow)}
   "use strict";
   function init(){
   document.getElementById('year').textContent = new Date().getFullYear();
+
+  /* ---- cookies (LGPD) + Google Analytics 4 ----
+     O GA só carrega se (a) o visitante aceitar no banner e (b) o admin
+     tiver configurado o ID GA4 em Ajustes (site_config.ga4_id). */
+  var GA_ID = '';
+  var gaCarregado = false;
+  var CONSENT_KEY = 'galpe_consent';
+  function consentimento(){ try{ return localStorage.getItem(CONSENT_KEY); }catch(e){ return null; } }
+  function carregarGA(){
+    if(gaCarregado || !GA_ID || consentimento() !== 'all') return;
+    gaCarregado = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA_ID);
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
+    document.head.appendChild(s);
+  }
+  function medir(evento, params){ if(window.gtag) window.gtag('event', evento, params || {}); }
+  window.GALPE_GA = { carregar: carregarGA, definirId: function(id){ GA_ID = id; carregarGA(); }, medir: medir };
+
+  var ckBanner = document.getElementById('ckBanner');
+  function decidirCookies(valor){
+    try{ localStorage.setItem(CONSENT_KEY, valor); }catch(e){}
+    ckBanner.classList.remove('on');
+    if(valor === 'all') carregarGA();
+  }
+  document.getElementById('ckAceitar').addEventListener('click', function(){ decidirCookies('all'); });
+  document.getElementById('ckRecusar').addEventListener('click', function(){ decidirCookies('essential'); });
+  document.getElementById('ckPrefs').addEventListener('click', function(e){
+    e.preventDefault();
+    try{ localStorage.removeItem(CONSENT_KEY); }catch(e2){}
+    ckBanner.classList.add('on');
+    ckBanner.scrollIntoView({ block: 'end' });
+  });
+  if(!consentimento()) ckBanner.classList.add('on');
+
+  /* cliques em WhatsApp viram evento de medição (se GA ativo) */
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href*="wa.me"]');
+    if(a) medir('clique_whatsapp');
+  });
 
   /* ---- nav ---- */
   var nav = document.getElementById('nav');
@@ -1230,6 +1294,7 @@ footer a:hover{color:var(--yellow)}
     if(mes) payload.data_interesse = mes;
     try{ localStorage.setItem(LEAD_KEY, JSON.stringify(lead)); }catch(e){}
     btn.disabled = true; btn.textContent = 'Abrindo seu simulador…';
+    medir('generate_lead', { origem: 'simulador' });
     enviarLead(payload, liberarSimulador);
   });
 
@@ -1264,13 +1329,20 @@ footer a:hover{color:var(--yellow)}
           });
         renderAdds(); update();
       }).catch(function(){});
-    /* preço da Comida de verdade vem do config (fallback estático: 25) */
-    fetch(SB.url + '/rest/v1/site_config?select=value&key=eq.comida_verdade_preco', { headers: headers })
+    /* preço da Comida de verdade (fallback estático: 25) + ID do GA4 vêm do config */
+    fetch(SB.url + '/rest/v1/site_config?select=key,value&key=in.(comida_verdade_preco,ga4_id)', { headers: headers })
       .then(function(r){ return r.ok ? r.json() : null; })
       .then(function(rows){
         if(!rows || !rows.length) return;
-        var v = Number(rows[0].value);
-        if(isFinite(v) && v > 0 && v !== ADD_FIXOS[0].preco){ ADD_FIXOS[0].preco = v; renderAdds(); update(); }
+        rows.forEach(function(row){
+          if(row.key === 'comida_verdade_preco'){
+            var v = Number(row.value);
+            if(isFinite(v) && v > 0 && v !== ADD_FIXOS[0].preco){ ADD_FIXOS[0].preco = v; renderAdds(); update(); }
+          } else if(row.key === 'ga4_id'){
+            var id = String(row.value == null ? '' : row.value).replace(/^"|"$/g, '').trim();
+            if(/^G-[A-Z0-9]+$/i.test(id) && window.GALPE_GA) window.GALPE_GA.definirId(id);
+          }
+        });
       }).catch(function(){});
   })();
 

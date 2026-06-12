@@ -19,12 +19,15 @@ Não há lint nem testes automatizados. Verificação é manual no navegador (te
 
 ## Arquitetura
 
-Três páginas + um backend Supabase compartilhado:
+Cinco páginas + um backend Supabase compartilhado:
 
 - **`index.html`** (site público) — funciona 100% offline do banco: preços embutidos em `var PRICES`. Se `supabase-config.js` estiver configurado, busca preços ao vivo de `precos`, adicionais precificados de `upgrades` e o valor da Comida de verdade de `site_config` via REST. O **simulador fica atrás de um gate de captura de lead** (`form#simGate`): nome + WhatsApp obrigatórios (aniversariante/idade/mês opcionais) → INSERT em `leads` (somente colunas da whitelist anon: `nome, telefone, data_interesse, origem:'site', observacoes`) → revela o simulador (`#simApp`). O simulador trabalha com **contagem exata de pagantes** (input 1–150) enquadrada automaticamente na faixa, meia-entrada 6–9 e adicionais marcáveis, exibindo um mini-extrato — regras na seção *Regras de preço*. Memória em `localStorage` (`galpe_lead` libera retornos sem flash via classe `lead-ok` aplicada pré-paint no `<head>`; `galpe_lead_pendente` guarda lead que falhou por rede e reenvia na visita seguinte). Timeout de 3,5s e qualquer falha **liberam o simulador mesmo assim** — o gate nunca pode travar o funil; sem JS, a classe `.no-js` mostra o simulador estático direto. A mensagem do WhatsApp sai personalizada com nome/aniversariante. O Supabase é progressive enhancement; nunca quebre o fallback estático.
-- **`admin.html`** (back-office, login via Supabase Auth) — KPIs, calendário/bloqueio de datas, CRM de leads, gerador de propostas (convidados integrais + meia-entrada 6–9), editor de preços/upgrades e configurações. Escreve nas tabelas `site_config`, `precos`, `upgrades`, `leads`, `propostas`, `eventos`, `bloqueios`.
-- **`proposta.html`** — página pública de proposta acessada por token UUID (`?t=...`). Não lê tabelas diretamente: usa as RPCs `get_proposta` e `aceitar_proposta` (security definer) para não expor a tabela `propostas`.
-- **`supabase-config.js`** — único ponto de configuração do backend (`window.GALPE_SUPABASE = { url, anonKey }`). Carregado pelas três páginas.
+- **`admin.html`** (back-office, login via Supabase Auth) — KPIs + **metas do mês** (`meta_festas_mes`/`meta_receita_mes`), calendário/bloqueio de datas, CRM de leads, gerador de propostas (convidados integrais + meia-entrada 6–9) com **PDF estilizado** (janela de impressão com a marca — `abrirImpressao()`/`PRINT_CSS`), **contratos** (gerados da proposta via `textoContratoTemplate()`, texto editável antes de salvar, numeração de cláusulas dinâmica), **métricas** (funil/origem/conversão/ticket médio/receita 6 meses), editor de preços/upgrades e configurações (incl. razão social/CNPJ/PIX do contrato e ID GA4). Escreve nas tabelas `site_config`, `precos`, `upgrades`, `leads`, `propostas`, `eventos`, `bloqueios`, `contratos`. Se a tabela `contratos` ainda não existir no banco, o painel degrada com instrução na tela (não trava).
+- **`proposta.html`** — página pública de proposta acessada por token UUID (`?t=...`). Não lê tabelas diretamente: usa as RPCs `get_proposta` e `aceitar_proposta` (security definer) para não expor a tabela `propostas`. Botão "Salvar em PDF" (print CSS).
+- **`contrato.html`** — página pública de **assinatura eletrônica** por token (`?t=...`), via RPCs `get_contrato`/`assinar_contrato` (security definer). O cliente assina com nome + CPF (validação de dígitos verificadores) + desenho no canvas; o servidor grava a trilha de auditoria: data/hora, IP, user-agent e **hash SHA-256 do texto integral** (validade jurídica: MP 2.200-2/2001 art. 10 §2º e Lei 14.063/2020). Só status `enviado` é assinável; copiar link/enviar WhatsApp no admin promove `rascunho → enviado`; o CPF sai mascarado na RPC pública.
+- **`privacidade.html`** — política de privacidade (LGPD), linkada no gate do simulador, no footer e no banner de cookies.
+- **Cookies/GA4 no `index.html`**: banner de consentimento (`#ckBanner`, chave `galpe_consent` no localStorage; "Preferências de cookies" no footer reabre). O Google Analytics **só carrega com consentimento `all` + `site_config.ga4_id` preenchido** (admin → Ajustes). Eventos: `generate_lead` (gate) e `clique_whatsapp`. CSP no `vercel.json` já libera os domínios do GA.
+- **`supabase-config.js`** — único ponto de configuração do backend (`window.GALPE_SUPABASE = { url, anonKey }`). Carregado pelas páginas com backend.
 - **`supabase/migrations/`** — fonte da verdade do schema. A integração GitHub do Supabase aplica automaticamente novos arquivos `*.sql` (ordem pelo timestamp do nome) a cada push na branch de produção. **Mudança de schema = novo arquivo timestampado aqui; nunca editar migração já aplicada.** `supabase/config.toml` e `seed.sql` valem para preview branches.
 - **`setup/setup.sql`** — instalador manual all-in-one (idempotente), usado só para ativar um projeto Supabase do zero fora da integração (guia em `setup/SETUP-ADMIN.md`). Ao mudar o schema, manter este arquivo em sincronia com as migrações.
 - **Modelo de RLS** (pós-hardening): anônimo lê `site_config`/`precos`/`upgrades` e insere em `leads` (colunas restritas, throttle); escrita administrativa exige `public.is_admin()` (tabela `admins`), não apenas estar autenticado. Novos usuários admin precisam ser inseridos em `public.admins`.
@@ -42,7 +45,8 @@ Regras confirmadas com o negócio em 11/06/2026. Implementadas em três lugares 
 
 - A `anon key` é pública por design (RLS protege os dados). A `service_role` key **nunca** entra no front-end nem no repositório.
 - Credenciais reais ficam em `.env.local` (gitignorado). Não commitar segredos.
-- Acesso a propostas públicas sempre via RPC com token, nunca select direto na tabela.
+- Acesso a propostas e contratos públicos sempre via RPC com token, nunca select direto na tabela. A RPC `assinar_contrato` valida nome/CPF/formato da assinatura no servidor e calcula o hash sobre o texto salvo no banco (nunca confiar no cliente).
+- LGPD: analytics só com consentimento; a política de privacidade (`privacidade.html`) lista os dados/cookies — atualizar ao coletar qualquer dado novo.
 
 ## Manutenção frequente
 
@@ -55,6 +59,9 @@ Regras confirmadas com o negócio em 11/06/2026. Implementadas em três lugares 
 | Telefone/WhatsApp | buscar `5521995060184` em todos os arquivos |
 | Cardápio | `index.html` → seção `<!-- ======= CARDÁPIO ======= -->` |
 | Fotos | `assets/` (WebP servido no site; manter o .jpg correspondente — usado no og:image) |
+| Texto-modelo do contrato | `admin.html` → `textoContratoTemplate()` (o texto salvo é editável por contrato) |
+| Metas do painel / ID GA4 / dados do contrato (CNPJ, PIX) | painel admin → Ajustes (chaves `meta_*`, `ga4_id`, `razao_social`, `cnpj`, `pix_chave`) |
+| Política de privacidade / banner de cookies | `privacidade.html` / `index.html` → `#ckBanner` + bloco JS `cookies (LGPD)` |
 | Headers de segurança/CSP/cache | `vercel.json` |
 | SEO técnico | `robots.txt`, `sitemap.xml` (atualizar URLs ao migrar para festanogalpe.com.br) |
 | Pendências abertas | `PENDENCIAS.md` (atualizar ao concluir qualquer item) |
