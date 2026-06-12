@@ -3,7 +3,7 @@
 Suíte de verificação de navegador (Playwright + Chromium) com o Supabase **mockado**
 (`mock-supabase.js` substitui o CDN do supabase-js; nenhuma rede externa é usada).
 Cobre as cinco páginas: gate de leads + simulador + cookies/GA4 do `index.html`,
-fluxo completo do `admin.html` (login, proposta, PDF, contrato, métricas, ajustes),
+fluxo completo do `admin.html` (login, proposta, PDF, contrato, métricas, ajustes, sair da conta),
 aceite e estados de falha da `proposta.html`, assinatura no canvas do `contrato.html`
 e a `privacidade.html`.
 
