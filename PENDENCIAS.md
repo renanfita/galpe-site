@@ -24,6 +24,7 @@
 - [ ] **Regra de desistência para menos de 60 dias:** o FAQ hoje diz só "até 60 dias antes, ressarcimos 70%" e deixa o pior cenário à imaginação do leitor. Completar a resposta em `index.html` (FAQ visível **e** o bloco JSON-LD `FAQPage` no `<head>` — manter os dois idênticos). Moldura sugerida: *"Após esse prazo, [regra real — ex.: buscamos remarcar sua festa conforme a agenda]"*.
 - [ ] **Foto real do prato da aba "Comida de verdade"** (strogonoff/mini porção da casa). Hoje a aba usa `familia-mesa.webp` (real, mas repetida da galeria). Ao trocar: atualizar `src`, `width/height` e `alt`, e **apagar `comida-verdade.webp` + `comida-verdade.jpg`** (órfãos em `assets/` — era foto stock com alt incorreto).
 - [ ] **Política de privacidade (LGPD):** o gate do simulador captura nome/WhatsApp ativamente. Criar página ou seção e linkar na microcopy do gate (`.gate-lgpd`) e no footer.
+- [ ] **Mínimo contratual de pagantes — perguntar ao Galpê.** Desde a contagem exata (commit `6ed959a`), o simulador aceita qualquer quantidade: 45 pagantes simulam a R$ 134 cada (valor da faixa mínima), e o admin também aceita qualquer número no gerador de propostas. Se o contrato exigir um mínimo faturado (ex.: cobrar sempre ao menos 60 pagantes), codificar a regra nos dois lados: simulador (piso de cobrança + legenda explicando, ex. "festas têm mínimo de 60 pagantes") e admin/proposta (`calcProp`/`propTotal` com o mesmo piso). Se não houver mínimo, marcar este item como resolvido sem mudança de código.
 
 ## 📈 Funil e produto — decidir com dados
 
