@@ -22,7 +22,7 @@ Durante esta sessão também está em: <http://localhost:8765/>
 - **Como funciona** (4 passos) + equipe
 - **FAQ** com as condições gerais reescritas de forma amigável
 - **Mapa do Google** apontando para Rua Yeda, 184 + cartões de contato
-- **Banner de cookies + política de privacidade** (LGPD): o Google Analytics só liga com o consentimento do visitante
+- **Banner de cookies + política de privacidade** (LGPD): o Google Analytics só liga com o consentimento do visitante, e desliga na hora se ele mudar de ideia
 - Botão flutuante de WhatsApp, animações GSAP, 100% responsivo
 
 ## SEO (pronto para dominar o Google local)
@@ -45,7 +45,7 @@ Com o painel admin ativo, as faixas, o preço da Comida de verdade e os upgrades
 
 ## O que ainda falta
 
-Todas as pendências em aberto (senhas, domínio, prova social, política de privacidade etc.) estão centralizadas em **`PENDENCIAS.md`**, com responsável e instruções por item.
+Todas as pendências em aberto (senhas, domínio, prova social, GA4, revisão jurídica do contrato etc.) estão centralizadas em **`PENDENCIAS.md`**, com responsável e instruções por item.
 
 ## Polimento aplicado (v2)
 
@@ -63,7 +63,7 @@ site/
 ├── index.html          (site público: HTML + CSS + JS num arquivo)
 ├── admin.html          (painel back-office com login Supabase)
 ├── proposta.html       (proposta pública acessada por token)
-├── contrato.html       (assinatura eletrônica do contrato por token)
+├── contrato.html       (assinatura eletrônica por token — desenhada ou digitada; comprovante com sinal + PIX)
 ├── privacidade.html    (política de privacidade — LGPD)
 ├── supabase-config.js  (url + anon key do backend)
 ├── supabase/           (migrações versionadas — fonte da verdade do schema)

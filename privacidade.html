@@ -22,8 +22,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);l
 .wrap{width:min(760px,92%);margin:0 auto;padding:40px 0 80px}
 h1{font-size:clamp(1.8rem,5vw,2.6rem);color:var(--navy);margin-bottom:6px}
 .updated{color:#5A6B80;font-size:.9rem;margin-bottom:30px}
-h2{font-size:1.15rem;color:var(--navy);margin:34px 0 10px}
-p,li{font-size:.98rem;color:#33445C}
+h2{font-size:1.35rem;color:var(--navy);margin:34px 0 10px}
+p,li{font-size:.98rem;color:#33445C;max-width:72ch}
 ul{margin:8px 0 8px 22px}
 li{margin-bottom:6px}
 .card{background:#fff;border-radius:22px;padding:clamp(24px,4vw,44px);box-shadow:0 24px 60px -30px rgba(14,39,71,.35)}
@@ -33,7 +33,13 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 code{background:var(--cream-2);padding:2px 6px;border-radius:6px;font-size:.85em}
 a{color:var(--orange-ink);font-weight:600}
 .voltar{display:inline-flex;align-items:center;gap:8px;margin-top:30px;font-weight:700;color:var(--navy);text-decoration:none;border:2px solid var(--navy);border-radius:999px;padding:11px 22px}
-@media(max-width:560px){table,thead,tbody,tr{display:block}th{display:none}td{display:block;border-bottom:none}tr{border-bottom:1px solid var(--line);padding:8px 0}}
+@media(max-width:560px){
+  table,thead,tbody,tr{display:block}
+  th{display:none}
+  td{display:block;border-bottom:none;padding:6px 0}
+  td::before{content:attr(data-label);display:block;font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#5A6B80;margin-bottom:1px}
+  tr{border-bottom:1px solid var(--line);padding:8px 0}
+}
 </style>
 </head>
 <body>
@@ -49,10 +55,10 @@ a{color:var(--orange-ink);font-weight:600}
     <table>
       <thead><tr><th>Quando</th><th>Dados</th><th>Para quê (finalidade)</th><th>Base legal</th></tr></thead>
       <tbody>
-        <tr><td>Você libera o simulador de preços</td><td>Nome, WhatsApp e, se você quiser, nome/idade do aniversariante e mês da festa</td><td>Entrar em contato sobre o seu orçamento e organizar o atendimento</td><td>Consentimento (art. 7º, I) e procedimentos preliminares ao contrato (art. 7º, V)</td></tr>
-        <tr><td>Você recebe uma proposta ou contrato</td><td>Nome, telefone, e-mail, CPF e endereço</td><td>Emitir a proposta, celebrar e executar o contrato da festa</td><td>Execução de contrato (art. 7º, V) e obrigação legal (art. 7º, II)</td></tr>
-        <tr><td>Você assina o contrato eletronicamente</td><td>Nome, CPF, assinatura desenhada, data/hora, endereço IP e identificação do navegador</td><td>Comprovar a autoria e a integridade da assinatura eletrônica</td><td>Execução de contrato e exercício regular de direitos (art. 7º, V e VI)</td></tr>
-        <tr><td>Você aceita cookies de medição</td><td>Estatísticas de navegação (páginas vistas, origem da visita), de forma pseudonimizada</td><td>Entender como o site é usado e melhorar a experiência</td><td>Consentimento (art. 7º, I)</td></tr>
+        <tr><td data-label="Quando">Você libera o simulador de preços</td><td data-label="Dados">Nome, WhatsApp e, se você quiser, nome/idade do aniversariante e mês da festa</td><td data-label="Para quê">Entrar em contato sobre o seu orçamento e organizar o atendimento</td><td data-label="Base legal">Consentimento (art. 7º, I) e procedimentos preliminares ao contrato (art. 7º, V)</td></tr>
+        <tr><td data-label="Quando">Você recebe uma proposta ou contrato</td><td data-label="Dados">Nome, telefone, e-mail, CPF e endereço</td><td data-label="Para quê">Emitir a proposta, celebrar e executar o contrato da festa</td><td data-label="Base legal">Execução de contrato (art. 7º, V) e obrigação legal (art. 7º, II)</td></tr>
+        <tr><td data-label="Quando">Você assina o contrato eletronicamente</td><td data-label="Dados">Nome, CPF, assinatura desenhada ou digitada, data/hora, endereço IP e identificação do navegador</td><td data-label="Para quê">Comprovar a autoria e a integridade da assinatura eletrônica</td><td data-label="Base legal">Execução de contrato e exercício regular de direitos (art. 7º, V e VI)</td></tr>
+        <tr><td data-label="Quando">Você aceita cookies de medição</td><td data-label="Dados">Estatísticas de navegação (páginas vistas, origem da visita), de forma pseudonimizada</td><td data-label="Para quê">Entender como o site é usado e melhorar a experiência</td><td data-label="Base legal">Consentimento (art. 7º, I)</td></tr>
       </tbody>
     </table>
 
@@ -61,9 +67,9 @@ a{color:var(--orange-ink);font-weight:600}
     <table>
       <thead><tr><th>Item</th><th>Tipo</th><th>O que faz</th></tr></thead>
       <tbody>
-        <tr><td><code>galpe_lead</code> / <code>galpe_lead_pendente</code></td><td>Essencial (localStorage)</td><td>Lembra que você já liberou o simulador, para não pedir seus dados de novo</td></tr>
-        <tr><td><code>galpe_consent</code></td><td>Essencial (localStorage)</td><td>Guarda a sua escolha sobre cookies</td></tr>
-        <tr><td><code>_ga</code> e similares (Google Analytics)</td><td>Estatístico — só com o seu aceite</td><td>Mede visitas de forma agregada. Sem o seu aceite no banner, nada do Google Analytics é carregado</td></tr>
+        <tr><td data-label="Item"><code>galpe_lead</code> / <code>galpe_lead_pendente</code></td><td data-label="Tipo">Essencial (localStorage)</td><td data-label="O que faz">Lembra que você já liberou o simulador, para não pedir seus dados de novo</td></tr>
+        <tr><td data-label="Item"><code>galpe_consent</code></td><td data-label="Tipo">Essencial (localStorage)</td><td data-label="O que faz">Guarda a sua escolha sobre cookies</td></tr>
+        <tr><td data-label="Item"><code>_ga</code> e similares (Google Analytics)</td><td data-label="Tipo">Estatístico — só com o seu aceite</td><td data-label="O que faz">Mede visitas de forma agregada. Sem o seu aceite no banner, nada do Google Analytics é carregado. Se você mudar de ideia, a medição para na hora</td></tr>
       </tbody>
     </table>
     <p>Você pode mudar de ideia a qualquer momento pelo link <b>"Preferências de cookies"</b> no rodapé do site, ou limpando os dados do navegador.</p>

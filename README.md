@@ -14,7 +14,7 @@ Site one-page premium para o **Galpê**, buffet infantil e espaço de festas em 
 - **Galeria** com lightbox navegável por teclado
 - **SEO local**: JSON-LD `EventVenue` + `FAQPage`, Open Graph/Twitter Cards, otimizado para "buffet infantil Teresópolis"
 - **Mobile-first**: testado em 340/390/768/1440px, menu fullscreen, zero layout shift (todas as imagens com `width/height`)
-- **LGPD & medição opt-in**: banner de consentimento de cookies + política de privacidade (`privacidade.html`); o Google Analytics (GA4) só carrega com aceite **e** ID configurado no painel
+- **LGPD & medição opt-in**: banner de consentimento de cookies + política de privacidade (`privacidade.html`); o Google Analytics (GA4) só carrega com aceite **e** ID configurado no painel — e se o visitante revogar, a medição para na hora
 - **Segurança endurecida**: RLS por linha no Supabase (escrita só para admins explícitos), RPCs com token para proposta/contrato, headers + CSP no `vercel.json` e SRI (`integrity`) nos scripts de CDN
 - **Zero dependências de build**: HTML/CSS/JS vanilla em arquivo único + assets otimizados (~1,4 MB)
 
@@ -45,7 +45,7 @@ Hospedagem estática em qualquer provedor (Vercel, Netlify, Cloudflare Pages, Gi
 
 ## 🧭 Painel Admin (back-office)
 
-`admin.html` — dashboard completo com login (Supabase): KPIs e **metas do mês**, calendário de festas com bloqueio de datas, CRM de leads (alimentado automaticamente pelo gate do simulador — responda rápido aos leads `novo`!), gerador de propostas com meia-entrada 6–9 (link público + aceite online em `proposta.html`, **PDF estilizado**), **contratos com assinatura eletrônica** (link público `contrato.html`, trilha de auditoria com hash SHA-256/IP/data), **métricas** (funil, origem, conversão, ticket médio, receita 6 meses), editor de preços/upgrades que atualiza o site em tempo real (upgrades com preço viram adicionais do simulador) e ajustes das regras do negócio (incl. dados do contrato e ID GA4).
+`admin.html` — dashboard completo com login (Supabase): KPIs e **metas do mês**, calendário de festas com bloqueio de datas, CRM de leads (alimentado automaticamente pelo gate do simulador — responda rápido aos leads `novo`!), gerador de propostas com meia-entrada 6–9 (link público + aceite online em `proposta.html`, **PDF estilizado**), **contratos com assinatura eletrônica** (link público `contrato.html`, assinatura desenhada **ou digitada**, trilha de auditoria com hash SHA-256/IP/data; o cliente assina e já vê o sinal + chave PIX para fechar o ciclo), envio por WhatsApp direto no chat do cliente, **métricas** (funil, origem, conversão, ticket médio, receita 6 meses), editor de preços/upgrades que atualiza o site em tempo real (upgrades com preço viram adicionais do simulador) e ajustes das regras do negócio (incl. dados do contrato e ID GA4).
 
 **Ativação (~10 min):** siga [`setup/SETUP-ADMIN.md`](setup/SETUP-ADMIN.md). Sem backend configurado, o site público funciona normalmente com os preços embutidos.
 

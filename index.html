@@ -782,7 +782,7 @@ footer a:hover{color:var(--yellow)}
           <input class="hp" id="gWeb" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
           <p class="gate-erro" id="gateErro" role="alert" hidden></p>
           <button class="btn btn-primary" id="gateGo" type="submit">Ver o valor da minha festa</button>
-          <small class="gate-lgpd">Ao continuar, você autoriza o contato do Galpê pelo WhatsApp sobre a sua festa, conforme nossa <a href="privacidade.html" style="color:var(--orange-ink);font-weight:700">Política de Privacidade</a>. Nada de spam, prometido. 🤝</small>
+          <small class="gate-lgpd">Ao continuar, você autoriza o contato do Galpê pelo WhatsApp sobre a sua festa, conforme nossa <a href="privacidade.html" target="_blank" rel="noopener" style="color:var(--orange-ink);font-weight:700">Política de Privacidade</a>. Nada de spam, prometido. 🤝</small>
         </div>
         <div class="gate-teaser">
           <span class="gt-label">Você vai ver</span>
@@ -962,7 +962,7 @@ footer a:hover{color:var(--yellow)}
     </div>
     <div class="foot-bottom">
       <span>© <span id="year">2026</span> Galpê – Espaço de Festas. Todos os direitos reservados.</span>
-      <span><a href="privacidade.html">Política de Privacidade</a> · <a href="#" id="ckPrefs">Preferências de cookies</a></span>
+      <span><a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a> · <a href="#" id="ckPrefs">Preferências de cookies</a></span>
       <span>Feito com carinho em Teresópolis ⛰️</span>
     </div>
   </div>
@@ -970,7 +970,7 @@ footer a:hover{color:var(--yellow)}
 
 <!-- banner de cookies (LGPD): estatística só com aceite -->
 <div class="ck-banner" id="ckBanner" role="dialog" aria-label="Aviso de cookies" aria-describedby="ckTxt">
-  <p id="ckTxt">🍪 Usamos cookies essenciais para o site funcionar e, <b>só se você deixar</b>, cookies de estatística para melhorar sua experiência. Saiba mais na <a href="privacidade.html">Política de Privacidade</a>.</p>
+  <p id="ckTxt">🍪 Usamos cookies essenciais para o site funcionar e, <b>só se você deixar</b>, cookies de estatística para melhorar sua experiência. Saiba mais na <a href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</p>
   <div class="ck-acoes">
     <button class="btn btn-primary" id="ckAceitar" type="button">Aceitar cookies</button>
     <button class="btn ck-recusar" id="ckRecusar" type="button">Só os essenciais</button>
@@ -1016,7 +1016,13 @@ footer a:hover{color:var(--yellow)}
   function decidirCookies(valor){
     try{ localStorage.setItem(CONSENT_KEY, valor); }catch(e){}
     ckBanner.classList.remove('on');
-    if(valor === 'all') carregarGA();
+    if(valor === 'all'){
+      if(GA_ID) window['ga-disable-' + GA_ID] = false;
+      carregarGA();
+    } else if(gaCarregado && GA_ID){
+      /* revogação vale já: flag oficial de opt-out do GA interrompe os hits na sessão corrente */
+      window['ga-disable-' + GA_ID] = true;
+    }
   }
   document.getElementById('ckAceitar').addEventListener('click', function(){ decidirCookies('all'); });
   document.getElementById('ckRecusar').addEventListener('click', function(){ decidirCookies('essential'); });
