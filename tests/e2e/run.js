@@ -171,6 +171,14 @@ let pageErrors = [], gtagRequests = [], leadPosts = [];
     await page.click('[data-view="cfg"]');
     ok((await page.inputValue('#cfg_ga4_id')) === 'G-TEST123', 'Ajustes carrega ga4_id');
     ok((await page.inputValue('#cfg_meta_festas_mes')) === '8', 'Ajustes carrega meta de festas');
+
+    // sair da conta: no mobile a sidebar esconde o "Sair" — o dos Ajustes é a única saída
+    await page.setViewportSize({ width: 390, height: 844 });
+    ok(await page.locator('#btnLogout').isHidden(), 'mobile: "Sair" da sidebar fica oculto (CSS esperado)');
+    ok(await page.locator('#btnLogoutCfg').isVisible(), 'mobile: "Sair da conta" disponível nos Ajustes');
+    await page.click('#btnLogoutCfg');
+    await page.waitForSelector('#loginScreen', { state: 'visible' });
+    ok(true, '"Sair da conta" encerra a sessão e volta ao login');
     await ctx.close();
   }
 

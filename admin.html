@@ -424,6 +424,8 @@ tr:hover td{background:var(--cream-2)}
           <div><label>Repetir nova senha</label><input id="newPass2" type="password" autocomplete="new-password"></div>
         </div>
         <button class="btn btn-ghost btn-sm" style="margin-top:16px" id="btnSenha">Alterar senha</button>
+        <!-- no mobile a sidebar vira barra de abas e esconde o "Sair" — este é o logout alcançável em qualquer tela -->
+        <button class="btn btn-ghost btn-sm" style="margin-top:16px;margin-left:10px" id="btnLogoutCfg">Sair da conta</button>
       </div>
     </section>
   </main>
@@ -679,9 +681,9 @@ $('loginForm').addEventListener('submit', function(e){
       } else { enterApp(r.data.user); }
     });
 });
-$('btnLogout').addEventListener('click', function(){
-  sb.auth.signOut().then(function(){ location.reload(); });
-});
+function sair(){ sb.auth.signOut().then(function(){ location.reload(); }); }
+$('btnLogout').addEventListener('click', sair);
+$('btnLogoutCfg').addEventListener('click', sair);
 if(sb){
   sb.auth.getSession().then(function(r){
     if(r.data.session) enterApp(r.data.session.user);
