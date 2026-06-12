@@ -48,8 +48,15 @@ tr.total td:last-child{font-family:'Anton',sans-serif;font-size:1.7rem;color:var
 .foot{text-align:center;margin-top:26px;font-size:.85rem;color:#5A6B80;line-height:1.7}
 .loading,.notfound{text-align:center;padding:90px 20px;color:var(--navy)}
 .loading .h-display,.notfound .h-display{font-size:1.6rem;margin-bottom:10px}
+.btn-print{background:transparent;border-color:var(--navy);color:var(--navy)}
 #conteudo{display:none}
 @media(max-width:540px){.card-body,.card-head{padding:24px 20px}}
+@media print{
+  body{background:#fff}
+  .topband,.cta-row,.badge-aceita,.foot{display:none!important}
+  .card{box-shadow:none;border-radius:0}
+  .card-head{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
 </style>
 </head>
 <body>
@@ -85,6 +92,7 @@ tr.total td:last-child{font-family:'Anton',sans-serif;font-size:1.7rem;color:var
         <div class="cta-row">
           <button class="btn btn-ok" id="btnAceitar">✓ Aceitar proposta</button>
           <a class="btn btn-wa" id="btnWa" target="_blank" rel="noopener">Falar no WhatsApp</a>
+          <button class="btn btn-print" type="button" onclick="window.print()">Salvar em PDF</button>
         </div>
         <div class="badge-aceita" id="badgeAceita">🎉 Proposta aceita! Vamos confirmar sua data — a equipe Galpê entra em contato.</div>
         <div class="validade" id="pValidade"></div>

@@ -1,6 +1,6 @@
 # 🛠 Ativando o Painel Admin do Galpê
 
-O painel (`admin.html`) gerencia **preços, pacotes, propostas, leads e o calendário de festas** — e alimenta o site público em tempo real. Para ativá-lo são ~10 minutos, uma única vez.
+O painel (`admin.html`) gerencia **preços, pacotes, propostas, contratos com assinatura eletrônica, leads, metas/métricas e o calendário de festas** — e alimenta o site público em tempo real. Para ativá-lo são ~10 minutos, uma única vez.
 
 ## Passo 1 — Criar o projeto Supabase (grátis)
 
@@ -50,12 +50,16 @@ O painel (`admin.html`) gerencia **preços, pacotes, propostas, leads e o calend
 
 | Área | Função |
 | --- | --- |
-| Visão geral | KPIs do mês, próximas festas, pagamentos pendentes |
+| Visão geral | KPIs do mês, metas (festas e receita), próximas festas, pagamentos pendentes |
 | Calendário | Festas por mês, status, bloquear datas |
 | Leads | CRM: novo → contato → visita → proposta → fechado |
-| Propostas | Cálculo automático, upgrades, desconto, link público, aceite online |
+| Propostas | Cálculo automático, upgrades, desconto, link público, aceite online, **PDF estilizado** |
+| Contratos | Gerados da proposta (texto-modelo editável), link de **assinatura eletrônica** (`contrato.html?t=...`) com trilha de auditoria (data/hora, IP, hash SHA-256), PDF |
+| Métricas | Funil de leads, origem, taxa de conversão/aceitação, ticket médio, receita por mês |
 | Preços | Tabela dia × convidados (atualiza o site na hora) e upgrades |
-| Ajustes | Contatos, regras (sinal %, validade, meia etc.) e troca de senha |
+| Ajustes | Contatos, dados p/ contrato (razão social, CNPJ, PIX), metas, ID do Google Analytics (GA4), regras (sinal %, validade, meia etc.) e troca de senha |
+
+> **Depois de ativar:** preencha em **Ajustes** a razão social/CNPJ/chave PIX (entram no contrato) e, se quiser medir visitas, crie uma propriedade GA4 em analytics.google.com e cole o ID — o site só mede com consentimento de cookies do visitante (LGPD).
 
 ## Segurança (como foi desenhado)
 

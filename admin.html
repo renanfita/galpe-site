@@ -92,6 +92,7 @@ tr:hover td{background:var(--cream-2)}
 .st-rascunho{background:#E8ECF5;color:var(--navy)} .st-enviada{background:#FFF3D6;color:#8a6d1a}
 .st-aceita{background:#DFF5E7;color:var(--ok)} .st-recusada{background:#FDECEA;color:var(--red)}
 .st-expirada{background:#eee;color:#777}
+.st-enviado{background:#FFF3D6;color:#8a6d1a} .st-assinado{background:#DFF5E7;color:var(--ok)}
 .st-pre_reserva{background:#FFF3D6;color:#8a6d1a} .st-reservado{background:#E8ECF5;color:var(--navy)}
 .st-confirmado{background:#DFF5E7;color:var(--ok)} .st-realizado{background:#E0F0EF;color:var(--teal)}
 .st-cancelado{background:#FDECEA;color:var(--red)}
@@ -135,6 +136,26 @@ tr:hover td{background:var(--cream-2)}
 .precos-grid .rowlbl{font-weight:700;color:var(--navy);font-size:.9rem;padding-right:8px}
 .precos-grid input{text-align:center}
 
+/* ---------- métricas & metas ---------- */
+.meter{background:var(--cream-2);border-radius:999px;height:14px;overflow:hidden;margin-top:7px}
+.meter i{display:block;height:100%;background:var(--orange);border-radius:999px;transition:width .5s ease}
+.meter i.full{background:var(--ok)}
+.meta-row{margin-bottom:16px;font-size:.92rem}
+.meta-row .lin{display:flex;justify-content:space-between;gap:10px;font-weight:600}
+.meta-row .lin b{color:var(--navy)}
+.hbar{display:grid;grid-template-columns:minmax(90px,130px) 1fr 64px;gap:10px;align-items:center;margin-bottom:9px;font-size:.88rem}
+.hbar .nm{font-weight:700;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .track{background:var(--cream-2);border-radius:8px;height:18px;overflow:hidden}
+.hbar .fill{height:100%;border-radius:8px;background:var(--navy);min-width:2px}
+.hbar .qt{color:#5A6B80;font-weight:600;white-space:nowrap}
+.vbars{display:flex;gap:10px;align-items:flex-end;height:180px;padding-top:8px}
+.vbar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;font-size:.72rem;color:#5A6B80;font-weight:600;min-width:0}
+.vbar i{display:block;width:100%;max-width:54px;background:var(--orange);border-radius:8px 8px 0 0;min-height:3px}
+.vbar .vv{font-size:.68rem;color:var(--navy);font-weight:700;white-space:nowrap}
+.setup-hint{background:var(--cream-2);border:1.5px dashed var(--orange);border-radius:12px;padding:14px 16px;font-size:.88rem;line-height:1.6}
+.assin-img{background:var(--cream-2);border:1.5px solid var(--line);border-radius:12px;padding:8px;margin:10px 0;text-align:center}
+.assin-img img{max-width:100%;max-height:140px}
+
 /* ---------- toast ---------- */
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:var(--cream);padding:13px 26px;border-radius:999px;font-weight:700;font-size:.92rem;z-index:99;transition:transform .35s cubic-bezier(.34,1.56,.64,1);box-shadow:0 16px 40px -12px rgba(0,0,0,.45)}
 #toast.show{transform:translateX(-50%) translateY(0)}
@@ -143,9 +164,9 @@ tr:hover td{background:var(--cream-2)}
 /* ---------- mobile ---------- */
 @media(max-width:840px){
   .layout{grid-template-columns:1fr}
-  aside{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;padding:6px 8px;z-index:40;justify-content:space-around;align-items:center;gap:0}
+  aside{position:fixed;bottom:0;top:auto;left:0;right:0;height:auto;flex-direction:row;padding:6px 6px;z-index:40;justify-content:space-between;align-items:stretch;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
   aside .logo,aside .spacer,.user-box,#btnLogout{display:none}
-  .nav-item{flex-direction:column;gap:3px;font-size:.6rem;padding:8px 6px;border-radius:10px}
+  .nav-item{flex:1 0 auto;min-width:44px;width:auto;flex-direction:column;justify-content:center;gap:3px;font-size:.56rem;padding:8px 3px;border-radius:10px;text-align:center;white-space:nowrap}
   .nav-item svg{width:20px;height:20px}
   main{padding:18px 14px 110px}
   .modal .grid2,.modal .grid3{grid-template-columns:1fr}
@@ -198,6 +219,12 @@ tr:hover td{background:var(--cream-2)}
     <button class="nav-item" data-view="prop">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 2h9l5 5v15H6Z"/><path d="M14 2v6h6M9 13h7M9 17h7"/></svg>
       Propostas</button>
+    <button class="nav-item" data-view="contr">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h11l3 3v15H5Z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="M14.5 19.5c.8-2 2.5-2.4 4-1l1-1.2"/></svg>
+      Contratos</button>
+    <button class="nav-item" data-view="met">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/></svg>
+      Métricas</button>
     <button class="nav-item" data-view="precos">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v20M17 6.5c0-2-2.2-3-5-3s-5 1-5 3 1.8 2.7 5 3.5 5 1.7 5 3.5-2.2 3-5 3-5-1-5-3"/></svg>
       Preços</button>
@@ -220,7 +247,12 @@ tr:hover td{background:var(--cream-2)}
         <div class="kpi hl"><div class="num" id="kpiFestas">–</div><div class="lbl">festas este mês</div></div>
         <div class="kpi"><div class="num" id="kpiReceita">–</div><div class="lbl">receita prevista (mês)</div></div>
         <div class="kpi"><div class="num" id="kpiProp">–</div><div class="lbl">propostas em aberto</div></div>
+        <div class="kpi"><div class="num" id="kpiContr">–</div><div class="lbl">contratos p/ assinar</div></div>
         <div class="kpi"><div class="num" id="kpiLeads">–</div><div class="lbl">leads novos</div></div>
+      </div>
+      <div class="panel">
+        <h3>Meta do mês</h3>
+        <div id="dashMetas"></div>
       </div>
       <div class="panel">
         <h3>Próximas festas</h3>
@@ -275,6 +307,44 @@ tr:hover td{background:var(--cream-2)}
       <div class="panel" style="overflow-x:auto"><div id="propTable"></div></div>
     </section>
 
+    <!-- ===== CONTRATOS ===== -->
+    <section class="view" id="view-contr">
+      <div class="page-head"><h1 class="h-display">Contratos</h1>
+        <button class="btn btn-primary btn-sm" onclick="openContratoModal()">+ Novo contrato</button></div>
+      <div class="panel" style="overflow-x:auto"><div id="contrTable"></div></div>
+      <p style="font-size:.82rem;color:#5A6B80">O cliente assina eletronicamente pelo link (nome + CPF + assinatura na tela). Cada aceite grava data/hora, IP e o código de verificação SHA-256 do texto — validade jurídica de assinatura eletrônica (MP 2.200-2/2001, art. 10, §2º, e Lei 14.063/2020).</p>
+    </section>
+
+    <!-- ===== MÉTRICAS ===== -->
+    <section class="view" id="view-met">
+      <div class="page-head"><h1 class="h-display">Métricas</h1>
+        <select id="metPeriodo" style="width:auto">
+          <option value="30">Últimos 30 dias</option>
+          <option value="90" selected>Últimos 90 dias</option>
+          <option value="365">Últimos 12 meses</option>
+          <option value="0">Desde o início</option>
+        </select></div>
+      <div class="cards">
+        <div class="kpi hl"><div class="num" id="metLeads">–</div><div class="lbl">leads no período</div></div>
+        <div class="kpi"><div class="num" id="metConv">–</div><div class="lbl">conversão em fechados</div></div>
+        <div class="kpi"><div class="num" id="metAceit">–</div><div class="lbl">propostas aceitas</div></div>
+        <div class="kpi"><div class="num" id="metTicket">–</div><div class="lbl">ticket médio (festas)</div></div>
+      </div>
+      <div class="panel">
+        <h3>Funil de leads <small style="font-weight:400;color:#5A6B80">(status atual no CRM)</small></h3>
+        <div id="metFunil"></div>
+      </div>
+      <div class="panel">
+        <h3>Origem dos leads</h3>
+        <div id="metOrigem"></div>
+      </div>
+      <div class="panel">
+        <h3>Receita por mês <small style="font-weight:400;color:#5A6B80">(festas não canceladas, últimos 6 meses)</small></h3>
+        <div class="vbars" id="metReceita"></div>
+      </div>
+      <p style="font-size:.82rem;color:#5A6B80">Visitas e origem de tráfego do site ficam no Google Analytics (configure o ID GA4 em Ajustes → Metas &amp; medição). O site só mede com consentimento de cookies do visitante (LGPD).</p>
+    </section>
+
     <!-- ===== PREÇOS ===== -->
     <section class="view" id="view-precos">
       <div class="page-head"><h1 class="h-display">Preços &amp; Pacotes</h1></div>
@@ -303,6 +373,23 @@ tr:hover td{background:var(--cream-2)}
           <div><label>Instagram</label><input id="cfg_instagram"></div>
           <div style="grid-column:1/-1"><label>Endereço</label><input id="cfg_endereco"></div>
         </div>
+      </div>
+      <div class="panel">
+        <h3>Dados para contratos &amp; pagamento</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px">
+          <div><label>Razão social</label><input id="cfg_razao_social" placeholder="Galpê Buffet Ltda."></div>
+          <div><label>CNPJ</label><input id="cfg_cnpj" placeholder="00.000.000/0001-00"></div>
+          <div style="grid-column:1/-1"><label>Chave PIX (entra no contrato)</label><input id="cfg_pix_chave" placeholder="e-mail, telefone ou CNPJ"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Metas &amp; medição</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0 16px">
+          <div><label>Meta de festas/mês</label><input id="cfg_meta_festas_mes" type="number" min="0"></div>
+          <div><label>Meta de receita/mês (R$)</label><input id="cfg_meta_receita_mes" type="number" min="0" step="100"></div>
+          <div><label>Google Analytics (ID GA4)</label><input id="cfg_ga4_id" placeholder="G-XXXXXXXXXX"></div>
+        </div>
+        <p style="font-size:.82rem;color:#5A6B80;margin-top:10px">Crie a propriedade GA4 em analytics.google.com e cole o ID acima — o site passa a medir visitas na hora, sempre respeitando o banner de consentimento de cookies (LGPD).</p>
       </div>
       <div class="panel">
         <h3>Regras do negócio</h3>
@@ -476,6 +563,58 @@ tr:hover td{background:var(--cream-2)}
   </div>
 </div>
 
+<!-- ===== MODAL CONTRATO ===== -->
+<div class="modal-bg" id="modalContrato">
+  <div class="modal" style="width:min(780px,100%)">
+    <h2 class="h-display" id="ctTitle">Novo contrato</h2>
+    <p style="font-size:.85rem;color:#5A6B80" id="ctNumero"></p>
+    <input type="hidden" id="ct_id">
+    <div class="grid2">
+      <div><label>Contratante (nome completo) *</label><input id="ct_nome"></div>
+      <div><label>CPF</label><input id="ct_cpf" placeholder="000.000.000-00"></div>
+      <div style="grid-column:1/-1"><label>Endereço do contratante</label><input id="ct_endereco"></div>
+      <div><label>Telefone</label><input id="ct_telefone" placeholder="(21) 99999-9999"></div>
+      <div><label>E-mail</label><input id="ct_email" type="email"></div>
+      <div><label>Aniversariante</label><input id="ct_aniversariante"></div>
+      <div><label>Tema</label><input id="ct_tema"></div>
+      <div><label>Data da festa *</label><input id="ct_data" type="date"></div>
+      <div><label>Início</label><input id="ct_horario" type="time" value="12:00"></div>
+    </div>
+    <div class="grid3">
+      <div><label>Convidados (integral) *</label><input id="ct_convidados" type="number" min="1"></div>
+      <div><label>Crianças 6–9 (meia)</label><input id="ct_meia" type="number" min="0" value="0"></div>
+      <div><label>Valor total (R$) *</label><input id="ct_valor" type="number" step="0.01" min="0"></div>
+      <div><label>Sinal (R$)</label><input id="ct_sinal" type="number" step="0.01" min="0"></div>
+    </div>
+    <label>Disposições específicas (viram cláusula do contrato)</label><textarea id="ct_obs" rows="2"></textarea>
+    <label style="display:flex;justify-content:space-between;align-items:center;gap:10px">Texto do contrato
+      <button class="btn btn-ghost btn-sm" type="button" id="ctRegerar" style="text-transform:none;letter-spacing:0;font-size:.78rem;padding:5px 12px">↻ Regerar com os dados acima</button></label>
+    <textarea id="ct_texto" rows="13" style="font-size:.8rem;line-height:1.5"></textarea>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="ctDelete" style="display:none">Excluir</button>
+      <div class="right">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalContrato')">Cancelar</button>
+        <button class="btn btn-primary btn-sm" id="ctSave">Salvar contrato</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL ASSINATURA (contrato assinado) ===== -->
+<div class="modal-bg" id="modalAssin">
+  <div class="modal" style="width:min(560px,100%)">
+    <h2 class="h-display">Contrato assinado ✓</h2>
+    <div id="assinInfo" style="margin-top:12px;font-size:.92rem;line-height:1.8"></div>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" id="assinCancelar">Cancelar contrato</button>
+      <div class="right">
+        <button class="btn btn-ghost btn-sm" onclick="closeModal('modalAssin')">Fechar</button>
+        <button class="btn btn-primary btn-sm" id="assinPdf">Gerar PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script src="supabase-config.js"></script>
@@ -493,6 +632,7 @@ if(!hasCfg){
 var sb = hasCfg ? supabase.createClient(CFG.url, CFG.anonKey) : null;
 
 var state = { precos: [], upgrades: [], config: {}, eventos: [], leads: [], propostas: [], bloqueios: [],
+  contratos: [], contratosOk: true,
   calRef: (function(){ var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), 1); })() };
 
 var $ = function(id){ return document.getElementById(id); };
@@ -568,16 +708,20 @@ function loadAll(){
     sb.from('eventos').select('*').order('data'),
     sb.from('leads').select('*').order('created_at', {ascending:false}),
     sb.from('propostas').select('*').order('created_at', {ascending:false}),
-    sb.from('bloqueios').select('*')
+    sb.from('bloqueios').select('*'),
+    sb.from('contratos').select('*').order('created_at', {ascending:false})
   ]).then(function(rs){
-    var err = rs.find(function(r){ return r.error; });
+    var err = rs.slice(0, 7).find(function(r){ return r.error; });
     if(err){ toast('Erro ao carregar: ' + err.error.message, true); return; }
     state.precos = rs[0].data; state.upgrades = rs[1].data;
     state.config = {};
     rs[2].data.forEach(function(c){ state.config[c.key] = c.value; });
     state.eventos = rs[3].data; state.leads = rs[4].data;
     state.propostas = rs[5].data; state.bloqueios = rs[6].data;
-    renderDash(); renderCal(); renderLeads(); renderProps(); renderPrecos(); renderUpgrades(); renderCfg();
+    /* contratos pode ainda não existir em banco sem a migração 20260612 — degrada sem travar o painel */
+    state.contratosOk = !rs[7].error;
+    state.contratos = rs[7].data || [];
+    renderDash(); renderCal(); renderLeads(); renderProps(); renderContratos(); renderMetricas(); renderPrecos(); renderUpgrades(); renderCfg();
   });
 }
 
@@ -591,7 +735,22 @@ function renderDash(){
   $('kpiFestas').textContent = doMes.length;
   $('kpiReceita').textContent = BRL(doMes.reduce(function(s,e){ return s + Number(e.valor_total || 0); }, 0));
   $('kpiProp').textContent = state.propostas.filter(function(p){ return p.status === 'enviada' || p.status === 'rascunho'; }).length;
+  $('kpiContr').textContent = state.contratos.filter(function(c){ return c.status === 'enviado'; }).length;
   $('kpiLeads').textContent = state.leads.filter(function(l){ return l.status === 'novo'; }).length;
+
+  /* metas do mês (Ajustes → Metas & medição) */
+  var receitaMes = doMes.reduce(function(s,e){ return s + Number(e.valor_total || 0); }, 0);
+  var metaF = Number(state.config.meta_festas_mes || 0);
+  var metaR = Number(state.config.meta_receita_mes || 0);
+  function metaRow(lbl, atual, meta, fmtFn){
+    var pct = meta > 0 ? Math.min(100, Math.round(atual / meta * 100)) : 0;
+    return '<div class="meta-row"><div class="lin"><span>' + lbl + '</span><b>' + fmtFn(atual) + ' de ' + fmtFn(meta) +
+      ' · ' + pct + '%</b></div><div class="meter"><i class="' + (pct >= 100 ? 'full' : '') + '" style="width:' + pct + '%"></i></div></div>';
+  }
+  $('dashMetas').innerHTML = (metaF > 0 || metaR > 0)
+    ? (metaF > 0 ? metaRow('Festas fechadas', doMes.length, metaF, function(n){ return n; }) : '')
+      + (metaR > 0 ? metaRow('Receita prevista', receitaMes, metaR, BRL) : '')
+    : '<div class="empty">Defina suas metas em Ajustes → Metas &amp; medição.</div>';
 
   var prox = ativos.filter(function(e){ return e.data >= hoje(); }).slice(0, 8);
   $('dashProximas').innerHTML = prox.length ? tableHTML(
@@ -622,7 +781,8 @@ function sid(s){ return String(s == null ? '' : s).replace(/[^a-zA-Z0-9_-]/g, ''
 function stLabel(s){
   return ({ pre_reserva:'Pré-reserva', reservado:'Reservado', confirmado:'Confirmado', realizado:'Realizado', cancelado:'Cancelado',
     novo:'Novo', contato:'Em contato', visita:'Visita', proposta:'Proposta', fechado:'Fechado', perdido:'Perdido',
-    rascunho:'Rascunho', enviada:'Enviada', aceita:'Aceita ✓', recusada:'Recusada', expirada:'Expirada' })[s] || s;
+    rascunho:'Rascunho', enviada:'Enviada', aceita:'Aceita ✓', recusada:'Recusada', expirada:'Expirada',
+    enviado:'Enviado', assinado:'Assinado ✓' })[s] || s;
 }
 
 /* ================= calendário ================= */
@@ -824,6 +984,8 @@ function renderProps(){
         '<button class="icon-btn" title="Editar" onclick="openPropModal(\'' + sid(p.id) + '\')">✎</button>' +
         '<button class="icon-btn" title="Copiar link" onclick="copyPropLink(\'' + sid(p.token) + '\')">🔗</button>' +
         '<button class="icon-btn" title="Enviar por WhatsApp" onclick="sendProp(\'' + sid(p.id) + '\')">➤</button>' +
+        '<button class="icon-btn" title="Baixar PDF da proposta" onclick="printProposta(\'' + sid(p.id) + '\')">🖨</button>' +
+        (state.contratosOk ? '<button class="icon-btn" title="Gerar contrato" onclick="contratoFromProp(\'' + sid(p.id) + '\')">📑</button>' : '') +
         (p.status === 'aceita' && !eventoDaProposta(p.id) ? '<button class="icon-btn" title="Criar festa no calendário" onclick="eventoFromProp(\'' + sid(p.id) + '\')">📅</button>' : '') +
         '</div></td></tr>';
     }).join('')
@@ -981,6 +1143,433 @@ window.eventoFromProp = function(id){
   });
 };
 
+/* ================= contratos ================= */
+function contratoLink(token){
+  return location.origin + location.pathname.replace(/admin\.html$/, '') + 'contrato.html?t=' + token;
+}
+function novoNumeroContrato(){
+  var ano = new Date().getFullYear(), max = 0;
+  state.contratos.forEach(function(c){
+    var m = /^GAL-(\d{4})-(\d+)$/.exec(c.numero || '');
+    if(m && +m[1] === ano && +m[2] > max) max = +m[2];
+  });
+  return 'GAL-' + ano + '-' + String(max + 1).padStart(3, '0');
+}
+function fmtCPF(v){
+  var d = String(v || '').replace(/\D/g, '');
+  if(d.length !== 11) return v || '—';
+  return d.slice(0,3) + '.' + d.slice(3,6) + '.' + d.slice(6,9) + '-' + d.slice(9);
+}
+function horaFim(ini, durH){
+  var p = String(ini || '12:00').split(':');
+  var min = (+p[0]) * 60 + (+p[1] || 0) + Math.round(Number(durH || 4) * 60);
+  min = ((min % 1440) + 1440) % 1440;
+  return pad2(Math.floor(min / 60)) + ':' + pad2(min % 60);
+}
+
+/* Gera o texto integral do contrato a partir dos dados + Ajustes.
+   O admin pode editar livremente antes de salvar — o que vale (e o que
+   o cliente assina, com hash SHA-256) é o texto salvo no banco. */
+function textoContratoTemplate(d){
+  var cfg = state.config;
+  var rz = String(cfg.razao_social || '').trim() || 'Galpê – Espaço de Festas';
+  var cnpj = String(cfg.cnpj || '').trim();
+  var endSede = String(cfg.endereco || 'Rua Yeda, 184 – Tijuca, Teresópolis/RJ');
+  var telSede = String(cfg.telefone_exibicao || '');
+  var emailSede = String(cfg.email || '');
+  var dur = Number(cfg.duracao_horas || 4);
+  var tol = Number(cfg.tolerancia_min || 30);
+  var heA = Number(cfg.hora_extra_antecipada_percent || 15);
+  var heD = Number(cfg.hora_extra_dia_percent || 20);
+  var gratis = Number(cfg.criancas_gratis_ate || 5);
+  var meiaDe = Number(cfg.meia_de || 6), meiaAte = Number(cfg.meia_ate || 9);
+  var extraPct = Number(cfg.max_extra_percent || 10);
+  var pix = String(cfg.pix_chave || '').trim();
+  var ini = String(d.horario || '12:00').slice(0,5);
+
+  var cab = 'CONTRATO DE PRESTAÇÃO DE SERVIÇOS DE BUFFET E RECREAÇÃO INFANTIL — Nº ' + d.numero + '\n\n' +
+    'CONTRATADA: ' + rz + (cnpj ? ', CNPJ ' + cnpj : '') + ', com sede em ' + endSede +
+    (telSede ? ', telefone ' + telSede : '') + (emailSede ? ', e-mail ' + emailSede : '') + '.\n\n' +
+    'CONTRATANTE: ' + (d.contratante_nome || '(a preencher)') +
+    ', CPF ' + (d.contratante_cpf ? fmtCPF(d.contratante_cpf) : '(a preencher)') +
+    (d.contratante_endereco ? ', residente em ' + d.contratante_endereco : '') +
+    (d.contratante_telefone ? ', telefone ' + d.contratante_telefone : '') +
+    (d.contratante_email ? ', e-mail ' + d.contratante_email : '') + '.\n\n' +
+    'As partes celebram este contrato de prestação de serviços, que se regerá pelas cláusulas seguintes.';
+
+  var cls = [];
+  cls.push('OBJETO. Realização de festa infantil no espaço da CONTRATADA em ' + (fmtData(d.data_evento) || '(data a definir)') +
+    ', das ' + ini + ' às ' + horaFim(ini, dur) + ' (' + dur + ' horas), com uso exclusivo do espaço, brinquedão, buffet completo (entradas, salgados, piquenique, bolo, docinhos e bebidas), decoração com mesa temática e equipe completa (coordenação, monitores, garçons, copeira e recepção).' +
+    (d.aniversariante ? '\n1.1. Aniversariante: ' + d.aniversariante + (d.tema ? '. Tema: ' + d.tema + '.' : '.') : (d.tema ? '\n1.1. Tema: ' + d.tema + '.' : '')));
+  cls.push('CONVIDADOS. Contratação para ' + d.convidados + ' convidados pagantes' +
+    (d.convidados_meia > 0 ? ' e ' + d.convidados_meia + ' crianças de ' + meiaDe + ' a ' + meiaAte + ' anos (meia-entrada, 50% do valor por pessoa)' : '') +
+    '. Crianças com até ' + gratis + ' anos não pagam; de ' + meiaDe + ' a ' + meiaAte + ' anos pagam meia-entrada. Convidados excedentes serão cobrados ao valor por pessoa vigente, limitados a ' + extraPct + '% além do contratado, com acerto até o encerramento da festa.');
+  if((d.upgrades || []).length){
+    cls.push('ADICIONAIS CONTRATADOS, já incluídos no valor total:\n' + d.upgrades.map(function(u){ return '- ' + u.nome; }).join('\n'));
+  }
+  cls.push('VALOR E PAGAMENTO. Valor total de ' + BRL(d.valor_total) + '. Sinal de ' + BRL(d.sinal_valor) +
+    ' devido no ato da assinatura deste contrato, como confirmação de reserva da data. O saldo restante deverá ser quitado até 10 (dez) dias antes da festa.' +
+    (pix ? ' Pagamentos preferencialmente via PIX, chave: ' + pix + '.' : ''));
+  cls.push('DURAÇÃO E HORA EXTRA. A festa tem duração de ' + dur + ' horas, com tolerância de ' + tol + ' minutos para encerramento. Hora extra contratada com antecedência: ' + heA + '% do valor do contrato por hora; hora extra solicitada no dia: ' + heD + '% do valor do contrato por hora.');
+  cls.push('REMARCAÇÃO E CANCELAMENTO. Em caso de desistência comunicada por escrito até 60 (sessenta) dias antes da data, a CONTRATADA restituirá 70% dos valores pagos. Após esse prazo, as partes buscarão, de comum acordo, remarcar a festa conforme a disponibilidade de agenda da CONTRATADA, sujeita a eventual diferença da tabela vigente.');
+  cls.push('OBRIGAÇÕES DA CONTRATADA. Disponibilizar o espaço limpo, em condições de uso e segurança; fornecer o buffet, a equipe e a estrutura descritos na cláusula 1; manter monitoria no brinquedão durante toda a festa.');
+  cls.push('OBRIGAÇÕES DO CONTRATANTE. Fornecer as informações necessárias à organização (aniversariante, tema, lista de convidados); zelar, junto a seus convidados, pela conservação do espaço e dos equipamentos; responsabilizar-se por danos causados por seus convidados. Fora do brinquedão, as crianças permanecem sob supervisão dos respectivos responsáveis.');
+  cls.push('OBJETOS PESSOAIS. A CONTRATADA não se responsabiliza por objetos pessoais deixados no espaço durante ou após o evento.');
+  cls.push('USO DE IMAGEM. O uso de imagens da festa pela CONTRATADA em redes sociais ou materiais de divulgação dependerá de autorização expressa do CONTRATANTE.');
+  cls.push('PROTEÇÃO DE DADOS (LGPD). Os dados pessoais coletados neste contrato serão tratados exclusivamente para a execução do contrato e o cumprimento de obrigações legais, nos termos da Lei nº 13.709/2018 e da Política de Privacidade disponível no site da CONTRATADA.');
+  cls.push('CASO FORTUITO E FORÇA MAIOR. Impedimentos por caso fortuito ou força maior dão direito à remarcação da festa sem ônus para as partes, em data definida de comum acordo.');
+  if(d.observacoes) cls.push('DISPOSIÇÕES ESPECÍFICAS. ' + d.observacoes);
+  cls.push('FORO. Fica eleito o foro da Comarca de Teresópolis/RJ para dirimir quaisquer controvérsias decorrentes deste contrato.');
+
+  var corpo = cls.map(function(c, i){ return (i + 1) + '. ' + c; }).join('\n\n');
+  var rod = 'ASSINATURA ELETRÔNICA. Este contrato é celebrado eletronicamente: o aceite do CONTRATANTE pelo link exclusivo e intransferível — com nome completo, CPF e assinatura na tela, registrados com data e hora, endereço IP e código de verificação (SHA-256) do texto integral — vale como assinatura eletrônica, na forma do art. 10, §2º, da MP nº 2.200-2/2001 e da Lei nº 14.063/2020.';
+  return cab + '\n\n' + corpo + '\n\n' + rod;
+}
+
+function coletaContrato(){
+  var ds = $('ct_id').dataset;
+  var upgs = [];
+  try{ upgs = JSON.parse(ds.upgrades || '[]'); }catch(e){}
+  return {
+    numero: ds.numero,
+    proposta_id: ds.propostaId || null,
+    contratante_nome: $('ct_nome').value.trim(),
+    contratante_cpf: $('ct_cpf').value.trim() || null,
+    contratante_endereco: $('ct_endereco').value.trim() || null,
+    contratante_telefone: $('ct_telefone').value.trim() || null,
+    contratante_email: $('ct_email').value.trim() || null,
+    aniversariante: $('ct_aniversariante').value.trim() || null,
+    tema: $('ct_tema').value.trim() || null,
+    data_evento: $('ct_data').value || null,
+    horario: $('ct_horario').value || '12:00',
+    convidados: +$('ct_convidados').value || 0,
+    convidados_meia: +$('ct_meia').value || 0,
+    valor_total: +$('ct_valor').value || 0,
+    sinal_valor: +$('ct_sinal').value || 0,
+    upgrades: upgs,
+    observacoes: $('ct_obs').value.trim() || null
+  };
+}
+
+function renderContratos(){
+  if(!state.contratosOk){
+    $('contrTable').innerHTML = '<div class="setup-hint"><b>⚙️ Falta um passo no banco.</b> A tabela de contratos ainda não existe neste Supabase. Rode a migração <code>supabase/migrations/20260612090000_contratos_metricas_lgpd.sql</code> (ou o <code>setup/setup.sql</code> completo, idempotente) no SQL Editor e recarregue o painel.</div>';
+    return;
+  }
+  $('contrTable').innerHTML = state.contratos.length ? tableHTML(
+    ['Nº','Contratante','Festa','Valor','Status',''],
+    state.contratos.map(function(c){
+      var aberto = c.status === 'rascunho' || c.status === 'enviado';
+      return '<tr><td><b>' + esc(c.numero) + '</b></td>' +
+        '<td>' + esc(c.contratante_nome) + '</td>' +
+        '<td>' + fmtData(c.data_evento) + (c.aniversariante ? ' · ' + esc(c.aniversariante) : '') + '</td>' +
+        '<td><b>' + BRL(c.valor_total) + '</b></td>' +
+        '<td><span class="chip st-' + c.status + '">' + stLabel(c.status) + '</span></td>' +
+        '<td><div class="row-actions">' +
+        (aberto ? '<button class="icon-btn" title="Editar" onclick="openContratoModal(\'' + sid(c.id) + '\')">✎</button>' +
+          '<button class="icon-btn" title="Copiar link de assinatura" onclick="copyContratoLink(\'' + sid(c.id) + '\')">🔗</button>' +
+          '<button class="icon-btn" title="Enviar por WhatsApp" onclick="sendContrato(\'' + sid(c.id) + '\')">➤</button>' : '') +
+        (c.status === 'assinado' ? '<button class="icon-btn" title="Ver assinatura" onclick="openAssinModal(\'' + sid(c.id) + '\')">👁</button>' : '') +
+        (c.status === 'assinado' && !c.evento_id ? '<button class="icon-btn" title="Criar festa no calendário" onclick="eventoFromContrato(\'' + sid(c.id) + '\')">📅</button>' : '') +
+        '<button class="icon-btn" title="Baixar PDF" onclick="printContrato(\'' + sid(c.id) + '\')">🖨</button>' +
+        '</div></td></tr>';
+    }).join('')
+  ) : '<div class="empty">Nenhum contrato. Gere a partir de uma proposta (📑) ou crie um novo.</div>';
+}
+
+window.openContratoModal = function(id, prop){
+  if(!state.contratosOk){
+    document.querySelector('[data-view="contr"]').click();
+    return toast('Tabela de contratos ainda não existe — veja a instrução na tela.', true);
+  }
+  var c = id ? state.contratos.find(function(x){ return x.id === id; }) : null;
+  if(c && c.status === 'assinado'){ openAssinModal(id); return; }
+  var lead = prop && prop.lead_id ? state.leads.find(function(l){ return l.id === prop.lead_id; }) : null;
+  var numero = c ? c.numero : novoNumeroContrato();
+  $('ctTitle').textContent = c ? 'Editar contrato' : 'Novo contrato';
+  $('ctNumero').textContent = 'Nº ' + numero + (c ? ' · ' + stLabel(c.status) : '');
+  $('ct_id').value = c ? c.id : '';
+  $('ct_id').dataset.numero = numero;
+  $('ct_id').dataset.propostaId = c ? (c.proposta_id || '') : (prop ? prop.id : '');
+  $('ct_id').dataset.upgrades = JSON.stringify(c ? (c.upgrades || []) : (prop ? (prop.upgrades || []) : []));
+  $('ct_nome').value = c ? c.contratante_nome : (prop ? prop.nome_cliente : '');
+  $('ct_cpf').value = c ? (c.contratante_cpf || '') : '';
+  $('ct_endereco').value = c ? (c.contratante_endereco || '') : '';
+  $('ct_telefone').value = c ? (c.contratante_telefone || '') : (lead ? (lead.telefone || '') : '');
+  $('ct_email').value = c ? (c.contratante_email || '') : '';
+  $('ct_aniversariante').value = c ? (c.aniversariante || '') : (prop ? (prop.aniversariante || '') : '');
+  $('ct_tema').value = c ? (c.tema || '') : (prop ? (prop.tema || '') : '');
+  $('ct_data').value = c ? (c.data_evento || '') : (prop ? (prop.data_evento || '') : '');
+  $('ct_horario').value = String((c ? c.horario : (prop && prop.horario)) || '12:00').slice(0,5);
+  $('ct_convidados').value = c ? c.convidados : (prop ? prop.convidados : 60);
+  $('ct_meia').value = c ? c.convidados_meia : (prop ? (prop.convidados_meia || 0) : 0);
+  var tot = c ? Number(c.valor_total) : (prop ? propTotal(prop) : 0);
+  $('ct_valor').value = tot ? tot.toFixed(2) : '';
+  var sinalPct = Number(state.config.sinal_percent || 10);
+  $('ct_sinal').value = c ? Number(c.sinal_valor).toFixed(2) : (tot ? (tot * sinalPct / 100).toFixed(2) : '');
+  $('ct_obs').value = c ? (c.observacoes || '') : (prop ? (prop.observacoes || '') : '');
+  $('ct_texto').value = c ? c.texto_contrato : textoContratoTemplate(coletaContrato());
+  $('ctDelete').style.display = c ? 'inline-flex' : 'none';
+  openModal('modalContrato');
+};
+window.contratoFromProp = function(pid){
+  var existente = state.contratos.find(function(c){ return c.proposta_id === pid && c.status !== 'cancelado'; });
+  document.querySelector('[data-view="contr"]').click();
+  if(existente){ openContratoModal(existente.id); return; }
+  openContratoModal(null, state.propostas.find(function(x){ return x.id === pid; }));
+};
+$('ctRegerar').addEventListener('click', function(){
+  $('ct_texto').value = textoContratoTemplate(coletaContrato());
+  toast('Texto regerado com os dados do formulário.');
+});
+$('ctSave').addEventListener('click', function(){
+  var d = coletaContrato();
+  if(!d.contratante_nome || !d.data_evento || !(d.convidados > 0) || !(d.valor_total > 0)){
+    return toast('Preencha contratante, data, convidados e valor.', true);
+  }
+  d.texto_contrato = $('ct_texto').value.trim();
+  if(d.texto_contrato.length < 200) return toast('O texto do contrato está vazio — clique em "Regerar".', true);
+  var id = $('ct_id').value;
+  var q = id ? sb.from('contratos').update(d).eq('id', id) : sb.from('contratos').insert(d);
+  q.then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Contrato salvo! 📑'); closeModal('modalContrato'); loadAll();
+  });
+});
+$('ctDelete').addEventListener('click', function(){
+  if(!confirm('Excluir este contrato?')) return;
+  sb.from('contratos').delete().eq('id', $('ct_id').value).then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    toast('Contrato excluído'); closeModal('modalContrato'); loadAll();
+  });
+});
+function marcarContratoEnviado(c){
+  if(c.status !== 'rascunho') return;
+  sb.from('contratos').update({ status: 'enviado' }).eq('id', c.id).then(function(){ loadAll(); });
+}
+window.copyContratoLink = function(id){
+  var c = state.contratos.find(function(x){ return x.id === id; });
+  if(!c) return;
+  navigator.clipboard.writeText(contratoLink(c.token)).then(function(){ toast('Link de assinatura copiado! 🔗'); });
+  marcarContratoEnviado(c);
+};
+window.sendContrato = function(id){
+  var c = state.contratos.find(function(x){ return x.id === id; });
+  if(!c) return;
+  var msg = 'Oi, ' + c.contratante_nome.split(' ')[0] + '! 🎪 Seu contrato da festa no Galpê está pronto:\n' +
+    contratoLink(c.token) + '\n\nÉ só conferir e assinar direto pelo celular (nome, CPF e assinatura na tela). Qualquer dúvida, chama a gente!';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  marcarContratoEnviado(c);
+};
+window.openAssinModal = function(id){
+  var c = state.contratos.find(function(x){ return x.id === id; });
+  if(!c) return;
+  var dt = c.assinado_em ? new Date(c.assinado_em) : null;
+  $('assinInfo').innerHTML =
+    '<b>' + esc(c.numero) + '</b> — ' + esc(c.contratante_nome) + ' · ' + fmtData(c.data_evento) + ' · ' + BRL(c.valor_total) + '<br>' +
+    'Assinado por <b>' + esc(c.assinante_nome || '—') + '</b> · CPF ' + esc(fmtCPF(c.assinante_cpf || '')) + '<br>' +
+    'Em ' + (dt ? dt.toLocaleString('pt-BR') : '—') + (c.aceite_ip ? ' · IP ' + esc(c.aceite_ip) : '') +
+    (c.assinatura_img ? '<div class="assin-img"><img src="' + esc(c.assinatura_img) + '" alt="Assinatura do contratante"></div>' : '') +
+    (c.aceite_hash ? '<small style="color:#5A6B80;word-break:break-all">Verificação SHA-256: ' + esc(c.aceite_hash) + '</small>' : '');
+  $('assinCancelar').onclick = function(){
+    if(!confirm('Cancelar este contrato assinado? O registro da assinatura é mantido no banco.')) return;
+    sb.from('contratos').update({ status: 'cancelado' }).eq('id', c.id).then(function(r){
+      if(r.error) return toast(r.error.message, true);
+      toast('Contrato cancelado'); closeModal('modalAssin'); loadAll();
+    });
+  };
+  $('assinPdf').onclick = function(){ printContrato(c.id); };
+  openModal('modalAssin');
+};
+window.eventoFromContrato = function(id){
+  var c = state.contratos.find(function(x){ return x.id === id; });
+  if(!c) return;
+  sb.from('eventos').insert({
+    proposta_id: c.proposta_id || null,
+    titulo: 'Festa ' + (c.aniversariante || c.contratante_nome),
+    aniversariante: c.aniversariante, tema: c.tema,
+    data: c.data_evento, hora_inicio: String(c.horario || '12:00').slice(0,5),
+    convidados: c.convidados, valor_total: c.valor_total,
+    contato_nome: c.contratante_nome, contato_telefone: c.contratante_telefone,
+    status: 'confirmado'
+  }).select().single().then(function(r){
+    if(r.error) return toast(r.error.message, true);
+    sb.from('contratos').update({ evento_id: r.data.id }).eq('id', c.id).then(function(){
+      toast('Festa confirmada no calendário! 📅'); loadAll();
+    });
+  });
+};
+
+/* ================= PDF (janela de impressão com a cara da marca) ================= */
+var PRINT_CSS = '*{margin:0;padding:0;box-sizing:border-box}@page{size:A4;margin:0}' +
+  "body{font-family:'DM Sans',Arial,sans-serif;color:#1C2A3A;font-size:10.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}" +
+  '.band{background:#153765;color:#F5EDDC;padding:9mm 12mm;display:flex;justify-content:space-between;align-items:center}' +
+  ".band .logo{font-family:'Anton',sans-serif;font-size:22pt;letter-spacing:.04em}" +
+  '.band .tip{font-size:8.5pt;letter-spacing:.18em;text-transform:uppercase;text-align:right;line-height:1.6}' +
+  '.bar{height:3mm;background:#D85427}.inner{padding:8mm 12mm 10mm}' +
+  "h1{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;color:#153765;font-size:16pt;margin-bottom:2mm}" +
+  '.sub{color:#5A6B80;margin-bottom:6mm}' +
+  '.meta{display:flex;flex-wrap:wrap;gap:3mm;margin-bottom:6mm}' +
+  '.meta div{background:#FBF6EA;border-radius:3mm;padding:3mm 5mm;min-width:30mm}' +
+  '.meta b{display:block;font-size:7pt;letter-spacing:.12em;text-transform:uppercase;color:#5A6B80}' +
+  '.meta span{font-weight:700;color:#153765}' +
+  'table{width:100%;border-collapse:collapse;margin:2mm 0 4mm}' +
+  'td{padding:2.6mm 1mm;border-bottom:1px dashed rgba(21,55,101,.25)}' +
+  'td:last-child{text-align:right;font-weight:700;color:#153765;white-space:nowrap}' +
+  "tr.total td{border-bottom:none;font-family:'Anton',sans-serif;font-size:14pt;color:#D85427;padding-top:4mm}" +
+  '.cond{font-size:9pt;color:#44546A;line-height:1.65;margin-top:4mm}.cond li{margin-left:5mm;margin-bottom:1mm}' +
+  '.obsbox{background:rgba(233,180,59,.16);border:1px solid rgba(233,180,59,.6);border-radius:3mm;padding:4mm 5mm;font-size:9.5pt;margin:4mm 0}' +
+  '.texto{white-space:pre-wrap;line-height:1.6;font-size:9.5pt}' +
+  '.assin{margin-top:12mm;display:flex;gap:10mm}' +
+  '.assin .bx{flex:1;text-align:center;font-size:8.5pt;color:#5A6B80}' +
+  '.assin .ln{border-top:1.2px solid #1C2A3A;margin-top:14mm;padding-top:2mm}' +
+  '.assin-ok{margin-top:8mm;border:1.2px solid #23a455;border-radius:3mm;padding:5mm;font-size:9pt;line-height:1.6}' +
+  '.assin-ok img{max-height:24mm;display:block;margin:2mm auto}' +
+  '.hash{word-break:break-all;color:#5A6B80;font-size:7.5pt}' +
+  '.foot{margin-top:8mm;text-align:center;color:#5A6B80;font-size:8.5pt;line-height:1.6}';
+
+function abrirImpressao(titulo, corpo){
+  var w = window.open('', '_blank');
+  if(!w){ toast('Libere pop-ups para gerar o PDF.', true); return; }
+  /* fontes não bloqueantes (media=print + onload): se o CDN travar, o documento imprime mesmo assim */
+  w.document.write('<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>' + esc(titulo) + '</title>' +
+    '<link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet" media="print" onload="this.media=\'all\'">' +
+    '<style>' + PRINT_CSS + '</style></head><body>' + corpo +
+    /* dispara o print no onload, com timer de segurança caso as fontes travem */
+    '<script>(function(){var ja=false;function go(){if(ja)return;ja=true;setTimeout(function(){window.print()},250)}window.onload=go;setTimeout(go,1500);})();<\/script></body></html>');
+  w.document.close();
+}
+function bandHTML(tipo){
+  return '<div class="band"><div class="logo">GALPÊ</div><div class="tip">' + tipo + '<br>Teresópolis/RJ</div></div><div class="bar"></div>';
+}
+function footHTML(){
+  var cfg = state.config;
+  return '<div class="foot"><b>Galpê — Espaço de Festas</b><br>' +
+    esc(cfg.endereco || 'Rua Yeda, 184 – Tijuca, Teresópolis/RJ') + '<br>' +
+    esc((cfg.telefone_exibicao || '') + (cfg.email ? ' · ' + cfg.email : '') + (cfg.instagram ? ' · ' + cfg.instagram : '')) + '</div>';
+}
+
+window.printProposta = function(id){
+  var p = state.propostas.find(function(x){ return x.id === id; });
+  if(!p) return;
+  var cfg = state.config;
+  var conv = Number(p.convidados), meia = Number(p.convidados_meia || 0), vp = Number(p.valor_pessoa || 0);
+  var pessoas = conv + meia; /* adicionais "por pessoa" cobram integrais + meias */
+  var rows = [['Festa completa — ' + conv + ' convidados × ' + BRL(vp), BRL(conv * vp)]];
+  var total = conv * vp;
+  if(meia > 0){
+    var mt = meia * vp / 2; total += mt;
+    rows.push(['Crianças de 6 a 9 anos (meia) — ' + meia + ' × ' + BRL(vp / 2), BRL(mt)]);
+  }
+  (p.upgrades || []).forEach(function(u){
+    var v = u.unidade === 'por_pessoa' ? Number(u.preco || 0) * pessoas : Number(u.preco || 0);
+    total += v;
+    rows.push([u.nome + (u.unidade === 'por_pessoa' ? ' (' + BRL(u.preco) + '/pessoa)' : ''), BRL(v)]);
+  });
+  if(Number(p.desconto) > 0){ total -= Number(p.desconto); rows.push(['Desconto especial', '− ' + BRL(p.desconto)]); }
+  var sinalPct = Number(cfg.sinal_percent || 10);
+  var meta = [];
+  if(p.data_evento) meta.push(['Data', fmtData(p.data_evento)]);
+  if(p.horario) meta.push(['Horário', String(p.horario).slice(0,5)]);
+  meta.push(['Convidados', conv + ' pagantes' + (meia ? ' + ' + meia + ' meia' + (meia > 1 ? 's' : '') : '')]);
+  meta.push(['Dia', DIA_LABEL[p.dia_tipo] || p.dia_tipo]);
+  var corpo = bandHTML('Proposta de festa') + '<div class="inner">' +
+    '<h1>Proposta para ' + esc(p.nome_cliente) + '</h1>' +
+    '<div class="sub">' + esc((p.aniversariante ? 'Festa de ' + p.aniversariante + (p.idade ? ' · ' + p.idade + ' anos' : '') : '') + (p.tema ? ' — Tema: ' + p.tema : '')) + '</div>' +
+    '<div class="meta">' + meta.map(function(m){ return '<div><b>' + esc(m[0]) + '</b><span>' + esc(m[1]) + '</span></div>'; }).join('') + '</div>' +
+    '<table>' + rows.map(function(r){ return '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>'; }).join('') +
+    '<tr class="total"><td>Total da festa</td><td>' + esc(BRL(total)) + '</td></tr>' +
+    '<tr><td style="color:#5A6B80">Sinal para reservar (' + sinalPct + '%)</td><td>' + esc(BRL(total * sinalPct / 100)) + '</td></tr></table>' +
+    (p.observacoes ? '<div class="obsbox">' + esc(p.observacoes) + '</div>' : '') +
+    '<div class="cond"><b>O que está incluso:</b> espaço exclusivo com brinquedão, buffet completo (entradas, salgados, piquenique, bolo, docinhos e bebidas), decoração com mesa temática e equipe completa — festa de ' + Number(cfg.duracao_horas || 4) + ' horas.' +
+    '<ul><li>Crianças até ' + Number(cfg.criancas_gratis_ate || 5) + ' anos não pagam; de ' + Number(cfg.meia_de || 6) + ' a ' + Number(cfg.meia_ate || 9) + ' anos pagam meia.</li>' +
+    '<li>Reserva confirmada com assinatura do contrato e sinal de ' + sinalPct + '%.</li>' +
+    '<li>Saldo restante até 10 dias antes do evento.</li>' +
+    '<li>Esta proposta não garante reserva de data.' + (p.validade ? ' Válida até ' + fmtData(p.validade) + '.' : '') + '</li></ul></div>' +
+    footHTML() + '</div>';
+  abrirImpressao('Proposta Galpê — ' + p.nome_cliente, corpo);
+};
+
+window.printContrato = function(id){
+  var c = state.contratos.find(function(x){ return x.id === id; });
+  if(!c) return;
+  var assinBloco;
+  if(c.status === 'assinado'){
+    var dt = c.assinado_em ? new Date(c.assinado_em).toLocaleString('pt-BR') : '—';
+    assinBloco = '<div class="assin-ok"><b>✓ Assinado eletronicamente</b> por ' + esc(c.assinante_nome || '') +
+      ' (CPF ' + esc(fmtCPF(c.assinante_cpf || '')) + ') em ' + esc(dt) +
+      (c.aceite_ip ? ' · IP ' + esc(c.aceite_ip) : '') +
+      (c.assinatura_img ? '<img src="' + esc(c.assinatura_img) + '" alt="Assinatura do contratante">' : '') +
+      (c.aceite_hash ? '<div class="hash">Código de verificação SHA-256 do texto: ' + esc(c.aceite_hash) + '</div>' : '') +
+      '<div style="color:#5A6B80;font-size:8pt;margin-top:2mm">Assinatura eletrônica nos termos do art. 10, §2º, da MP nº 2.200-2/2001 e da Lei nº 14.063/2020.</div></div>';
+  } else {
+    assinBloco = '<div class="assin"><div class="bx"><div class="ln">CONTRATADA</div></div><div class="bx"><div class="ln">CONTRATANTE</div></div></div>';
+  }
+  var corpo = bandHTML('Contrato Nº ' + esc(c.numero)) + '<div class="inner">' +
+    '<div class="texto">' + esc(c.texto_contrato) + '</div>' + assinBloco + footHTML() + '</div>';
+  abrirImpressao('Contrato Galpê ' + c.numero + ' — ' + c.contratante_nome, corpo);
+};
+
+/* ================= métricas ================= */
+function renderMetricas(){
+  var dias = Number($('metPeriodo').value);
+  var corte = dias ? new Date(Date.now() - dias * 864e5).toISOString() : '';
+  var leads = corte ? state.leads.filter(function(l){ return l.created_at >= corte; }) : state.leads;
+  var props = corte ? state.propostas.filter(function(p){ return p.created_at >= corte; }) : state.propostas;
+
+  $('metLeads').textContent = leads.length;
+  var fechados = leads.filter(function(l){ return l.status === 'fechado'; }).length;
+  $('metConv').textContent = leads.length ? Math.round(fechados / leads.length * 100) + '%' : '—';
+  var aceitas = props.filter(function(p){ return p.status === 'aceita'; }).length;
+  $('metAceit').textContent = props.length ? aceitas + ' de ' + props.length : '—';
+  var evs = state.eventos.filter(function(e){ return e.status !== 'cancelado' && Number(e.valor_total) > 0; });
+  var evsP = corte ? evs.filter(function(e){ return e.created_at >= corte; }) : evs;
+  $('metTicket').textContent = evsP.length ? BRL(evsP.reduce(function(s,e){ return s + Number(e.valor_total); }, 0) / evsP.length) : '—';
+
+  /* funil por status atual do CRM */
+  var ordem = ['novo','contato','visita','proposta','fechado','perdido'];
+  var counts = {}, max = 1;
+  ordem.forEach(function(st){
+    counts[st] = leads.filter(function(l){ return l.status === st; }).length;
+    if(counts[st] > max) max = counts[st];
+  });
+  $('metFunil').innerHTML = leads.length ? ordem.map(function(st){
+    var cor = st === 'fechado' ? 'var(--ok)' : st === 'perdido' ? 'var(--red)' : 'var(--navy)';
+    return '<div class="hbar"><span class="nm">' + stLabel(st) + '</span><div class="track"><div class="fill" style="width:' +
+      Math.round(counts[st] / max * 100) + '%;background:' + cor + '"></div></div><span class="qt">' + counts[st] + '</span></div>';
+  }).join('') : '<div class="empty">Sem leads no período.</div>';
+
+  /* origem dos leads */
+  var orig = {};
+  leads.forEach(function(l){ var o = l.origem || 'outro'; orig[o] = (orig[o] || 0) + 1; });
+  var keys = Object.keys(orig).sort(function(a,b){ return orig[b] - orig[a]; });
+  var omax = keys.length ? orig[keys[0]] : 1;
+  $('metOrigem').innerHTML = keys.length ? keys.map(function(o){
+    return '<div class="hbar"><span class="nm">' + esc(o) + '</span><div class="track"><div class="fill" style="width:' +
+      Math.round(orig[o] / omax * 100) + '%;background:var(--orange)"></div></div><span class="qt">' + orig[o] +
+      ' (' + Math.round(orig[o] / leads.length * 100) + '%)</span></div>';
+  }).join('') : '<div class="empty">Sem leads no período.</div>';
+
+  /* receita dos últimos 6 meses (sempre fixa, independe do filtro) */
+  var MAB = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  var now = new Date(), meses = [];
+  for(var i = 5; i >= 0; i--){
+    var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    meses.push({ y: d.getFullYear(), m: d.getMonth(), tot: 0 });
+  }
+  state.eventos.forEach(function(e){
+    if(e.status === 'cancelado' || !e.data) return;
+    var pp = e.data.split('-');
+    meses.forEach(function(ms){ if(ms.y === +pp[0] && ms.m === +pp[1] - 1) ms.tot += Number(e.valor_total || 0); });
+  });
+  var rmax = Math.max.apply(null, meses.map(function(m){ return m.tot; }).concat([1]));
+  $('metReceita').innerHTML = meses.map(function(ms){
+    var kv = ms.tot >= 1000 ? 'R$ ' + (Math.round(ms.tot / 100) / 10).toLocaleString('pt-BR') + ' mil' : (ms.tot ? BRL(ms.tot) : '–');
+    return '<div class="vbar"><span class="vv">' + kv + '</span><i style="height:' + Math.max(3, Math.round(ms.tot / rmax * 128)) + 'px"></i><span>' + MAB[ms.m] + '/' + String(ms.y).slice(2) + '</span></div>';
+  }).join('');
+}
+$('metPeriodo').addEventListener('change', renderMetricas);
+
 /* ================= preços ================= */
 function renderPrecos(){
   $('precoDuracao').textContent = state.config.duracao_horas || 4;
@@ -1057,7 +1646,7 @@ $('upDelete').addEventListener('click', function(){
 });
 
 /* ================= config ================= */
-var CFG_KEYS = ['whatsapp','telefone_exibicao','email','instagram','endereco','duracao_horas','sinal_percent','validade_proposta_dias','hora_extra_antecipada_percent','hora_extra_dia_percent','criancas_gratis_ate','meia_de','meia_ate','docinhos_por_pessoa','tolerancia_min','max_extra_percent'];
+var CFG_KEYS = ['whatsapp','telefone_exibicao','email','instagram','endereco','duracao_horas','sinal_percent','validade_proposta_dias','hora_extra_antecipada_percent','hora_extra_dia_percent','criancas_gratis_ate','meia_de','meia_ate','docinhos_por_pessoa','tolerancia_min','max_extra_percent','razao_social','cnpj','pix_chave','ga4_id','meta_festas_mes','meta_receita_mes'];
 function renderCfg(){
   CFG_KEYS.forEach(function(k){
     var el = $('cfg_' + k);
