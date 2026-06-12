@@ -15,7 +15,7 @@
   --orange:#D85427; --orange-l:#E8703F; --orange-btn:#C7481C; --orange-ink:#B23F15;
   --olive:#A9A22F; --red:#C0392B;
   --teal:#2E7E78; --yellow:#E9B43B; --ink:#1C2A3A; --line:rgba(21,55,101,.14);
-  --ok:#23a455;
+  --ok:#157A3C;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh}
@@ -63,7 +63,7 @@ aside .logo small{font-family:'DM Sans';font-size:.6rem;letter-spacing:.2em;alig
 .nav-item svg{width:19px;height:19px;flex:none}
 aside .spacer{flex:1}
 .user-box{font-size:.8rem;opacity:.75;padding:10px 14px;border-top:1px solid rgba(245,237,220,.15);word-break:break-all}
-main{padding:clamp(20px,3vw,40px);max-width:1200px;width:100%}
+main{padding:clamp(20px,3vw,40px);max-width:1200px;width:100%;min-width:0}
 .page-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:24px}
 .page-head h1{font-size:clamp(1.5rem,3vw,2.2rem);color:var(--navy)}
 .view{display:none}
@@ -1344,6 +1344,10 @@ $('ctSave').addEventListener('click', function(){
   }
   d.texto_contrato = $('ct_texto').value.trim();
   if(d.texto_contrato.length < 200) return toast('O texto do contrato está vazio — clique em "Regerar".', true);
+  /* guarda jurídica: o texto assinável precisa bater com os campos que o cliente vê nos cartões */
+  var ancoras = [['valor total', BRL(d.valor_total)], ['data da festa', fmtData(d.data_evento)]];
+  var divergem = ancoras.filter(function(a){ return a[1] && d.texto_contrato.indexOf(a[1]) < 0; }).map(function(a){ return a[0]; });
+  if(divergem.length) return toast('O texto do contrato não bate com os campos (' + divergem.join(' e ') + '). Clique em "Regerar" ou ajuste o texto.', true);
   var id = $('ct_id').value;
   var q = id ? sb.from('contratos').update(d).eq('id', id) : sb.from('contratos').insert(d);
   q.then(function(r){

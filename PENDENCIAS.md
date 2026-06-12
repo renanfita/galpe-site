@@ -28,6 +28,18 @@
 - [ ] **Criar a propriedade GA4** (analytics.google.com, conta do Galpê) e colar o ID em Ajustes → Metas & medição. O site só mede com consentimento do banner de cookies; eventos já instrumentados: `generate_lead` e `clique_whatsapp`.
 - [ ] **Mínimo contratual de pagantes — perguntar ao Galpê.** Desde a contagem exata (commit `6ed959a`), o simulador aceita qualquer quantidade: 45 pagantes simulam a R$ 134 cada (valor da faixa mínima), e o admin também aceita qualquer número no gerador de propostas. Se o contrato exigir um mínimo faturado (ex.: cobrar sempre ao menos 60 pagantes), codificar a regra nos dois lados: simulador (piso de cobrança + legenda explicando, ex. "festas têm mínimo de 60 pagantes") e admin/proposta (`calcProp`/`propTotal` com o mesmo piso). Se não houver mínimo, marcar este item como resolvido sem mudança de código.
 
+## 🧹 Refinos P3 do audit+critique de 12/06 — responsável: dev (lista curta, baixo risco)
+
+- [ ] `window.open(wa.me)` disparado após a RPC de assinatura pode ser engolido por popup blocker (`contrato.html`) → virar botão "Avisar a equipe" dentro do badge de sucesso (e considerar mostrar ali o sinal + chave PIX, fechando o ciclo).
+- [ ] Copiar link promove rascunho→enviado em silêncio (`admin.html` `copyContratoLink`) → toast "contrato liberado para assinatura".
+- [ ] `sendContrato` abre `wa.me/?text=` sem destinatário tendo `contratante_telefone` no registro.
+- [ ] Link de privacidade do gate navega na mesma aba (perde o formulário) → `target="_blank" rel="noopener"`.
+- [ ] Meta "Festas fechadas" conta `pre_reserva` sem sinal → contar só reservado/confirmado/realizado.
+- [ ] Recusar cookies depois de aceitar não descarrega o GA na sessão corrente (só na recarga).
+- [ ] Vocabulário de erro do `contrato.html` (`.erro`) fora do padrão DESIGN.md; estado público "rascunho" usa verde de sucesso → neutro creme/navy.
+- [ ] Privacidade mobile: tabelas perdem rótulos (`th{display:none}`) → `td::before{content:attr(data-label)}`; medida >75ch.
+- [ ] Headings h1→h3 no admin (4×) e hierarquia tipográfica achatada na privacidade.
+
 ## 📈 Funil e produto — decidir com dados
 
 - [ ] **Tempo de resposta aos leads `novo`:** cada liberação do simulador vira lead no CRM do admin — o interesse de quem acabou de simular é perecível; definir rotina de resposta (meta sugerida: < 1h em horário comercial).
@@ -36,6 +48,7 @@
 ## ✅ Histórico de concluídos (rastreio)
 
 - **12/06/2026 (tarde)** — Pós-merge: **bug do aceite de proposta** corrigido (copiar link no admin agora promove `rascunho → enviada`, igual aos contratos — a RPC pós-hardening só aceita `enviada`; propostas antigas em rascunho: clicar 🔗 uma vez no admin promove); **robustez da `proposta.html`** (mensagem inline no lugar do `alert`, handler de queda de rede — botão não trava mais em "Enviando…" —, aviso de proposta vencida/indisponível no lugar do botão); **scrollspy** no nav do `index.html` (desktop + menu mobile, `aria-current`); **passada de design no `admin.html`** (variantes AA `--orange-btn`/`--orange-ink`, `:focus-visible` global, alvos de toque 44px no mobile, inputs 16px anti-zoom iOS, `prefers-reduced-motion`, toast com `aria-live`); **suíte E2E commitada em `tests/e2e/`** (Playwright + Supabase mockado, ~75 verificações, fora do deploy).
+- **12/06/2026** — Audit+critique rodada 2 (P1+P2): banner de cookies sobe acima do WhatsApp no mobile; "não encontrado" de contrato e proposta com saída de WhatsApp; `main{min-width:0}` corrige estouro do admin mobile (603→390px); admin na paleta AA (`--ok #157A3C`, chip de proposta, nav ativa, dia de hoje); guard jurídico no `ctSave` (texto deve conter valor/data dos campos); One Green Rule no contrato (Assinar laranja, WhatsApp verde sólido); a11y do contrato (texto focável `role=region`, 75ch) + **assinatura digitada** como alternativa ao desenho (Fraunces itálico, mesmo hash/auditoria). 11 verificações comportamentais via Playwright.
 - **12/06/2026** — Ferramental admin ponta a ponta: **contratos com assinatura eletrônica** (tabela `contratos` + RPCs com trilha de auditoria SHA-256/IP/data, página pública `contrato.html` com canvas de assinatura e validação de CPF), **PDF estilizado** de proposta e contrato (janela de impressão com a marca), **métricas e metas** (funil, origem, conversão, ticket médio, receita 6 meses, metas de festas/receita no dashboard), **LGPD** (página `privacidade.html`, banner de cookies com consentimento, link no gate e no footer) e **GA4 opt-in** (ID configurável em Ajustes, eventos `generate_lead`/`clique_whatsapp`, CSP atualizada). Validação: migração + setup.sql testados em Postgres local simulando Supabase (RLS, assinatura, reassinatura bloqueada, CPF mascarado) e E2E de navegador com 55 verificações em todas as páginas.
 - **11/06/2026** — Auditoria swarm: XSS na proposta, headers/CSP (`vercel.json`), RLS hardening (migração), hero sem dependência de CDN, robots/sitemap, WebP (−36% de peso). Detalhes em `RELATORIO-AUDITORIA.md`.
 - **11/06/2026** — Impeccable audit/polish (commit `6911c04`): paleta AA (`--orange-btn`/`--orange-ink`/`--wa`), landmark `<main>`, ARIA tabs completo, focus trap no lightbox e menu mobile, simulador com resultado visível no toque, foto stock removida, `tel:`, footer h3.
