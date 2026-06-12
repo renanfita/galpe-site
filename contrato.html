@@ -54,7 +54,7 @@ input:focus{outline:2px solid var(--orange);outline-offset:1px;border-color:var(
 .btn-wa{background:var(--ok);color:#fff}
 .btn-ghost{background:transparent;border-color:var(--navy);color:var(--navy)}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-.erro{background:#FDECEA;color:var(--red);padding:11px 15px;border-radius:12px;font-size:.9rem;margin-top:12px;display:none}
+.erro{background:rgba(192,57,43,.08);border:1.5px solid rgba(192,57,43,.4);color:#A02E22;font-weight:600;padding:11px 15px;border-radius:12px;font-size:.9rem;margin-top:12px;display:none}
 .badge-ok{background:#DFF5E7;border:1.5px solid rgba(21,122,60,.35);color:var(--ok);font-weight:600;padding:16px 20px;border-radius:16px;margin-top:20px;display:none;line-height:1.7;font-size:.92rem}
 .badge-ok b{font-size:1.05rem}
 .badge-ok .hash{word-break:break-all;font-size:.72rem;color:#44746A;font-weight:400}
@@ -210,12 +210,19 @@ function render(c, cfg, sb){
   $('btnWa').href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Oi! Recebi o contrato ' + c.numero + ' da festa no Galpê e tenho uma dúvida.');
 
   function mostraAssinado(nome, cpfMask, quando, hash, img){
+    var waOk = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Acabei de ASSINAR o contrato ' + c.numero + ' da festa no Galpê! 🎊');
+    var proximo = Number(c.sinal_valor) > 0
+      ? '<br><b>Próximo passo:</b> sinal de <b>' + esc(BRL(c.sinal_valor)) + '</b> para garantir a data' +
+        (cfg.pix_chave ? ' · PIX: <b>' + esc(cfg.pix_chave) + '</b>' : '')
+      : '';
     $('badgeOk').innerHTML = '<b>🎉 Contrato assinado!</b><br>' +
       'Por ' + esc(nome) + (cpfMask ? ' · CPF ' + esc(cpfMask) : '') +
       (quando ? '<br>Em ' + esc(new Date(quando).toLocaleString('pt-BR')) : '') +
       (img ? '<img src="' + esc(img) + '" alt="Sua assinatura">' : '') +
       (hash ? '<span class="hash">Código de verificação SHA-256: ' + esc(hash) + '</span>' : '') +
-      '<br>Guarde este link — ele é o seu comprovante. A equipe Galpê confirma os próximos passos pelo WhatsApp. 💛';
+      proximo +
+      '<br>Guarde este link — ele é o seu comprovante. 💛' +
+      '<br><a class="btn btn-wa" style="flex:none;display:inline-flex;margin-top:12px" href="' + waOk + '" target="_blank" rel="noopener">Avisar a equipe no WhatsApp 🎊</a>';
     $('badgeOk').style.display = 'block';
     $('assinarBox').style.display = 'none';
   }
@@ -233,8 +240,11 @@ function render(c, cfg, sb){
     return;
   }
   if(c.status !== 'enviado'){
-    /* rascunho: link ainda não liberado pelo Galpê para assinatura */
+    /* rascunho: link ainda não liberado — estado neutro, não é sucesso */
     $('badgeOk').style.display = 'block';
+    $('badgeOk').style.background = 'var(--cream-2)';
+    $('badgeOk').style.borderColor = 'var(--line)';
+    $('badgeOk').style.color = 'var(--navy)';
     $('badgeOk').textContent = 'Este contrato ainda está em preparação. A equipe Galpê avisa quando estiver pronto para assinar. ✨';
     return;
   }
@@ -361,9 +371,8 @@ function render(c, cfg, sb){
           if(motivo === 'indisponivel') return falha('Este contrato não está mais disponível para assinatura. Fale com a gente pelo WhatsApp.');
           return falha('Não foi possível registrar agora. Tente de novo ou chame a gente no WhatsApp.');
         }
+        /* sem window.open automático (popup blocker engole): o badge traz o botão de avisar a equipe */
         mostraAssinado(nome, null, r.data.assinado_em, r.data.hash, img);
-        var waOk = 'Acabei de ASSINAR o contrato ' + c.numero + ' da festa no Galpê! 🎊';
-        window.open('https://wa.me/' + wa + '?text=' + encodeURIComponent(waOk), '_blank', 'noopener');
       }, function(){
         btn.disabled = false; btn.textContent = '✍️ Assinar contrato';
         falha('Falha de conexão. Tente novamente em instantes.');

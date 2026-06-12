@@ -77,7 +77,7 @@ main{padding:clamp(20px,3vw,40px);max-width:1200px;width:100%;min-width:0}
 .kpi .lbl{font-size:.82rem;color:#5A6B80;font-weight:600;margin-top:2px}
 .kpi.hl .num{color:var(--orange)}
 .panel{background:#fff;border-radius:18px;border:1.5px solid var(--line);padding:22px;margin-bottom:20px}
-.panel h3{color:var(--navy);margin-bottom:14px;font-size:1.05rem}
+.panel h2{color:var(--navy);margin-bottom:14px;font-size:1.05rem}
 table{width:100%;border-collapse:collapse;font-size:.92rem}
 th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#5A6B80;padding:8px 10px;border-bottom:2px solid var(--line)}
 td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
@@ -260,15 +260,15 @@ tr:hover td{background:var(--cream-2)}
         <div class="kpi"><div class="num" id="kpiLeads">–</div><div class="lbl">leads novos</div></div>
       </div>
       <div class="panel">
-        <h3>Meta do mês</h3>
+        <h2>Meta do mês</h2>
         <div id="dashMetas"></div>
       </div>
       <div class="panel">
-        <h3>Próximas festas</h3>
+        <h2>Próximas festas</h2>
         <div id="dashProximas"></div>
       </div>
       <div class="panel">
-        <h3>Pagamentos pendentes</h3>
+        <h2>Pagamentos pendentes</h2>
         <div id="dashPagamentos"></div>
       </div>
     </section>
@@ -340,15 +340,15 @@ tr:hover td{background:var(--cream-2)}
         <div class="kpi"><div class="num" id="metTicket">–</div><div class="lbl">ticket médio (festas)</div></div>
       </div>
       <div class="panel">
-        <h3>Funil de leads <small style="font-weight:400;color:#5A6B80">(status atual no CRM)</small></h3>
+        <h2>Funil de leads <small style="font-weight:400;color:#5A6B80">(status atual no CRM)</small></h2>
         <div id="metFunil"></div>
       </div>
       <div class="panel">
-        <h3>Origem dos leads</h3>
+        <h2>Origem dos leads</h2>
         <div id="metOrigem"></div>
       </div>
       <div class="panel">
-        <h3>Receita por mês <small style="font-weight:400;color:#5A6B80">(festas não canceladas, últimos 6 meses)</small></h3>
+        <h2>Receita por mês <small style="font-weight:400;color:#5A6B80">(festas não canceladas, últimos 6 meses)</small></h2>
         <div class="vbars" id="metReceita"></div>
       </div>
       <p style="font-size:.82rem;color:#5A6B80">Visitas e origem de tráfego do site ficam no Google Analytics (configure o ID GA4 em Ajustes → Metas &amp; medição). O site só mede com consentimento de cookies do visitante (LGPD).</p>
@@ -358,13 +358,13 @@ tr:hover td{background:var(--cream-2)}
     <section class="view" id="view-precos">
       <div class="page-head"><h1 class="h-display">Preços &amp; Pacotes</h1></div>
       <div class="panel">
-        <h3>Tabela por pessoa (festa de <span id="precoDuracao">4</span>h)</h3>
+        <h2>Tabela por pessoa (festa de <span id="precoDuracao">4</span>h)</h2>
         <div class="precos-grid" id="precosGrid"></div>
         <button class="btn btn-primary btn-sm" style="margin-top:18px" id="btnSalvarPrecos">Salvar tabela</button>
         <p style="font-size:.82rem;color:#5A6B80;margin-top:10px">As alterações valem na hora para o site público e para novas propostas.</p>
       </div>
       <div class="panel">
-        <h3>Upgrades &amp; adicionais</h3>
+        <h2>Upgrades &amp; adicionais</h2>
         <div id="upgTable" style="overflow-x:auto"></div>
         <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="openUpgModal()">+ Novo upgrade</button>
       </div>
@@ -374,7 +374,7 @@ tr:hover td{background:var(--cream-2)}
     <section class="view" id="view-cfg">
       <div class="page-head"><h1 class="h-display">Ajustes</h1></div>
       <div class="panel">
-        <h3>Contato &amp; site</h3>
+        <h2>Contato &amp; site</h2>
         <div class="modal grid2" style="all:unset;display:grid;grid-template-columns:1fr 1fr;gap:0 16px">
           <div><label>WhatsApp (só números, com 55)</label><input id="cfg_whatsapp"></div>
           <div><label>Telefone (exibição)</label><input id="cfg_telefone_exibicao"></div>
@@ -384,7 +384,7 @@ tr:hover td{background:var(--cream-2)}
         </div>
       </div>
       <div class="panel">
-        <h3>Dados para contratos &amp; pagamento</h3>
+        <h2>Dados para contratos &amp; pagamento</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px">
           <div><label>Razão social</label><input id="cfg_razao_social" placeholder="Galpê Buffet Ltda."></div>
           <div><label>CNPJ</label><input id="cfg_cnpj" placeholder="00.000.000/0001-00"></div>
@@ -392,7 +392,7 @@ tr:hover td{background:var(--cream-2)}
         </div>
       </div>
       <div class="panel">
-        <h3>Metas &amp; medição</h3>
+        <h2>Metas &amp; medição</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0 16px">
           <div><label>Meta de festas/mês</label><input id="cfg_meta_festas_mes" type="number" min="0"></div>
           <div><label>Meta de receita/mês (R$)</label><input id="cfg_meta_receita_mes" type="number" min="0" step="100"></div>
@@ -401,7 +401,7 @@ tr:hover td{background:var(--cream-2)}
         <p style="font-size:.82rem;color:#5A6B80;margin-top:10px">Crie a propriedade GA4 em analytics.google.com e cole o ID acima — o site passa a medir visitas na hora, sempre respeitando o banner de consentimento de cookies (LGPD).</p>
       </div>
       <div class="panel">
-        <h3>Regras do negócio</h3>
+        <h2>Regras do negócio</h2>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0 16px">
           <div><label>Duração da festa (h)</label><input id="cfg_duracao_horas" type="number" step="0.5"></div>
           <div><label>Sinal (%)</label><input id="cfg_sinal_percent" type="number"></div>
@@ -418,7 +418,7 @@ tr:hover td{background:var(--cream-2)}
         <button class="btn btn-primary btn-sm" style="margin-top:18px" id="btnSalvarCfg">Salvar ajustes</button>
       </div>
       <div class="panel">
-        <h3>Segurança</h3>
+        <h2>Segurança</h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px;max-width:560px">
           <div><label>Nova senha</label><input id="newPass" type="password" autocomplete="new-password"></div>
           <div><label>Repetir nova senha</label><input id="newPass2" type="password" autocomplete="new-password"></div>
@@ -756,8 +756,10 @@ function renderDash(){
     return '<div class="meta-row"><div class="lin"><span>' + lbl + '</span><b>' + fmtFn(atual) + ' de ' + fmtFn(meta) +
       ' · ' + pct + '%</b></div><div class="meter"><i class="' + (pct >= 100 ? 'full' : '') + '" style="width:' + pct + '%"></i></div></div>';
   }
+  /* meta de festas só conta compromisso real (pré-reserva sem sinal fica de fora) */
+  var fechadasMes = doMes.filter(function(e){ return ['reservado','confirmado','realizado'].indexOf(e.status) >= 0; }).length;
   $('dashMetas').innerHTML = (metaF > 0 || metaR > 0)
-    ? (metaF > 0 ? metaRow('Festas fechadas', doMes.length, metaF, function(n){ return n; }) : '')
+    ? (metaF > 0 ? metaRow('Festas fechadas', fechadasMes, metaF, function(n){ return n; }) : '')
       + (metaR > 0 ? metaRow('Receita prevista', receitaMes, metaR, BRL) : '')
     : '<div class="empty">Defina suas metas em Ajustes → Metas &amp; medição.</div>';
 
@@ -1128,19 +1130,30 @@ function marcarPropostaEnviada(p){
   if(p.status !== 'rascunho') return;
   sb.from('propostas').update({ status: 'enviada' }).eq('id', p.id).then(function(){ loadAll(); });
 }
+/* normaliza telefone BR para wa.me (prefixa 55 quando vier sem DDI) */
+function waNum(t){
+  var d = String(t || '').replace(/\D/g, '');
+  if(!d) return '';
+  if(d.length === 10 || d.length === 11) d = '55' + d;
+  return d;
+}
 window.copyPropLink = function(id){
   var p = state.propostas.find(function(x){ return x.id === id; });
   if(!p) return;
-  navigator.clipboard.writeText(propLink(p.token)).then(function(){ toast('Link copiado! 🔗'); });
+  var promove = p.status === 'rascunho';
+  navigator.clipboard.writeText(propLink(p.token)).then(function(){
+    toast(promove ? 'Link copiado: proposta liberada para aceite! 🔗' : 'Link copiado! 🔗');
+  });
   marcarPropostaEnviada(p);
 };
 window.sendProp = function(id){
   var p = state.propostas.find(function(x){ return x.id === id; });
   if(!p) return;
+  var lead = p.lead_id ? state.leads.find(function(l){ return l.id === p.lead_id; }) : null;
   var msg = 'Oi' + (p.nome_cliente ? ', ' + p.nome_cliente.split(' ')[0] : '') + '! 🎪 Aqui é do Galpê.\n\n' +
     'Preparamos sua proposta' + (p.aniversariante ? ' para a festa de ' + p.aniversariante : '') + ':\n' + propLink(p.token) +
     '\n\nQualquer dúvida é só chamar. Vai ser uma festa linda! ✨';
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  window.open('https://wa.me/' + waNum(lead && lead.telefone) + '?text=' + encodeURIComponent(msg), '_blank');
   marcarPropostaEnviada(p);
 };
 window.eventoFromProp = function(id){
@@ -1369,7 +1382,10 @@ function marcarContratoEnviado(c){
 window.copyContratoLink = function(id){
   var c = state.contratos.find(function(x){ return x.id === id; });
   if(!c) return;
-  navigator.clipboard.writeText(contratoLink(c.token)).then(function(){ toast('Link de assinatura copiado! 🔗'); });
+  var promove = c.status === 'rascunho';
+  navigator.clipboard.writeText(contratoLink(c.token)).then(function(){
+    toast(promove ? 'Link copiado: contrato liberado para assinatura! ✍️' : 'Link de assinatura copiado! 🔗');
+  });
   marcarContratoEnviado(c);
 };
 window.sendContrato = function(id){
@@ -1377,7 +1393,7 @@ window.sendContrato = function(id){
   if(!c) return;
   var msg = 'Oi, ' + c.contratante_nome.split(' ')[0] + '! 🎪 Seu contrato da festa no Galpê está pronto:\n' +
     contratoLink(c.token) + '\n\nÉ só conferir e assinar direto pelo celular (nome, CPF e assinatura na tela). Qualquer dúvida, chama a gente!';
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+  window.open('https://wa.me/' + waNum(c.contratante_telefone) + '?text=' + encodeURIComponent(msg), '_blank');
   marcarContratoEnviado(c);
 };
 window.openAssinModal = function(id){
