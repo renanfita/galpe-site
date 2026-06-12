@@ -33,7 +33,7 @@ Cinco páginas + um backend Supabase compartilhado:
 - **`supabase-config.js`** — único ponto de configuração do backend (`window.GALPE_SUPABASE = { url, anonKey }`). Carregado pelas páginas com backend.
 - **`supabase/migrations/`** — fonte da verdade do schema. A integração GitHub do Supabase aplica automaticamente novos arquivos `*.sql` (ordem pelo timestamp do nome) a cada push na branch de produção. **Mudança de schema = novo arquivo timestampado aqui; nunca editar migração já aplicada.** `supabase/config.toml` e `seed.sql` valem para preview branches.
 - **`setup/setup.sql`** — instalador manual all-in-one (idempotente), usado só para ativar um projeto Supabase do zero fora da integração (guia em `setup/SETUP-ADMIN.md`). Ao mudar o schema, manter este arquivo em sincronia com as migrações.
-- **Modelo de RLS** (pós-hardening): anônimo lê `site_config`/`precos`/`upgrades` e insere em `leads` (colunas restritas, throttle); escrita administrativa exige `public.is_admin()` (tabela `admins`), não apenas estar autenticado. Novos usuários admin precisam ser inseridos em `public.admins`.
+- **Modelo de RLS** (pós-hardening): anônimo lê `site_config`/`precos`/`upgrades` e insere em `leads` (colunas restritas, throttle); escrita administrativa exige `public.is_admin()` (tabela `admins`), não apenas estar autenticado. Novos usuários admin precisam ser inseridos em `public.admins`. **Padrões de performance das policies** (migração `20260612150000_perf_rls_lints`, advisor zerado): nas tabelas de leitura pública (`site_config`/`precos`/`upgrades`) a policy de admin cobre **só escrita** (`INSERT`/`UPDATE`/`DELETE` separados — a leitura vem da `*_read`, evitando duas policies permissivas no mesmo `SELECT`); e todo `auth.uid()`/`public.is_admin()` dentro de policy fica embrulhado em `(select …)` (vira InitPlan, avaliado 1× por consulta, não por linha). Ao criar policy nova, repetir os dois padrões para não reintroduzir os lints `multiple_permissive_policies`/`auth_rls_initplan`.
 
 ## Regras de preço (aplicar igualmente em simulador, admin e proposta)
 
@@ -50,6 +50,8 @@ Regras confirmadas com o negócio em 11/06/2026. Implementadas em três lugares 
 - Credenciais reais ficam em `.env.local` (gitignorado). Não commitar segredos.
 - Acesso a propostas e contratos públicos sempre via RPC com token, nunca select direto na tabela. A RPC `assinar_contrato` valida nome/CPF/formato da assinatura no servidor e calcula o hash sobre o texto salvo no banco (nunca confiar no cliente).
 - LGPD: analytics só com consentimento; a política de privacidade (`privacidade.html`) lista os dados/cookies — atualizar ao coletar qualquer dado novo.
+- Cadeia de suprimentos: os scripts de CDN (GSAP no `index.html`; supabase-js em `admin`/`proposta`/`contrato`) carregam com `integrity` (SRI sha384) + `crossorigin`, e a CSP do `vercel.json` restringe os hosts. Ao trocar a versão de uma lib, recalcular o hash (ver linha do SRI na tabela de manutenção) — sem isso o navegador bloqueia o script.
+- Acesso ao painel: signups públicos do Supabase Auth ficam **desativados** (qualquer autenticado teria acesso total) e a política de senha do provider Email é forte; o *leaked password protection* exige plano Pro (ver `setup/SETUP-ADMIN.md`).
 
 ## Manutenção frequente
 
@@ -67,6 +69,8 @@ Regras confirmadas com o negócio em 11/06/2026. Implementadas em três lugares 
 | Política de privacidade / banner de cookies | `privacidade.html` / `index.html` → `#ckBanner` + bloco JS `cookies (LGPD)` |
 | Headers de segurança/CSP/cache | `vercel.json` |
 | Versão das libs de CDN (GSAP/supabase-js) | tags `<script integrity>` nas páginas — ao subir versão, recalcular o SRI com os bytes do pacote npm (`openssl dgst -sha384 -binary arq.js \| openssl base64 -A`) e apontar para um arquivo exato do pacote (nunca `.min.js` auto-gerado pelo jsdelivr, que pode mudar de bytes) |
+| Schema, RLS e RPCs do banco | `supabase/migrations/*.sql` (novo arquivo timestampado; **nunca** editar migração já aplicada) + `setup/setup.sql` idempotente mantido em sincronia. Conferir lints depois de mudar policy (Supabase → Advisors) |
+| Config de Auth do Supabase (signups, política de senha) | Dashboard → Authentication (não versionado; passo a passo em `setup/SETUP-ADMIN.md` Passo 4) |
 | SEO técnico | `robots.txt`, `sitemap.xml` (atualizar URLs ao migrar para festanogalpe.com.br) |
 | Pendências abertas | `PENDENCIAS.md` (atualizar ao concluir qualquer item) |
 
