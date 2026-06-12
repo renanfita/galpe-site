@@ -982,7 +982,7 @@ function renderProps(){
         '<td><span class="chip st-' + p.status + '">' + stLabel(p.status) + '</span></td>' +
         '<td><div class="row-actions">' +
         '<button class="icon-btn" title="Editar" onclick="openPropModal(\'' + sid(p.id) + '\')">✎</button>' +
-        '<button class="icon-btn" title="Copiar link" onclick="copyPropLink(\'' + sid(p.token) + '\')">🔗</button>' +
+        '<button class="icon-btn" title="Copiar link" onclick="copyPropLink(\'' + sid(p.id) + '\')">🔗</button>' +
         '<button class="icon-btn" title="Enviar por WhatsApp" onclick="sendProp(\'' + sid(p.id) + '\')">➤</button>' +
         '<button class="icon-btn" title="Baixar PDF da proposta" onclick="printProposta(\'' + sid(p.id) + '\')">🖨</button>' +
         (state.contratosOk ? '<button class="icon-btn" title="Gerar contrato" onclick="contratoFromProp(\'' + sid(p.id) + '\')">📑</button>' : '') +
@@ -1115,18 +1115,24 @@ $('prDelete').addEventListener('click', function(){
 function propLink(token){
   return location.origin + location.pathname.replace(/admin\.html$/, '') + 'proposta.html?t=' + token;
 }
-window.copyPropLink = function(token){
-  navigator.clipboard.writeText(propLink(token)).then(function(){ toast('Link copiado! 🔗'); });
+function marcarPropostaEnviada(p){
+  if(p.status !== 'rascunho') return;
+  sb.from('propostas').update({ status: 'enviada' }).eq('id', p.id).then(function(){ loadAll(); });
+}
+window.copyPropLink = function(id){
+  var p = state.propostas.find(function(x){ return x.id === id; });
+  if(!p) return;
+  navigator.clipboard.writeText(propLink(p.token)).then(function(){ toast('Link copiado! 🔗'); });
+  marcarPropostaEnviada(p);
 };
 window.sendProp = function(id){
   var p = state.propostas.find(function(x){ return x.id === id; });
+  if(!p) return;
   var msg = 'Oi' + (p.nome_cliente ? ', ' + p.nome_cliente.split(' ')[0] : '') + '! 🎪 Aqui é do Galpê.\n\n' +
     'Preparamos sua proposta' + (p.aniversariante ? ' para a festa de ' + p.aniversariante : '') + ':\n' + propLink(p.token) +
     '\n\nQualquer dúvida é só chamar. Vai ser uma festa linda! ✨';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-  if(p.status === 'rascunho'){
-    sb.from('propostas').update({ status: 'enviada' }).eq('id', id).then(function(){ loadAll(); });
-  }
+  marcarPropostaEnviada(p);
 };
 window.eventoFromProp = function(id){
   var p = state.propostas.find(function(x){ return x.id === id; });
