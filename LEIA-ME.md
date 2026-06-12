@@ -18,7 +18,7 @@ Durante esta sessão também está em: <http://localhost:8765/>
 - **Galeria** com lightbox (fotos profissionais da proposta)
 - **Cardápio completo** em 8 abas (todas as etapas da festa)
 - **Upgrades** ("Quero mais")
-- **Simulador de orçamento com captura de lead**: antes de ver valores, o visitante deixa nome + WhatsApp (vira lead no painel admin); depois simula dia × convidados → valor por pessoa + total + mensagem personalizada pronta no WhatsApp
+- **Simulador de orçamento com captura de lead**: antes de ver valores, o visitante deixa nome + WhatsApp (vira lead no painel admin); depois simula com o número exato de convidados (o sistema enquadra na faixa de preço sozinho), crianças de 6 a 9 a meia e adicionais → mini-extrato com total estimado + mensagem pronta no WhatsApp
 - **Como funciona** (4 passos) + equipe
 - **FAQ** com as condições gerais reescritas de forma amigável
 - **Mapa do Google** apontando para Rua Yeda, 184 + cartões de contato
@@ -40,6 +40,7 @@ Durante esta sessão também está em: <http://localhost:8765/>
 ## Como editar preços
 
 Em `index.html`, procure por `var PRICES` — os valores estão organizados por dia (seg/sex/sab) e nº de convidados.
+Com o painel admin ativo, as faixas, o preço da Comida de verdade e os upgrades (que viram adicionais do simulador quando precificados) são editados por lá, sem mexer em código. Crianças de 6 a 9 pagam meia automaticamente; a faixa é definida só pelos pagantes integrais.
 
 ## O que ainda falta
 

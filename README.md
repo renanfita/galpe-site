@@ -9,7 +9,7 @@ Site one-page premium para o **Galpê**, buffet infantil e espaço de festas em 
 ## ✨ Features
 
 - **Design system da marca**: paleta extraída da proposta oficial (creme `#F5EDDC`, marinho `#153765`, laranja `#D85427`, oliva `#A9A22F`), arcos, bordas onduladas e motion design com GSAP/ScrollTrigger
-- **Simulador de orçamento com captura de lead**: o visitante deixa nome + WhatsApp (e, se quiser, aniversariante/idade/mês) → vira lead no CRM do admin → simula dia da semana × nº de convidados → valor por pessoa + total + mensagem personalizada pré-pronta no WhatsApp. Funciona offline do banco e lembra quem já se cadastrou
+- **Simulador de orçamento com captura de lead**: o visitante deixa nome + WhatsApp (e, se quiser, aniversariante/idade/mês) → vira lead no CRM do admin → simula com o **número exato de pagantes** (o sistema enquadra sozinho nas faixas 60/80/100/150, com dica quando falta pouco para a faixa mais barata), crianças de 6 a 9 a meia e adicionais marcáveis → mini-extrato com total estimado + mensagem personalizada pré-pronta no WhatsApp. Funciona offline do banco e lembra quem já se cadastrou
 - **Cardápio completo** em 8 abas acessíveis (ARIA tabs)
 - **Galeria** com lightbox navegável por teclado
 - **SEO local**: JSON-LD `EventVenue` + `FAQPage`, Open Graph/Twitter Cards, otimizado para "buffet infantil Teresópolis"
@@ -42,7 +42,7 @@ Hospedagem estática em qualquer provedor (Vercel, Netlify, Cloudflare Pages, Gi
 
 ## 🧭 Painel Admin (back-office)
 
-`admin.html` — dashboard completo com login (Supabase): KPIs, calendário de festas com bloqueio de datas, CRM de leads (alimentado automaticamente pelo gate do simulador — responda rápido aos leads `novo`!), gerador de propostas com link público e aceite online (`proposta.html`), editor de preços/upgrades que atualiza o site em tempo real e ajustes das regras do negócio.
+`admin.html` — dashboard completo com login (Supabase): KPIs, calendário de festas com bloqueio de datas, CRM de leads (alimentado automaticamente pelo gate do simulador — responda rápido aos leads `novo`!), gerador de propostas com meia-entrada 6–9, link público e aceite online (`proposta.html`), editor de preços/upgrades que atualiza o site em tempo real (upgrades com preço viram adicionais do simulador) e ajustes das regras do negócio.
 
 **Ativação (~10 min):** siga [`setup/SETUP-ADMIN.md`](setup/SETUP-ADMIN.md). Sem backend configurado, o site público funciona normalmente com os preços embutidos.
 
